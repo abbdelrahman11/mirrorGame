@@ -52,8 +52,6 @@ router.post(
       name,
       email: email.toLowerCase(),
       password: encryptedPassword,
-      address,
-  
     };
 
     const dbUser = await UserModel.create(newUser);
@@ -77,7 +75,6 @@ const generateTokenReponse = (user: User) => {
     id: user.id,
     email: user.email,
     name: user.name,
-    address: user.address,
     token: token,
   };
 };

@@ -5,16 +5,14 @@ export interface User {
   email: string;
   password: string;
   name: string;
-  address: string;
-}
+ }
 
 export const UserSchema = new Schema<User>(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    address: { type: String, required: true },
-  },
+   },
   {
     timestamps: true,
     toJSON: {
