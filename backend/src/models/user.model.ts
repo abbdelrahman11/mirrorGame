@@ -6,8 +6,6 @@ export interface User {
   password: string;
   name: string;
   address: string;
-  doctor_id: string;
-  Diagnosis: string;
 }
 
 export const UserSchema = new Schema<User>(
@@ -16,8 +14,6 @@ export const UserSchema = new Schema<User>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     address: { type: String, required: true },
-    doctor_id: { type: String, required: false },
-    Diagnosis: { type: String, required: false },
   },
   {
     timestamps: true,

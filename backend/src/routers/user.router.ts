@@ -38,7 +38,7 @@ router.post(
 router.post(
   "/register",
   asyncHandler(async (req, res) => {
-    const { name, email, password, address, doctor_id } = req.body;
+    const { name, email, password, address } = req.body;
     const user = await UserModel.findOne({ email });
     if (user) {
       res.status(HTTP_BAD_REQUEST).send("User is already exist, please login!");
@@ -53,8 +53,7 @@ router.post(
       email: email.toLowerCase(),
       password: encryptedPassword,
       address,
-      Diagnosis: "",
-      doctor_id,
+  
     };
 
     const dbUser = await UserModel.create(newUser);
@@ -80,8 +79,6 @@ const generateTokenReponse = (user: User) => {
     name: user.name,
     address: user.address,
     token: token,
-    Diagnosis: user.Diagnosis,
-    doctor_id: user.doctor_id,
   };
 };
 
