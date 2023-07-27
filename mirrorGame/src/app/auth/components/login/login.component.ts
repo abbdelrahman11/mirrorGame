@@ -1,18 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ToastrService } from 'ngx-toastr';
-import { NgxSpinnerService } from 'ngx-spinner';
+import { AuthService } from 'src/app/core/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
-  constructor(
-    private fb: FormBuilder,
-    private toastr: ToastrService,
-    private spinner: NgxSpinnerService
-  ) {}
+  constructor(private fb: FormBuilder, private service: AuthService) {}
   form!: FormGroup;
 
   createForm() {
@@ -25,7 +20,10 @@ export class LoginComponent implements OnInit {
     this.createForm();
   }
   login() {
-    this.toastr.success('Hello world!', 'Toastr fun!');
-    this.spinner.show();
+    this.service.login(this.form.value).subscribe({
+      next: (res) => {
+        console.log(res);
+      },
+    });
   }
 }

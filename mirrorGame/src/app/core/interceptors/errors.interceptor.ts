@@ -21,11 +21,9 @@ export class ErrorsInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<unknown>> {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
-        this.toastr.error(error.error);
         if (error instanceof HttpErrorResponse) {
           const applicationError = error.headers.get('Application-Error');
           if (applicationError) {
-            console.log('applicationError');
             this.toastr.error(applicationError);
             throw error;
           }
@@ -40,7 +38,7 @@ export class ErrorsInterceptor implements HttpInterceptor {
               this.toastr.error('error', 'server error');
               break;
             default:
-              console.log('back error : ', error.message);
+              this.toastr.error(error.error);
               break;
           }
         }
