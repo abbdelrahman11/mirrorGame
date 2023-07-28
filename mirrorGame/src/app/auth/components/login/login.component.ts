@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -25,5 +26,8 @@ export class LoginComponent implements OnInit {
         console.log(res);
       },
     });
+  }
+  SignupWithGoogle() {
+    window.open(`${environment.baseUrl}/auth/google/callback`, '_self');
   }
 }

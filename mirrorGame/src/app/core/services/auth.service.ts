@@ -8,9 +8,9 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
   constructor(private http: HttpClient) {}
   login(body: any) {
-    return this.http.post(`${environment.baseUrl}/users/login`, body);
+    return this.http.post(`${environment.baseUrl}/api/users/login`, body);
   }
   signup(body: any) {
-    return this.http.post(`${environment.baseUrl}/users/register`, body);
+    return this.http.post(`${environment.baseUrl}/api/users/register`, body);
   }
 }
