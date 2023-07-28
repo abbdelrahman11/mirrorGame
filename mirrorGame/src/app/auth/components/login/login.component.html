@@ -40,7 +40,12 @@
           </div>
 
           <!-- Submit button -->
-          <button (click)="login()" class="btn btn-dark btn-lg btn-block">
+
+          <button
+            (click)="login()"
+            class="btn btn-dark btn-lg btn-block"
+            [disabled]="!form.valid"
+          >
             Sign in
           </button>
           <div class="text-center m-3">
