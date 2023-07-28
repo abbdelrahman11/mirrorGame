@@ -8,10 +8,10 @@ import path from "path";
 import express from "express";
 import cors from "cors";
 import userRouter from "./routers/user.router";
-const authRoute = require("./routers/");
+import googleLoginRouter from "./routers/googleLogin";
 import { dbConnect } from "./configs/database.config";
 dbConnect();
-
+require("./passport");
 const app = express();
 const server = http.createServer(app);
 // const io = socketio(server);
@@ -29,11 +29,12 @@ app.use(passport.session());
 
 app.use(
   cors({
-    origin: "http://localhost:5000",
+    origin: "http://localhost:4200",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })
 );
+
 // app.use(
 //     cors({
 //         credentials: true,
@@ -42,7 +43,7 @@ app.use(
 // );
 
 app.use("/api/users", userRouter);
-app.use("/auth", authRoute);
+app.use("/auth", googleLoginRouter);
 
 const port = process.env.PORT || 8080;
 server.listen(port, () => {

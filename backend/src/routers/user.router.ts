@@ -6,7 +6,7 @@ import { User, UserModel } from "../models/user.model";
 import { HTTP_BAD_REQUEST } from "../constants/http_status";
 import bcrypt from "bcryptjs";
 const router = Router();
-
+const passport = require("passport");
 router.get(
   "/seed",
   asyncHandler(async (req, res) => {
@@ -78,5 +78,39 @@ const generateTokenReponse = (user: User) => {
     token: token,
   };
 };
+
+router.get("/login/success", (req: any, res) => {
+  if (req.user) {
+    res.status(200).json({
+      error: false,
+      message: "Successfully Loged In",
+      user: req.user,
+    });
+  } else {
+    res.status(403).json({ error: true, message: "Not Authorized" });
+  }
+});
+
+router.get("/login/failed", (req, res) => {
+  res.status(401).json({
+    error: true,
+    message: "Log in failure",
+  });
+});
+
+router.get("/google", passport.authenticate("google", ["profile", "email"]));
+
+router.get(
+  "/google/callback",
+  passport.authenticate("google", {
+    successRedirect: process.env.CLIENT_URL,
+    failureRedirect: "/login/failed",
+  })
+);
+
+router.get("/logout", (req: any, res) => {
+  req.logout();
+  res.redirect(process.env.CLIENT_URL as any);
+});
 
 export default router;
