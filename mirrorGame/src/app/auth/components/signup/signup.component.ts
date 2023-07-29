@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Component({
   selector: 'app-signup',
@@ -8,7 +10,11 @@ import { AuthService } from 'src/app/core/services/auth.service';
   styleUrls: ['./signup.component.css'],
 })
 export class SignupComponent implements OnInit {
-  constructor(private fb: FormBuilder, private service: AuthService) {}
+  constructor(
+    private fb: FormBuilder,
+    private service: AuthService,
+    private router: Router
+  ) {}
   form!: FormGroup;
 
   createForm() {
@@ -23,7 +29,13 @@ export class SignupComponent implements OnInit {
   }
   signup() {
     this.service.signup(this.form.value).subscribe({
-      next: () => {},
+      next: () => this.handelSuccess(),
     });
+  }
+  SignupWithGoogle() {
+    window.open(`${environment.baseUrl}/auth/google/callback`, '_self');
+  }
+  handelSuccess() {
+    this.router.navigateByUrl("/auth/login")
   }
 }

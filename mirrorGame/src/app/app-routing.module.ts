@@ -1,10 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { NotfoundComponent } from './shared/components/notfound/notfound.component';
+import { AuthGuard } from './core/guards/auth.guard';
 
 const routes: Routes = [
   {
     path: '',
+    canActivateChild: [AuthGuard],
     loadChildren: () =>
       import(`./game-body/game-body.module`).then((m) => m.GameBodyModule),
   },
