@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RedirectService } from 'src/app/core/services/redirect.service';
-import { environment } from 'src/environments/environment';
-
 @Component({
   selector: 'app-redirect',
   templateUrl: './redirect.component.html',
@@ -16,7 +14,8 @@ export class RedirectComponent implements OnInit {
   }
   checkRedirect() {
     this.service.checkRedirect().subscribe({
-      next: (res) => {
+      next: (res: any) => {
+        localStorage.setItem('token', res.token);
         this.router.navigateByUrl('/');
       },
     });
