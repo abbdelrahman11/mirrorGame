@@ -1,22 +1,33 @@
+import { messages } from "../models/messages.model";
+import { roomUsers } from "../models/roomUsers.model";
+
 module.exports = (io: any, socket: any) => {
   const botName = "ChatCord Bot";
   const { formatMessage } = require("../utils/message");
   const { getRoomUsers, userLeave } = require("../utils/users");
   const handledisconnect = () => {
-    const user = userLeave(socket.id);
+    userLeave("1").then((Leaveres: roomUsers) => {
+      console.log(Leaveres);
 
-    if (user) {
-      io.to(user.room).emit(
-        "message",
-        formatMessage(botName, `${user.username} has left the chat`)
-      );
+      if (Leaveres) {
+        const msgToAll: messages = {
+          username: "ChatCord Bot",
+          text: `${Leaveres.username} has left the chat`,
+        };
+        formatMessage(msgToAll).then((res: messages) => {
+          io.to(Leaveres.room).emit("message", res);
+        });
 
-      // Send users and room info
-      io.to(user.room).emit("roomUsers", {
-        room: user.room,
-        users: getRoomUsers(user.room),
-      });
-    }
+        // Send users and room info
+
+        getRoomUsers(Leaveres.room).then((res: roomUsers) => {
+          io.to(Leaveres.room).emit("roomUsers", {
+            room: Leaveres.room,
+            users: res,
+          });
+        });
+      }
+    });
   };
 
   socket.on("disconnect", handledisconnect);
