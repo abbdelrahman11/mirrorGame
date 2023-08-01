@@ -21,6 +21,8 @@
     "bootstrap": "^4.6.0",
     "ngx-spinner": "^14.0.0",
     "ngx-toastr": "^15.2.2",
+    "primeicons": "^5.0.0",
+    "primeng": "^14.0.0",
     "rxjs": "~7.5.0",
     "rxjs-compat": "^6.6.7",
     "socket.io-client": "^4.7.1",

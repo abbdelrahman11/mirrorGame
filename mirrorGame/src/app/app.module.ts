@@ -7,8 +7,9 @@ import { ToastrModule } from 'ngx-toastr';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
-import { HttpClientModule} from '@angular/common/http';
-
+import { HttpClientModule } from '@angular/common/http';
+import { AccordionModule } from 'primeng/accordion'; //accordion and accordion tab
+import { MenuItem } from 'primeng/api';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -19,8 +20,9 @@ import { HttpClientModule} from '@angular/common/http';
     NgxSpinnerModule.forRoot({ type: 'ball-scale-multiple' }),
     CoreModule,
     SharedModule,
-    HttpClientModule
-  ],
+    HttpClientModule,
+    AccordionModule,
+   ],
   providers: [],
   bootstrap: [AppComponent],
 })

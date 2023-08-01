@@ -1,7 +1,7 @@
-<div class="row">
-  <div class="col-md-3">
+<div class="row mt-5">
+  <div class="col-md-3 col-6 mt-3" *ngFor="let room of allRooms">
     <div class="card-body">
-      <h5 class="card-title text-center">The King</h5>
+      <h5 class="card-title text-center">{{ room.roomName }}</h5>
       <p class="card-text">
         <img
           style="border-radius: 10px"
@@ -11,76 +11,57 @@
         />
       </p>
       <div class="my-3 mx-0 d-flex justify-content-between">
-        <span class="badge badge-danger"> Members: 2 </span>
-        <span class="badge badge-warning"> PointToWin: 50 </span>
+        <span class="badge badge-danger">
+          Members: {{ room.romMembersCount }}
+        </span>
+        <span class="badge badge-warning">
+          PointToWin: {{ room.roomPoints }}
+        </span>
       </div>
 
       <div class="text-center">
-        <span class="btn btn-dark" (click)="joinTheRoom()">Join The Room</span>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card-body">
-      <h5 class="card-title text-center">The King</h5>
-      <p class="card-text">
-        <img
-          style="border-radius: 10px"
-          width="100%"
-          src="../../../assets/Mirror_Logo.png"
-          alt=""
-        />
-      </p>
-      <div class="my-3 mx-0 d-flex justify-content-between">
-        <span class="badge badge-danger"> Members: 2 </span>
-        <span class="badge badge-warning"> PointToWin: 50 </span>
-      </div>
-
-      <div class="text-center">
-        <span class="btn btn-dark" (click)="joinTheRoom()">Join The Room</span>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card-body">
-      <h5 class="card-title text-center">The King</h5>
-      <p class="card-text">
-        <img
-          style="border-radius: 10px"
-          width="100%"
-          src="../../../assets/Mirror_Logo.png"
-          alt=""
-        />
-      </p>
-      <div class="my-3 mx-0 d-flex justify-content-between">
-        <span class="badge badge-danger"> Members: 2 </span>
-        <span class="badge badge-warning"> PointToWin: 50 </span>
-      </div>
-
-      <div class="text-center">
-        <span class="btn btn-dark" (click)="joinTheRoom()">Join The Room</span>
-      </div>
-    </div>
-  </div>
-  <div class="col-md-3">
-    <div class="card-body">
-      <h5 class="card-title text-center">The King</h5>
-      <p class="card-text">
-        <img
-          style="border-radius: 10px"
-          width="100%"
-          src="../../../assets/Mirror_Logo.png"
-          alt=""
-        />
-      </p>
-      <div class="my-3 mx-0 d-flex justify-content-between">
-        <span class="badge badge-danger"> Members: 2 </span>
-        <span class="badge badge-warning"> PointToWin: 50 </span>
-      </div>
-
-      <div class="text-center">
-        <span class="btn btn-dark" (click)="joinTheRoom()">Join The Room</span>
+        <span class="btn btn-dark btn-sm" (click)="joinTheRoom()"
+          >Join The Room</span
+        >
       </div>
     </div>
   </div>
 </div>
+<div class="create-room text-center mt-5">
+  <button class="btn btn-dark" (click)="showDialog()">Create Room</button>
+</div>
+<p-dialog
+  header="Create Room"
+  [(visible)]="display"
+  [style]="{ width: '25vw', height: '20vw' }"
+>
+  <div class="content text-center">
+    <div class="input-group mb-3 w-30">
+      <input
+        type="text"
+        class="form-control"
+        [(ngModel)]="RoomName"
+        placeholder="Room Name"
+        aria-label="Room Name"
+        aria-describedby="basic-addon1"
+      />
+    </div>
+    <p-dropdown
+      [options]="cities"
+      [(ngModel)]="selectedPoint"
+      placeholder="Points To Win"
+      [showClear]="true"
+      optionLabel="name"
+      optionValue="name"
+    ></p-dropdown>
+
+    <button
+      style="width: 90%"
+      class="d-block m-3 btn btn-outline-primary"
+      [disabled]="!selectedPoint || !RoomName"
+      (click)="CreateRoom()"
+    >
+      Create
+    </button>
+  </div>
+</p-dialog>
