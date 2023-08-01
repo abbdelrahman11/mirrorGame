@@ -6,7 +6,7 @@ module.exports = (io: any, socket: any) => {
   const { formatMessage } = require("../utils/message");
   const { getRoomUsers, userLeave } = require("../utils/users");
   const handledisconnect = () => {
-    userLeave("1").then((Leaveres: roomUsers) => {
+    userLeave("1").then((Leaveres: any) => {
       console.log(Leaveres);
 
       if (Leaveres) {
@@ -20,7 +20,7 @@ module.exports = (io: any, socket: any) => {
 
         // Send users and room info
 
-        getRoomUsers(Leaveres.room).then((res: roomUsers) => {
+        getRoomUsers(Leaveres.room).then((res: any) => {
           io.to(Leaveres.room).emit("roomUsers", {
             room: Leaveres.room,
             users: res,

@@ -6,7 +6,7 @@ module.exports = (io: any, socket: any) => {
   const { formatMessage } = require("../utils/message");
   const handleJoinRoom = ({ user_id, username, room }: any) => {
     const user = { user_id, username, room };
-    userJoin(user).then((res: roomUsers) => {
+    userJoin(user).then((res: any) => {
       socket.join(res.room);
     });
 
