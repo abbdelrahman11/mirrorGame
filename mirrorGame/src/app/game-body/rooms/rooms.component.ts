@@ -23,7 +23,6 @@ export class RoomsComponent implements OnInit {
   ngOnInit(): void {
     socket.on('allRooms', (res) => {
       this.allRooms = res;
-      console.log(res);
     });
     socket.emit('getallRooms');
     socket.on('getallRoomsRes', (res: any) => {
