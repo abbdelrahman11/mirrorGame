@@ -2,39 +2,29 @@ import { roomUsers } from "../models/roomUsers.model";
 import { messages } from "../models/messages.model";
 
 module.exports = (io: any, socket: any) => {
-  const { userJoin, getRoomUsers } = require("../utils/users");
-  const { formatMessage } = require("../utils/message");
-  const handleJoinRoom = ({ user_id, username, room }: any) => {
-    const user = { user_id, username, room };
-    userJoin(user).then((res: any) => {
-      socket.join(res.room);
+  const { getRoomUsers } = require("../utils/users");
+  const { userJoin } = require("../utils/rooms");
+  const handleJoinRoom = (room: roomUsers) => {
+    userJoin(room).then((res: any) => {
+      socket.join(res.roomName);
+      io.emit("joinedTheRoom", {});
     });
-
-    // Welcome current user
-    const msg: messages = {
-      username: "ChatCord Bot",
-      text: "Welcome to ChatCord!",
-    };
-    formatMessage(msg).then((res: messages) => {
-      socket.emit("message", res);
-    });
+    // return getRoomUsers(res.roomName);
+    // .then((getRoomUsers: any) => {
+    //    io.emit("joinedTheRoom", {
+    //     room: room.roomName,
+    //     users: getRoomUsers,
+    //   });
+    // });
 
     // Broadcast when a user connects
-    const msgToAll: messages = {
-      username: "ChatCord Bot",
-      text: `${user.username} has joined the chat`,
-    };
-    formatMessage(msgToAll).then((res: messages) => {
-      socket.emit("message", res);
-    });
-
-    // Send users and room info
-    getRoomUsers(user.room).then((res: any) => {
-      io.to(user.room).emit("roomUsers", {
-        room: user.room,
-        users: res,
-      });
-    });
+    // const msgToAll: messages = {
+    //   username: "ChatCord Bot",
+    //   text: `$s has joined the chat`,
+    // };
+    // formatMessage(msgToAll).then((res: messages) => {
+    //   socket.broadcast.to(room.roomName).emit("message", res);
+    // });
   };
 
   socket.on("joinRoom", handleJoinRoom);

@@ -8,7 +8,12 @@ function allRooms() {
   return roomUsersModel.find({});
 }
 
+function userJoin(room: roomUsers) {
+  return roomUsersModel.findByIdAndUpdate(room._id, { usersId: room.usersId });
+}
+
 module.exports = {
   CreateRoom,
-  allRooms
+  allRooms,
+  userJoin
 };

@@ -2,11 +2,6 @@ import { roomUsers, roomUsersModel } from "../models/roomUsers.model";
 
 const users: any = [];
 
-// Join user to chat
-function userJoin(user: roomUsers) {
-  return roomUsersModel.create(user);
-}
-
 // Get current user
 function getCurrentUser(id: number) {
   return users.find((user: any) => user.id === id);
@@ -18,12 +13,21 @@ function userLeave(id: number) {
 }
 
 // Get room users
-function getRoomUsers(room: any) {
-  return roomUsersModel.find({ room });
+function getRoomUsers(roomName: any) {
+  return roomUsersModel.aggregate([
+    { $match: { roomName } },
+    {
+      $lookup: {
+        from: "users",
+        localField: "usersId",
+        foreignField: "_id",
+        as: "users_info",
+      },
+    },
+  ]);
 }
 
 module.exports = {
-  userJoin,
   getCurrentUser,
   userLeave,
   getRoomUsers,

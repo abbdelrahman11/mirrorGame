@@ -1,19 +1,16 @@
-import { messages } from "../models/messages.model";
-module.exports = (io: any, socket: any) => {
+module.exports = (io: any, socket: any, callback: any) => {
   const { CreateRoom, allRooms } = require("../utils/rooms");
-  const { formatMessage } = require("../utils/message");
 
   const handleCreateRoom = ({
     roomName,
     roomPoints,
     usersId,
-    romMembersCount,
-  }: any) => {
-    const room = { roomName, roomPoints, usersId, romMembersCount };
+   }: any) => {
+    const room = { roomName, roomPoints, usersId };
 
     CreateRoom(room)
       .then((Roomres: any) => {
-        return allRooms(); // Return a new promise to chain with the next `then`
+        return allRooms();
       })
       .then((res: any) => {
         io.emit("allRooms", res);
