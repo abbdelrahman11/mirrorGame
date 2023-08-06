@@ -1,31 +1,33 @@
 <div class="row mt-5">
-  <div class="col-md-3 col-6 mt-3" *ngFor="let room of allRooms">
-    <div class="card-body">
-      <h5 class="card-title text-center">{{ room.roomName }}</h5>
-      <p class="card-text">
-        <img
-          style="border-radius: 10px"
-          width="100%"
-          src="../../../assets/Mirror_Logo.png"
-          alt=""
-        />
-      </p>
-      <div class="my-3 mx-0 d-flex justify-content-between">
-        <span class="badge badge-danger">
-          Members: {{ room.romMembersCount }}
-        </span>
-        <span class="badge badge-warning">
-          PointToWin: {{ room.roomPoints }}
-        </span>
-      </div>
+  <ng-container *ngFor="let room of allRooms; let i = index">
+    <div class="col-md-3 col-6 mt-3" *ngIf="room.usersId.length != 4">
+      <div class="card-body">
+        <h5 class="card-title text-center">{{ room.roomName }}</h5>
+        <p class="card-text">
+          <img
+            style="border-radius: 10px"
+            width="100%"
+            src="../../../assets/Mirror_Logo.png"
+            alt=""
+          />
+        </p>
+        <div class="my-3 mx-0 d-flex justify-content-between">
+          <span class="badge badge-danger">
+            Members: {{ room.usersId.length }}
+          </span>
+          <span class="badge badge-warning">
+            PointToWin: {{ room.roomPoints }}
+          </span>
+        </div>
 
-      <div class="text-center">
-        <span class="btn btn-dark btn-sm" (click)="joinTheRoom()"
-          >Join The Room</span
-        >
+        <div class="text-center">
+          <span class="btn btn-dark btn-sm" (click)="joinTheRoom(i)"
+            >Join The Room</span
+          >
+        </div>
       </div>
     </div>
-  </div>
+  </ng-container>
 </div>
 <div class="create-room text-center mt-5">
   <button class="btn btn-dark" (click)="showDialog()">Create Room</button>
@@ -47,7 +49,7 @@
       />
     </div>
     <p-dropdown
-      [options]="cities"
+      [options]="points"
       [(ngModel)]="selectedPoint"
       placeholder="Points To Win"
       [showClear]="true"
