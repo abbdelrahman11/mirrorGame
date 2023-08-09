@@ -1,13 +1,12 @@
 import { roomUsers } from "../models/roomUsers.model";
-import { messages } from "../models/messages.model";
 
 module.exports = (io: any, socket: any) => {
-  const { getRoomUsers } = require("../utils/users");
   const { userJoin } = require("../utils/rooms");
   const handleJoinRoom = (room: roomUsers) => {
     userJoin(room).then((res: any) => {
       socket.join(res.roomName);
       io.emit("joinedTheRoom", {});
+      socket.emit("canJoinRoom", {});
     });
     // return getRoomUsers(res.roomName);
     // .then((getRoomUsers: any) => {

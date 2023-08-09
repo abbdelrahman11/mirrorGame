@@ -1,6 +1,6 @@
 <div class="row mt-5">
   <ng-container *ngFor="let room of allRooms; let i = index">
-    <div class="col-md-3 col-6 mt-3" *ngIf="room.usersId.length != 4">
+    <div class="col-md-3 col-6 mt-3">
       <div class="card-body">
         <h5 class="card-title text-center">{{ room.roomName }}</h5>
         <p class="card-text">
@@ -12,18 +12,24 @@
           />
         </p>
         <div class="my-3 mx-0 d-flex justify-content-between">
-          <span class="badge badge-danger">
+          <span class="badge badge-warning">
             Members: {{ room.usersId.length }}
           </span>
           <span class="badge badge-warning">
             PointToWin: {{ room.roomPoints }}
           </span>
         </div>
-
+        <div class="my-3 mx-0 d-flex justify-content-center">
+          <span class="badge badge-danger"> Completed </span>
+        </div>
         <div class="text-center">
-          <span class="btn btn-dark btn-sm" (click)="joinTheRoom(i)"
-            >Join The Room</span
+          <button
+            [disabled]="room.usersId.length == 4"
+            class="btn btn-dark btn-sm"
+            (click)="joinTheRoom(i)"
           >
+            Join The Room
+          </button>
         </div>
       </div>
     </div>
@@ -63,7 +69,7 @@
       [disabled]="!selectedPoint || !RoomName"
       (click)="CreateRoom()"
     >
-      Create
+      Start
     </button>
   </div>
 </p-dialog>

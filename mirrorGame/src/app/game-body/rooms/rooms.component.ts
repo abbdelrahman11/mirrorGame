@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 interface points {
   name: string;
 }
 import io from 'socket.io-client';
-import { RoomsService } from 'src/app/core/services/rooms';
+import { RoomsService } from 'src/app/core/services/rooms.service copy';
 import { environment } from 'src/environments/environment';
 const socket = io(environment.baseUrl);
 @Component({
@@ -18,19 +19,17 @@ export class RoomsComponent implements OnInit {
   allRooms: any;
   points: points[];
   usersIdArrray: any[] = [];
-  constructor(private service: RoomsService) {
+  constructor(private service: RoomsService, private router: Router) {
     this.points = [{ name: '50 Point' }, { name: '100 Point' }];
   }
 
   ngOnInit(): void {
-    this.getNewRooms();
+    this.getCreatedRoom();
     this.getAllRooms();
-    socket.on('joinedTheRoom', (res) => {
-      this.getAllRooms();
-    });
+    this.socketsOn();
   }
-  getNewRooms() {
-    socket.on('allRooms', (res) => {
+  getCreatedRoom() {
+    socket.once('allRooms', (res) => {
       this.display = false;
       this.selectedPoint = '';
       this.RoomName = '';
@@ -39,7 +38,6 @@ export class RoomsComponent implements OnInit {
   }
   joinTheRoom(index: number) {
     let data = this.allRooms[index];
-    console.log(data, 'fromFront');
     data.usersId.push(localStorage.getItem('userId'));
     socket.emit('joinRoom', data);
   }
@@ -48,7 +46,7 @@ export class RoomsComponent implements OnInit {
     this.display = true;
   }
   CreateRoom() {
-    // this.usersIdArrray.push(localStorage.getItem('userId'));
+    this.usersIdArrray.push(localStorage.getItem('userId'));
     socket.emit('createRoom', {
       roomName: this.RoomName,
       roomPoints: this.selectedPoint,
@@ -59,8 +57,20 @@ export class RoomsComponent implements OnInit {
     this.service.getAllRooms().subscribe({
       next: (res) => {
         this.allRooms = res;
-        console.log(res);
       },
     });
   }
+  socketsOn() {
+    socket.once('joinedTheRoom', (res) => {
+      this.getAllRooms();
+    });
+    socket.on('canRoute', (res) => {
+      this.router.navigateByUrl('roombody');
+    });
+    socket.on('canJoinRoom', (res) => {
+      this.router.navigateByUrl('roombody');
+    });
+  }
+
+  ngOnDestroy(): void {}
 }
