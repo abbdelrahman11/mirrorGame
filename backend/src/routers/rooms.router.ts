@@ -1,7 +1,12 @@
 import { Router } from "express";
 import asyncHandler from "express-async-handler";
 import { roomUsersModel } from "../models/roomUsers.model";
+import auth from "../middlewares/auth.mid";
+
 const router = Router();
+
+router.use(auth);
+
 router.get(
   "/getAllRooms",
   asyncHandler(async (req, res) => {
