@@ -9,4 +9,22 @@ router.get(
     res.send(rooms);
   })
 );
+router.post(
+  "/roomInfo",
+  asyncHandler(async (req, res) => {
+    let { roomName } = req.body;
+    const rooms = await roomUsersModel.aggregate([
+      { $match: { roomName } },
+      {
+        $lookup: {
+          from: "users",
+          localField: "usersId",
+          foreignField: "_id",
+          as: "users_info",
+        },
+      },
+    ]);
+    res.send(rooms);
+  })
+);
 export default router;

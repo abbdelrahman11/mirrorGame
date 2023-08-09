@@ -4,7 +4,8 @@ interface points {
   name: string;
 }
 import io from 'socket.io-client';
-import { RoomsService } from 'src/app/core/services/rooms.service copy';
+import { ToastrService } from 'ngx-toastr';
+import { RoomsService } from 'src/app/core/services/rooms.service';
 import { environment } from 'src/environments/environment';
 const socket = io(environment.baseUrl);
 @Component({
@@ -19,7 +20,11 @@ export class RoomsComponent implements OnInit {
   allRooms: any;
   points: points[];
   usersIdArrray: any[] = [];
-  constructor(private service: RoomsService, private router: Router) {
+  constructor(
+    private service: RoomsService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {
     this.points = [{ name: '50 Point' }, { name: '100 Point' }];
   }
 
@@ -30,6 +35,10 @@ export class RoomsComponent implements OnInit {
   }
   getCreatedRoom() {
     socket.once('allRooms', (res) => {
+      if (res.error) {
+        this.toastr.error(res.error);
+        return;
+      }
       this.display = false;
       this.selectedPoint = '';
       this.RoomName = '';
@@ -39,6 +48,7 @@ export class RoomsComponent implements OnInit {
   joinTheRoom(index: number) {
     let data = this.allRooms[index];
     data.usersId.push(localStorage.getItem('userId'));
+    localStorage.setItem('roomName', data.roomName);
     socket.emit('joinRoom', data);
   }
 
@@ -46,7 +56,10 @@ export class RoomsComponent implements OnInit {
     this.display = true;
   }
   CreateRoom() {
-    this.usersIdArrray.push(localStorage.getItem('userId'));
+    localStorage.setItem('roomName', this.RoomName);
+    if (this.usersIdArrray.length == 0)
+      this.usersIdArrray.push(localStorage.getItem('userId'));
+    console.log(this.usersIdArrray);
     socket.emit('createRoom', {
       roomName: this.RoomName,
       roomPoints: this.selectedPoint,

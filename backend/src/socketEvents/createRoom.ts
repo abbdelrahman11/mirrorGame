@@ -6,14 +6,17 @@ module.exports = (io: any, socket: any, callback: any) => {
 
     CreateRoom(room)
       .then((Roomres: any) => {
-        return allRooms();
-      })
-      .then((res: any) => {
-        io.emit("allRooms", res);
-        socket.emit("canRoute", {});
+        return allRooms()
+          .then((res: any) => {
+            io.emit("allRooms", res);
+            socket.emit("canRoute", {});
+          })
+          .catch((error: any) => {
+            console.error("Error in allRooms():", error);
+          });
       })
       .catch((error: any) => {
-        console.error(error);
+        io.emit("allRooms", { error });
       });
   };
 

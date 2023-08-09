@@ -7,7 +7,7 @@ import { environment } from 'src/environments/environment';
 })
 export class RoomBodyService {
   constructor(private http: HttpClient) {}
-  getAllRooms() {
-    return this.http.get(`${environment.baseUrl}/api/rooms/getAllRooms`);
+  getRoomInfo(roomName: any) {
+    return this.http.post(`${environment.baseUrl}/api/rooms/roomInfo`, roomName);
   }
 }
