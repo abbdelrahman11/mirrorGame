@@ -1,12 +1,10 @@
-<!-- <div class="d-flex">
-  <ng-container *ngFor="let item of [1, 2, 3, 4]">
-    <div class="memory-game-blocks" (click)="flip = !flip">
-      <div class="game-block" [ngClass]="flip ? 'is-flipped' : 'flip-back'">
-        <div class="face front"></div>
-        <div class="face back">
-          <img decoding="async" src="../../../assets/Mirror_Logo.png" alt="" />
-        </div>
-      </div>
+<div class="memory-game-blocks">
+  <div class="game-block" [ngClass]="flip ? 'is-flipped' : 'flip-back'">
+    <div class="face front">
+      <span class="before">{{ CardData?.content }}</span>
     </div>
-  </ng-container>
-</div> -->
+    <div class="face back">
+      <img decoding="async" src="../../../assets/Mirror_Logo.png" alt="" />
+    </div>
+  </div>
+</div>

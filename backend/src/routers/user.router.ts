@@ -1,22 +1,23 @@
 import { Router } from "express";
-import { sample_users } from "../data";
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
 import { User, UserModel } from "../models/user.model";
 import { HTTP_BAD_REQUEST } from "../constants/http_status";
 import bcrypt from "bcryptjs";
+import { CardModel } from "../models/card.model";
+import { sample_cards } from "../data";
 const router = Router();
 const passport = require("passport");
 router.get(
   "/seed",
   asyncHandler(async (req, res) => {
-    const usersCount = await UserModel.countDocuments();
+    const usersCount = await CardModel.countDocuments();
     if (usersCount > 0) {
       res.send("Seed is already done!");
       return;
     }
 
-    await UserModel.create(sample_users);
+    await CardModel.create(sample_cards);
     res.send("Seed Is Done!");
   })
 );

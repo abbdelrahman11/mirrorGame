@@ -59,7 +59,6 @@ export class RoomsComponent implements OnInit {
     localStorage.setItem('roomName', this.RoomName);
     if (this.usersIdArrray.length == 0)
       this.usersIdArrray.push(localStorage.getItem('userId'));
-    console.log(this.usersIdArrray);
     socket.emit('createRoom', {
       roomName: this.RoomName,
       roomPoints: this.selectedPoint,
@@ -74,7 +73,7 @@ export class RoomsComponent implements OnInit {
     });
   }
   socketsOn() {
-    socket.once('joinedTheRoom', (res) => {
+    socket.on('joinedTheRoom', (res) => {
       this.getAllRooms();
     });
     socket.on('canRoute', (res) => {
@@ -85,5 +84,7 @@ export class RoomsComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(): void {}
+  ngOnDestroy(): void {
+    socket.disconnect();
+  }
 }

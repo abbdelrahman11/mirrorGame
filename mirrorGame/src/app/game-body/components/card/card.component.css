@@ -13,10 +13,9 @@
 .memory-game-blocks .game-block .front {
   background-color: #333;
 }
-.memory-game-blocks .game-block .front:before {
-  content: "1";
+.memory-game-blocks .game-block .front .before {
   color: #fff;
-  font-size: 100px;
+  font-size: 50px;
   font-weight: bold;
 }
 .memory-game-blocks .game-block .back {

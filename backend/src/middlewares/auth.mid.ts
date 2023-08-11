@@ -3,7 +3,6 @@ import { HTTP_UNAUTHORIZED } from "../constants/http_status";
 
 export default (req: any, res: any, next: any) => {
   const token = req.headers.authorization as string;
-  console.log(token);
   if (!token) return res.status(HTTP_UNAUTHORIZED).send();
 
   try {

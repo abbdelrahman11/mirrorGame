@@ -4,6 +4,7 @@ import express from "express";
 import cors from "cors";
 import userRouter from "./routers/user.router";
 import roomsRouter from "./routers/rooms.router";
+import cardsRouter from "./routers/cards.router";
 import googleLoginRouter from "./routers/googleLogin";
 dotenv.config();
 require("dotenv").config();
@@ -16,6 +17,7 @@ const joinRoom = require("./socketEvents/joinRoom");
 // const chatMessage = require("./socketEvents/chatMessage");
 // const disconnect = require("./socketEvents/disconnect");
 const createRoom = require("./socketEvents/createRoom");
+const inRoom = require("./socketEvents/InRoom");
 const app = express();
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
@@ -46,6 +48,7 @@ app.use(passport.session());
 
 app.use("/api/users", userRouter);
 app.use("/api/rooms", roomsRouter);
+app.use("/api/cards", cardsRouter);
 app.use("/auth", googleLoginRouter);
 const onConnection = (socket: any) => {
   console.log("connected");
@@ -53,6 +56,7 @@ const onConnection = (socket: any) => {
   // chatMessage(io, socket);
   // disconnect(io, socket);
   createRoom(io, socket);
+  inRoom(io, socket);
 };
 
 io.on("connection", onConnection);

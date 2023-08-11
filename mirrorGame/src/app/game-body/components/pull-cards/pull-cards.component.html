@@ -1,12 +1,5 @@
 <div class="outer">
-  <div class="memory-game-blocks inner">
-    <div class="game-block is-flipped">
-      <div class="face front">
-        <span class="before"> 1</span>
-      </div>
-      <div class="face back">
-        <img decoding="async" src="../../../assets/Mirror_Logo.png" alt="" />
-      </div>
-    </div>
+  <div *ngFor="let card of Cards" class="inner">
+    <app-card [CardData]="card"></app-card>
   </div>
 </div>
