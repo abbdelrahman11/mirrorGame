@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { io } from 'socket.io-client';
+import * as socketIO from 'socket.io-client';
 import { CardsService } from 'src/app/core/services/cards.service';
 import { RoomBodyService } from 'src/app/core/services/roomBody.service';
 import { environment } from 'src/environments/environment';
-
-const socket = io(environment.baseUrl);
 
 @Component({
   selector: 'app-room-body',
@@ -13,26 +11,24 @@ const socket = io(environment.baseUrl);
   styleUrls: ['./room-body.component.css'],
 })
 export class RoomBodyComponent implements OnInit {
+  private socket!: socketIO.Socket;
   roomInfo: any = [];
   allCards: any;
-  constructor(
-    private service: RoomBodyService,
-    private cService: CardsService,
-    private router: Router
-  ) {}
+  constructor(private service: RoomBodyService) {}
   ngOnChanges(): void {
-    console.log(socket.id);
+    console.log(this.socket.id);
   }
   ngOnInit(): void {
+    this.socket = socketIO.io(environment.baseUrl);
     this.getRoomInfo();
-    socket.emit('inRoom', {
+    this.socket.emit('inRoom', {
       roomName: localStorage.getItem('roomName'),
       userId: localStorage.getItem('userId'),
     });
-    socket.on('joinedTheRoom', (res) => {
+    this.socket.on('joinedTheRoom', (res) => {
       this.getRoomInfo();
     });
-    socket.on('AllCards', (res) => {
+    this.socket.on('AllCards', (res) => {
       console.log(res);
     });
   }
@@ -47,6 +43,6 @@ export class RoomBodyComponent implements OnInit {
       });
   }
   ngOnDestroy(): void {
-    socket.disconnect();
+    this.socket.disconnect();
   }
 }

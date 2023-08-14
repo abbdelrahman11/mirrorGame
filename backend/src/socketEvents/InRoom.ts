@@ -8,8 +8,6 @@ module.exports = (io: any, socket: any) => {
     roomInfo(roomName).then((roomRes: any) => {
       socket.join(roomName);
       return getAllCards().then((res: any) => {
-        // console.log(roomName, "roomName");
-        // io.to(roomName).emit("AllCards", res);
         if (roomRes[0].usersId.length == 4) {
           io.to(roomName).emit("AllCards", res);
         }
