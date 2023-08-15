@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-main-player',
   templateUrl: './main-player.component.html',
-  styleUrls: ['./main-player.component.css']
+  styleUrls: ['./main-player.component.css'],
 })
 export class MainPlayerComponent implements OnInit {
+  @Input() Cards!: any;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+  ngOnChanges(): void {
+    console.log(this.Cards);
   }
-
 }

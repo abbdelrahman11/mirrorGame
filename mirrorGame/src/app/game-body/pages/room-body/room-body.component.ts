@@ -13,7 +13,8 @@ import { environment } from 'src/environments/environment';
 export class RoomBodyComponent implements OnInit {
   private socket!: socketIO.Socket;
   roomInfo: any = [];
-  allCards: any;
+  playerCards: any;
+  pullCards: any;
   constructor(private service: RoomBodyService) {}
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
@@ -26,13 +27,15 @@ export class RoomBodyComponent implements OnInit {
     this.socket.on('joinedTheRoom', (res) => {
       this.getRoomInfo();
     });
-    this.socket.on('AllCards', (res) => {
-      this.allCards = res;
-      console.log(res);
+    this.socket.on('playerCards', (res) => {
+      this.playerCards = res;
+
+      console.log(res, 'playerCards');
       // this.HandOutTheCardsToThePlayers(res);
     });
-    this.socket.on('test', (res) => {
-      console.log(res, 'text');
+    this.socket.on('pullCards', (res) => {
+      this.pullCards = res;
+      console.log(res, 'pullCards');
     });
   }
   getRoomInfo() {

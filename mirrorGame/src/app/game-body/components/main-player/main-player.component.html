@@ -1,5 +1,5 @@
 <div class="d-flex">
-  <ng-container *ngFor="let item of [1, 2, 3, 4]">
-    <app-card></app-card>
+  <ng-container *ngFor="let card of Cards">
+    <app-card [CardData]="card"></app-card>
   </ng-container>
 </div>

@@ -7,18 +7,26 @@ module.exports = (io: any, socket: any) => {
       socket.join(userId);
       return getGame(gameId).then((cards: any) => {
         let userIndex = roomRes[0].usersId.indexOf(userId);
-        io.to(roomName).emit("test", cards);
-
         io.to(userId).emit(
-          "AllCards",
+          "playerCards",
           getRandomNumbers(cards[0].cards, userIndex)
         );
+        if (roomRes[0].usersId.length == 4) {
+          getPullCards(cards[0].cards, 16);
+          io.to(roomName).emit("pullCards", cards[0].cards);
+        }
       });
     });
   };
   function getRandomNumbers(arr: Array<any>, count: number) {
     let randomNumbers;
     randomNumbers = arr.slice(count * 4, (count + 1) * 4);
+
+    return randomNumbers;
+  }
+  function getPullCards(arr: Array<any>, count: number) {
+    let randomNumbers;
+    randomNumbers = arr.splice(0, count);
 
     return randomNumbers;
   }
