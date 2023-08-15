@@ -51,6 +51,7 @@ export class RoomsComponent implements OnInit {
     data.usersId.push(localStorage.getItem('userId'));
     localStorage.setItem('roomName', data.roomName);
     this.socket.emit('joinRoom', data);
+    localStorage.setItem('gameId', data.gameId);
   }
 
   showDialog() {
@@ -78,6 +79,7 @@ export class RoomsComponent implements OnInit {
       this.getAllRooms();
     });
     this.socket.on('canRoute', (res: any) => {
+      localStorage.setItem('gameId', res);
       this.router.navigateByUrl('roombody');
     });
     this.socket.on('canJoinRoom', (res: any) => {

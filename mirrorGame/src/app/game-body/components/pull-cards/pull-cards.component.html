@@ -1,5 +1,5 @@
 <div class="outer">
   <div *ngFor="let card of Cards" class="inner">
-    <app-card [CardData]="card"></app-card>
+    <app-card [CardData]="card" (click)="showToThePlayer(card)"></app-card>
   </div>
 </div>

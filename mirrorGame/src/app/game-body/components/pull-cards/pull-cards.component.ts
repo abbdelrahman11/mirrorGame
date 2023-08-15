@@ -13,4 +13,7 @@ export class PullCardsComponent implements OnInit {
   ngOnChanges(): void {
     console.log(this.Cards);
   }
+  showToThePlayer(card: any) {
+    console.log(card);
+  }
 }

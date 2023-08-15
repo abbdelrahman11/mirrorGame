@@ -15,21 +15,24 @@ export class RoomBodyComponent implements OnInit {
   roomInfo: any = [];
   allCards: any;
   constructor(private service: RoomBodyService) {}
-  ngOnChanges(): void {
-    console.log(this.socket.id);
-  }
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
     this.getRoomInfo();
     this.socket.emit('inRoom', {
       roomName: localStorage.getItem('roomName'),
       userId: localStorage.getItem('userId'),
+      gameId: localStorage.getItem('gameId'),
     });
     this.socket.on('joinedTheRoom', (res) => {
       this.getRoomInfo();
     });
     this.socket.on('AllCards', (res) => {
+      this.allCards = res;
       console.log(res);
+      // this.HandOutTheCardsToThePlayers(res);
+    });
+    this.socket.on('test', (res) => {
+      console.log(res, 'text');
     });
   }
   getRoomInfo() {
@@ -38,10 +41,12 @@ export class RoomBodyComponent implements OnInit {
       .subscribe({
         next: (res) => {
           this.roomInfo = res;
-          console.log(this.roomInfo);
         },
       });
   }
+
+  HandOutTheCardsToThePlayers(cards: any) {}
+
   ngOnDestroy(): void {
     this.socket.disconnect();
   }
