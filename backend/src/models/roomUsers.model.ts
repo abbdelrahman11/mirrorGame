@@ -4,6 +4,7 @@ export interface roomUsers {
   roomName: string;
   roomPoints: string;
   usersId: any;
+  gameId: string;
 }
 
 export const roomUsersSchema = new Schema<roomUsers>(
@@ -11,6 +12,7 @@ export const roomUsersSchema = new Schema<roomUsers>(
     roomName: { type: String, required: true, unique: true },
     roomPoints: { type: String, required: true },
     usersId: [mongoose.Types.ObjectId],
+    gameId: { type: String, required: true },
   },
   {
     timestamps: true,
