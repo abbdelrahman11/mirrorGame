@@ -18,6 +18,7 @@ export class RoomBodyComponent implements OnInit {
   roomName!: string | undefined;
   userId!: string | undefined;
   gameId!: string | undefined;
+  playersIndex!: number;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute
@@ -35,14 +36,13 @@ export class RoomBodyComponent implements OnInit {
       this.getRoomInfo();
     });
     this.socket.on('playerCards', (res) => {
-      this.playerCards = res;
-
-      console.log(res, 'playerCards');
-      // this.HandOutTheCardsToThePlayers(res);
+      this.playersIndex = res;
     });
-    this.socket.on('pullCards', (res) => {
-      this.pullCards = res;
-      console.log(res, 'pullCards');
+    this.socket.on('allCarsd', (res) => {
+      this.playerCards = res[0].playerCards[this.playersIndex][1];
+      console.log(this.playerCards, 'playerCards');
+      this.pullCards = res[0].pullCards;
+      console.log(this.pullCards, 'pullCards');
     });
   }
   getRoomInfo() {

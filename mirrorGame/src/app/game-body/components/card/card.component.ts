@@ -8,6 +8,10 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CardComponent implements OnInit {
   @Input() flip!: boolean;
   @Input() CardData!: any;
+  @Input() disabled!: boolean;
+  @Input() cardWidth!: number;
+  @Input() cardHeight!: number;
   constructor() {}
   ngOnInit(): void {}
+  ngOnChanges(): void {}
 }

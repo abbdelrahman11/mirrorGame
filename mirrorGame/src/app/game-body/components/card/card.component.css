@@ -49,3 +49,6 @@
   transform: rotateY(0deg);
   /* pointer-events: none; */
 }
+.disable {
+  pointer-events: none;
+}

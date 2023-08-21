@@ -1,5 +1,13 @@
-<div class="memory-game-blocks">
-  <div class="game-block" [ngClass]="flip ? 'is-flipped' : 'flip-back'">
+<div
+  class="memory-game-blocks"
+  [ngClass]="disabled ? 'disable' : ''"
+  [style.width.px]="cardWidth"
+>
+  <div
+    class="game-block"
+    [ngClass]="flip ? 'is-flipped' : 'flip-back'"
+    [style.height.px]="cardHeight"
+  >
     <div class="face front">
       <span class="before">{{ CardData?.content }}</span>
     </div>

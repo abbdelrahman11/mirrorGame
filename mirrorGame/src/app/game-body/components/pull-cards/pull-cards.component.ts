@@ -7,13 +7,16 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class PullCardsComponent implements OnInit {
   @Input() Cards!: any;
+  cardToShowToThePlayer: any;
+  showTheCard: boolean = false;
   constructor() {}
 
   ngOnInit(): void {}
-  ngOnChanges(): void {
-    console.log(this.Cards);
-  }
+  ngOnChanges(): void {}
   showToThePlayer(card: any) {
     console.log(card);
+    this.showTheCard = true;
+
+    this.cardToShowToThePlayer = card;
   }
 }

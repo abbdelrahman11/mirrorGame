@@ -14,17 +14,15 @@ module.exports = (io: any, socket: any) => {
           userId,
           getRandomNumbers(cards[0].cards, userIndex),
         ]);
-        const cardsUpdate = await getGame(gameId);
 
-        io.to(userId).emit("playerCards", cardsUpdate);
+        io.to(userId).emit("playerCards", userIndex);
 
         if (roomRes[0].usersId.length == 4) {
-          console.log("id");
           getPullCards(cards[0].cards, 16);
           const res = await UpdateGame(gameId, "pullCards", cards[0].cards);
           const cardsUpdate = await getGame(gameId);
 
-          io.to(roomName).emit("pullCards", cardsUpdate);
+          io.to(roomName).emit("allCarsd", cardsUpdate);
         }
       }
     } catch (error) {
