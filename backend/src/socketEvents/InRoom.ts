@@ -1,23 +1,37 @@
 module.exports = (io: any, socket: any) => {
   const { roomInfo } = require("../utils/rooms");
-  const { getGame } = require("../utils/game");
-  const handleinRoom = ({ userId, roomName, gameId }: any) => {
-    roomInfo(roomName).then((roomRes: any) => {
+  const { getGame, UpdateGame, UpdatePlayerCards } = require("../utils/game");
+  const handleinRoom = async ({ userId, roomName, gameId }: any) => {
+    try {
+      const roomRes = await roomInfo(roomName);
       socket.join(roomName);
       socket.join(userId);
-      return getGame(gameId).then((cards: any) => {
-        let userIndex = roomRes[0].usersId.indexOf(userId);
-        io.to(userId).emit(
-          "playerCards",
-          getRandomNumbers(cards[0].cards, userIndex)
-        );
+
+      const cards = await getGame(gameId);
+      if (cards.length > 0) {
+        const userIndex = roomRes[0].usersId.indexOf(userId);
+        const playerCardsres = await UpdatePlayerCards(gameId, "playerCards", [
+          userId,
+          getRandomNumbers(cards[0].cards, userIndex),
+        ]);
+        const cardsUpdate = await getGame(gameId);
+
+        io.to(userId).emit("playerCards", cardsUpdate);
+
         if (roomRes[0].usersId.length == 4) {
+          console.log("id");
           getPullCards(cards[0].cards, 16);
-          io.to(roomName).emit("pullCards", cards[0].cards);
+          const res = await UpdateGame(gameId, "pullCards", cards[0].cards);
+          const cardsUpdate = await getGame(gameId);
+
+          io.to(roomName).emit("pullCards", cardsUpdate);
         }
-      });
-    });
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
+
   function getRandomNumbers(arr: Array<any>, count: number) {
     let randomNumbers;
     randomNumbers = arr.slice(count * 4, (count + 1) * 4);
