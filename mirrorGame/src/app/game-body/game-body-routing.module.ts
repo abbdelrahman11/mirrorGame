@@ -10,11 +10,11 @@ const routes: Routes = [
     component: LayoutComponent,
     children: [
       {
-        path: 'rooms',
+        path: 'rooms/:id',
         component: RoomsComponent,
       },
       {
-        path: 'roombody',
+        path: 'roombody/:roomName/:gameId/:id',
         component: RoomBodyComponent,
       },
     ],

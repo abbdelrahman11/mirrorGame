@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import * as socketIO from 'socket.io-client';
 import { ToastrService } from 'ngx-toastr';
 import { RoomsService } from 'src/app/core/services/rooms.service';
@@ -20,15 +20,19 @@ export class RoomsComponent implements OnInit {
   allRooms: any;
   points: points[];
   usersIdArrray: any[] = [];
+  userId!: any;
+  gameId!: number;
   constructor(
     private service: RoomsService,
     private router: Router,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private ActivatedRoute: ActivatedRoute
   ) {
     this.points = [{ name: '50 Point' }, { name: '100 Point' }];
   }
 
   ngOnInit(): void {
+    this.userId = this.ActivatedRoute.snapshot.paramMap.get('id');
     this.socket = socketIO.io(environment.baseUrl);
     this.getCreatedRoom();
     this.getAllRooms();
@@ -42,25 +46,22 @@ export class RoomsComponent implements OnInit {
       }
       this.display = false;
       this.selectedPoint = '';
-      this.RoomName = '';
       this.allRooms = res;
     });
   }
   joinTheRoom(index: number) {
     let data = this.allRooms[index];
-    data.usersId.push(localStorage.getItem('userId'));
-    localStorage.setItem('roomName', data.roomName);
+    data.usersId.push(this.userId);
+    this.RoomName = data.roomName;
     this.socket.emit('joinRoom', data);
-    localStorage.setItem('gameId', data.gameId);
+    this.gameId = data.gameId;
   }
 
   showDialog() {
     this.display = true;
   }
   CreateRoom() {
-    localStorage.setItem('roomName', this.RoomName);
-    if (this.usersIdArrray.length == 0)
-      this.usersIdArrray.push(localStorage.getItem('userId'));
+    if (this.usersIdArrray.length == 0) this.usersIdArrray.push(this.userId);
     this.socket.emit('createRoom', {
       roomName: this.RoomName,
       roomPoints: this.selectedPoint,
@@ -79,11 +80,17 @@ export class RoomsComponent implements OnInit {
       this.getAllRooms();
     });
     this.socket.on('canRoute', (res: any) => {
-      localStorage.setItem('gameId', res);
-      this.router.navigateByUrl('roombody');
+      console.log(this.userId);
+      this.router.navigate(['roombody', this.RoomName, res, this.userId]);
     });
     this.socket.on('canJoinRoom', (res: any) => {
-      this.router.navigateByUrl('roombody');
+      console.log(this.userId);
+      this.router.navigate([
+        'roombody',
+        this.RoomName,
+        this.gameId,
+        this.userId,
+      ]);
     });
   }
 

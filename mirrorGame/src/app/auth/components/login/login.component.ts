@@ -37,7 +37,6 @@ export class LoginComponent implements OnInit {
   }
   handelSuccess(res: any) {
     localStorage.setItem('token', res.token);
-    localStorage.setItem('userId', res.id);
-    this.router.navigateByUrl("/rooms")
+    this.router.navigate(['/rooms', res.id]);
   }
 }
