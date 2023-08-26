@@ -18,6 +18,8 @@ const joinRoom = require("./socketEvents/joinRoom");
 // const disconnect = require("./socketEvents/disconnect");
 const createRoom = require("./socketEvents/createRoom");
 const inRoom = require("./socketEvents/InRoom");
+const deleteCards = require("./socketEvents/deleteCards");
+
 const app = express();
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
@@ -57,6 +59,7 @@ const onConnection = (socket: any) => {
   // disconnect(io, socket);
   createRoom(io, socket);
   inRoom(io, socket);
+  deleteCards(io, socket);
 };
 
 io.on("connection", onConnection);

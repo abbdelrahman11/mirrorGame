@@ -1,6 +1,6 @@
 module.exports = (io: any, socket: any) => {
   const { roomInfo } = require("../utils/rooms");
-  const { getGame, UpdateGame, UpdatePlayerCards } = require("../utils/game");
+  const { getGame, UpdateGame } = require("../utils/game");
   const handleinRoom = async ({ userId, roomName, gameId }: any) => {
     try {
       const roomRes = await roomInfo(roomName);
@@ -10,19 +10,20 @@ module.exports = (io: any, socket: any) => {
       const cards = await getGame(gameId);
       if (cards.length > 0) {
         const userIndex = roomRes[0].usersId.indexOf(userId);
-        const playerCardsres = await UpdatePlayerCards(gameId, "playerCards", [
-          userId,
-          getRandomNumbers(cards[0].cards, userIndex),
-        ]);
+        const playerCardsres = await UpdateGame(
+          gameId,
+          `player${userIndex + 1}`,
+          { userId: userId, cards: getRandomNumbers(cards[0].cards, userIndex) }
+        );
 
-        io.to(userId).emit("playerCards", userIndex);
+        io.to(userId).emit("playerIndex", userIndex + 1);
 
         if (roomRes[0].usersId.length == 4) {
           getPullCards(cards[0].cards, 16);
           const res = await UpdateGame(gameId, "pullCards", cards[0].cards);
           const cardsUpdate = await getGame(gameId);
 
-          io.to(roomName).emit("allCarsd", cardsUpdate);
+          io.to(roomName).emit("allCards", cardsUpdate);
         }
       }
     } catch (error) {

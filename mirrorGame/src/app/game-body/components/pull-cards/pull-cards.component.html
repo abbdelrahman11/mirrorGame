@@ -1,9 +1,9 @@
 <div class="outer">
-  <div *ngFor="let card of Cards" class="inner">
+  <div *ngFor="let card of Cards; let i = index" class="inner">
     <app-card
       [CardData]="card"
       [disabled]="showTheCard"
-      (click)="showToThePlayer(card)"
+      (click)="showToThePlayer(card, i)"
     ></app-card>
   </div>
 </div>
@@ -13,10 +13,14 @@
     [CardData]="cardToShowToThePlayer"
     [cardWidth]="160"
     [cardHeight]="200"
-    style="position: fixed; top: 30%; right: 50%; z-index: 2"
+    style="position: absolute; top: 30%; right: 51%; z-index: 2"
   ></app-card>
-  <div class="btn">
-    <button class="btn btn-primary m-3 rounded">Take</button>
-    <button class="btn btn-primary rounded">To Ground</button>
+  <div class="btn" style="position: absolute; top: 55%; right: 50%; z-index: 2">
+    <button class="btn btn-primary m-3 rounded" (click)="takeTheCard()">
+      Take
+    </button>
+    <button class="btn btn-primary rounded" (click)="toGround()">
+      To Ground
+    </button>
   </div>
 </ng-container>

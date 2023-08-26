@@ -3,7 +3,10 @@ import { Card } from "./card.model";
 export interface Game {
   _id: string;
   cards: Array<Card>;
-  playerCards: Array<playerCards>;
+  player1: playerCards;
+  player2: playerCards;
+  player3: playerCards;
+  player4: playerCards;
   pullCards: Array<Card>;
   tableCards: Array<Card>;
 }
@@ -15,7 +18,10 @@ export interface playerCards {
 export const GameSchema = new Schema<Game>(
   {
     cards: { type: [] },
-    playerCards: { type: [] },
+    player1: { type: mongoose.Schema.Types.Mixed },
+    player2: { type: mongoose.Schema.Types.Mixed },
+    player3: { type: mongoose.Schema.Types.Mixed },
+    player4: { type: mongoose.Schema.Types.Mixed },
     pullCards: { type: [] },
     tableCards: { type: [] },
   },

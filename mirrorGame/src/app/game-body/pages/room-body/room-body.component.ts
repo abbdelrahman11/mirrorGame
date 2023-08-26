@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import * as socketIO from 'socket.io-client';
+import { Card } from 'src/app/core/interfaces/card';
+import { Room } from 'src/app/core/interfaces/room';
 import { CardsService } from 'src/app/core/services/cards.service';
 import { RoomBodyService } from 'src/app/core/services/roomBody.service';
 import { environment } from 'src/environments/environment';
@@ -12,9 +14,9 @@ import { environment } from 'src/environments/environment';
 })
 export class RoomBodyComponent implements OnInit {
   private socket!: socketIO.Socket;
-  roomInfo: any = [];
-  playerCards: any;
-  pullCards: any;
+  roomInfo!: Room;
+  playerCards!: Card[];
+  pullCards!: Card[];
   roomName!: string | undefined;
   userId!: string | undefined;
   gameId!: string | undefined;
@@ -24,8 +26,8 @@ export class RoomBodyComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute
   ) {}
   ngOnInit(): void {
-    this.getRouteParams();
     this.socket = socketIO.io(environment.baseUrl);
+    this.getRouteParams();
     this.getRoomInfo();
     this.socket.emit('inRoom', {
       roomName: this.roomName,
@@ -35,11 +37,11 @@ export class RoomBodyComponent implements OnInit {
     this.socket.on('joinedTheRoom', (res) => {
       this.getRoomInfo();
     });
-    this.socket.on('playerCards', (res) => {
+    this.socket.on('playerIndex', (res) => {
       this.playersIndex = res;
     });
-    this.socket.on('allCarsd', (res) => {
-      this.playerCards = res[0].playerCards[this.playersIndex][1];
+    this.socket.on('allCards', (res) => {
+      this.playerCards = res[0][`player${this.playersIndex}`].cards;
       console.log(this.playerCards, 'playerCards');
       this.pullCards = res[0].pullCards;
       console.log(this.pullCards, 'pullCards');
@@ -47,8 +49,8 @@ export class RoomBodyComponent implements OnInit {
   }
   getRoomInfo() {
     this.service.getRoomInfo({ roomName: this.roomName }).subscribe({
-      next: (res) => {
-        this.roomInfo = res;
+      next: (res: any) => {
+        this.roomInfo = res[0];
       },
     });
   }

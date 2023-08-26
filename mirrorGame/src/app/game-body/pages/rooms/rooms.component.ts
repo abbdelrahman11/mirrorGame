@@ -4,6 +4,8 @@ import * as socketIO from 'socket.io-client';
 import { ToastrService } from 'ngx-toastr';
 import { RoomsService } from 'src/app/core/services/rooms.service';
 import { environment } from 'src/environments/environment';
+import { User } from 'src/app/core/interfaces/user';
+import { Room } from 'src/app/core/interfaces/room';
 interface points {
   name: string;
 }
@@ -15,13 +17,13 @@ interface points {
 export class RoomsComponent implements OnInit {
   private socket!: socketIO.Socket;
   display: boolean = false;
-  selectedPoint: any;
-  RoomName: any;
-  allRooms: any;
+  selectedPoint!: string;
+  RoomName!: string;
+  allRooms!: Room[];
   points: points[];
-  usersIdArrray: any[] = [];
-  userId!: any;
-  gameId!: number;
+  usersIdArrray: any = [];
+  userId!: string | undefined;
+  gameId!: string;
   constructor(
     private service: RoomsService,
     private router: Router,
@@ -32,7 +34,8 @@ export class RoomsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.userId = this.ActivatedRoute.snapshot.paramMap.get('id');
+    const userIdParam = this.ActivatedRoute.snapshot.paramMap.get('id');
+    this.userId = userIdParam !== null ? userIdParam : undefined;
     this.socket = socketIO.io(environment.baseUrl);
     this.getCreatedRoom();
     this.getAllRooms();
@@ -70,7 +73,7 @@ export class RoomsComponent implements OnInit {
   }
   getAllRooms() {
     this.service.getAllRooms().subscribe({
-      next: (res) => {
+      next: (res: any) => {
         this.allRooms = res;
       },
     });
@@ -80,11 +83,9 @@ export class RoomsComponent implements OnInit {
       this.getAllRooms();
     });
     this.socket.on('canRoute', (res: any) => {
-      console.log(this.userId);
       this.router.navigate(['roombody', this.RoomName, res, this.userId]);
     });
     this.socket.on('canJoinRoom', (res: any) => {
-      console.log(this.userId);
       this.router.navigate([
         'roombody',
         this.RoomName,
