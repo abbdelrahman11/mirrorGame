@@ -3,6 +3,7 @@ import jwt from "jsonwebtoken";
 
 const router = Router();
 const passport = require("passport");
+const jwtSecret = process.env.JWT_SECRET || "default_secret";
 router.get("/login/success", (req: any, res) => {
   if (req.user) {
     const token = jwt.sign(
@@ -10,7 +11,7 @@ router.get("/login/success", (req: any, res) => {
         id: req.user.id,
         email: req.user.emails[0].value,
       },
-      "secret",
+      jwtSecret,
       {
         expiresIn: "30d",
       }

@@ -8,6 +8,7 @@ import { CardModel } from "../models/card.model";
 import { sample_cards } from "../data";
 const router = Router();
 const passport = require("passport");
+const jwtSecret = process.env.JWT_SECRET || "default_secret";
 router.get(
   "/seed",
   asyncHandler(async (req, res) => {
@@ -66,7 +67,7 @@ const generateTokenReponse = (user: User) => {
       id: user.id,
       email: user.email,
     },
-    "secret",
+    jwtSecret,
     {
       expiresIn: "30d",
     }
