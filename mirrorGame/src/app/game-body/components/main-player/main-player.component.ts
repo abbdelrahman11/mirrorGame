@@ -12,6 +12,6 @@ export class MainPlayerComponent implements OnInit {
 
   ngOnInit(): void {}
   ngOnChanges(): void {
-    console.log(this.Cards);
+    // console.log(this.Cards);
   }
 }

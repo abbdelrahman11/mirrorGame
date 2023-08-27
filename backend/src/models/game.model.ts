@@ -9,6 +9,7 @@ export interface Game {
   player4: playerCards;
   pullCards: Array<Card>;
   tableCards: Array<Card>;
+  gameStarted: boolean;
 }
 export interface playerCards {
   cards: Array<Card>;
@@ -24,6 +25,7 @@ export const GameSchema = new Schema<Game>(
     player4: { type: mongoose.Schema.Types.Mixed },
     pullCards: { type: [] },
     tableCards: { type: [] },
+    gameStarted: { type: Boolean, default: false },
   },
   {
     timestamps: true,

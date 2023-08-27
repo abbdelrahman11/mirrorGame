@@ -5,6 +5,7 @@ module.exports = (io: any, socket: any) => {
     const cardsUpdate = await getGame(gameId);
 
     io.to(roomName).emit("allCards", cardsUpdate);
+    socket.emit("cardDeleted", true);
   };
 
   socket.on("deleteCards", handledeleteCards);
