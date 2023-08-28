@@ -1,0 +1,6 @@
+.player-card {
+  border: 2px dotted red;
+  padding: 3px 0;
+  border-radius: 10px;
+  margin: 5px;
+}

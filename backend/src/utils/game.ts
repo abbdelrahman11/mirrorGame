@@ -7,19 +7,8 @@ async function CreateGame(Game: Game) {
 async function getGame(id: string) {
   return GameModel.find({ _id: id });
 }
-async function UpdatePlayerCards(id: string, key: string, value: any) {
-  return GameModel.findByIdAndUpdate(
-    id,
-
-    {
-      $push: {
-        [key]: {
-          $each: [value],
-          $slice: 4,
-        },
-      },
-    }
-  );
+async function UpdateTheGame(id: string, key: string, value: any) {
+  return GameModel.findByIdAndUpdate(id, { $push: { [key]: value } });
 }
 
 async function UpdateGame(id: string, key: string, value: any) {
@@ -28,6 +17,6 @@ async function UpdateGame(id: string, key: string, value: any) {
 module.exports = {
   CreateGame,
   getGame,
-  UpdatePlayerCards,
+  UpdateTheGame,
   UpdateGame,
 };

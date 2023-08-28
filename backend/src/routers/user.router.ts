@@ -8,7 +8,6 @@ import { CardModel } from "../models/card.model";
 import { sample_cards } from "../data";
 const router = Router();
 const passport = require("passport");
-const jwtSecret = process.env.JWT_SECRET || "default_secret";
 router.get(
   "/seed",
   asyncHandler(async (req, res) => {
@@ -62,6 +61,9 @@ router.post(
 );
 
 const generateTokenReponse = (user: User) => {
+  const jwtSecret = process.env.JWT_SECRET || "default_secret";
+
+  console.log(jwtSecret);
   const token = jwt.sign(
     {
       id: user.id,
@@ -80,39 +82,5 @@ const generateTokenReponse = (user: User) => {
     token: token,
   };
 };
-
-router.get("/login/success", (req: any, res) => {
-  if (req.user) {
-    res.status(200).json({
-      error: false,
-      message: "Successfully Loged In",
-      user: req.user,
-    });
-  } else {
-    res.status(403).json({ error: true, message: "Not Authorized" });
-  }
-});
-
-router.get("/login/failed", (req, res) => {
-  res.status(401).json({
-    error: true,
-    message: "Log in failure",
-  });
-});
-
-router.get("/google", passport.authenticate("google", ["profile", "email"]));
-
-router.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    successRedirect: process.env.CLIENT_URL,
-    failureRedirect: "/login/failed",
-  })
-);
-
-router.get("/logout", (req: any, res) => {
-  req.logout();
-  res.redirect(process.env.CLIENT_URL as any);
-});
 
 export default router;

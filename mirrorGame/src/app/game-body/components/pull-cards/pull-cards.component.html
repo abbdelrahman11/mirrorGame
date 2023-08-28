@@ -7,15 +7,15 @@
     ></app-card>
   </div>
 </div>
-<ng-container *ngIf="showTheCard">
+<div *ngIf="showTheCard">
   <app-card
     [disabled]="showTheCard"
     [CardData]="cardToShowToThePlayer"
     [cardWidth]="160"
     [cardHeight]="200"
-    style="position: absolute; top: 30%; right: 51%; z-index: 2"
+    style="position: absolute; top: 30%; right: 45%; z-index: 2"
   ></app-card>
-  <div class="btn" style="position: absolute; top: 55%; right: 50%; z-index: 2">
+  <div class="btn" style="position: absolute; top: 55%; right: 44%; z-index: 2">
     <button class="btn btn-primary m-3 rounded" (click)="takeTheCard()">
       Take
     </button>
@@ -23,4 +23,4 @@
       To Ground
     </button>
   </div>
-</ng-container>
+</div>

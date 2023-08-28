@@ -3,8 +3,8 @@ import jwt from "jsonwebtoken";
 
 const router = Router();
 const passport = require("passport");
-const jwtSecret = process.env.JWT_SECRET || "default_secret";
 router.get("/login/success", (req: any, res) => {
+  const jwtSecret = process.env.JWT_SECRET || "default_secret";
   if (req.user) {
     const token = jwt.sign(
       {

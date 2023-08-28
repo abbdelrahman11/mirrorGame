@@ -10,11 +10,11 @@ import { environment } from 'src/environments/environment';
 })
 export class PullCardsComponent implements OnInit {
   private socket!: socketIO.Socket;
-  @Input() Cards!: Card[];
+  @Input() Cards!: Card[] | [];
   splicedCards!: Card[];
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
-  cardToShowToThePlayer: any;
+  cardToShowToThePlayer!: Card;
   showTheCard: boolean = false;
   cardIndex!: number;
 
@@ -22,15 +22,11 @@ export class PullCardsComponent implements OnInit {
 
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
-    this.socket.on('cardDeleted', (res) => {
-      if (res) {
-        this.showTheCard = false;
-        this.Cards.splice(this.cardIndex, 1);
-      }
-    });
   }
   ngOnChanges(): void {
-    this.splicedCards = [...this.Cards];
+    if (this.Cards) {
+      this.splicedCards = [...this.Cards];
+    }
   }
   showToThePlayer(card: any, index: number) {
     this.showTheCard = true;
@@ -41,12 +37,19 @@ export class PullCardsComponent implements OnInit {
     this.splicedCards.splice(this.cardIndex, 1);
   }
   toGround() {
-    this.splicedCards.splice(this.cardIndex, 1);
-    console.log(this.Cards);
+    const card = this.splicedCards.splice(this.cardIndex, 1)[0];
+    this.showTheCard = false;
     this.socket.emit('deleteCards', {
       gameId: this.gameId,
       cards: this.splicedCards,
       roomName: this.roomName,
+      keyName: 'pullCards',
+    });
+    this.socket.emit('addCard', {
+      gameId: this.gameId,
+      card: card,
+      roomName: this.roomName,
+      keyName: 'tableCards',
     });
   }
 }

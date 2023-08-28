@@ -21,7 +21,7 @@ export class RoomsComponent implements OnInit {
   RoomName!: string;
   allRooms!: Room[];
   points: points[];
-  usersIdArrray: any = [];
+  usersIdArrray: Array<string | undefined> = [];
   userId!: string | undefined;
   gameId!: string;
   constructor(

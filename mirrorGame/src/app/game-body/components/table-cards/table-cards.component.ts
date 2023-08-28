@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Card } from 'src/app/core/interfaces/card';
 
 @Component({
   selector: 'app-table-cards',
@@ -6,7 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./table-cards.component.css'],
 })
 export class TableCardsComponent implements OnInit {
-  @Input() Cards!: any;
+  @Input() Cards!: Card[];
 
   constructor() {}
 

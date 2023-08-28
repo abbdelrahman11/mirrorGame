@@ -17,6 +17,7 @@ export class RoomBodyComponent implements OnInit {
   roomInfo!: Room;
   playerCards!: Card[];
   pullCards!: Card[];
+  tableCards!: Card[];
   roomName!: string | undefined;
   userId!: string | undefined;
   gameId!: string | undefined;
@@ -42,9 +43,12 @@ export class RoomBodyComponent implements OnInit {
     });
     this.socket.on('allCards', (res) => {
       this.playerCards = res[0][`player${this.playersIndex}`].cards;
-      console.log(this.playerCards, 'playerCards');
       this.pullCards = res[0].pullCards;
+      this.tableCards = res[0].tableCards;
+      console.log(res, 'game');
+      console.log(this.playerCards, 'playerCards');
       console.log(this.pullCards, 'pullCards');
+      console.log(this.tableCards, 'tableCard');
     });
   }
   getRoomInfo() {
