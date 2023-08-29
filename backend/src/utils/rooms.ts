@@ -1,13 +1,17 @@
+import { resolve } from "path";
 import { roomUsers, roomUsersModel } from "../models/roomUsers.model";
 
 async function CreateRoom(room: roomUsers) {
+  return roomUsersModel.create(room);
+}
+async function checkTheRoomName(room: roomUsers) {
   const rooms = await roomUsersModel.findOne({ roomName: room.roomName });
   if (rooms) {
     return new Promise((resolve, reject) => {
       reject("This name already exists. Enter another name");
     });
   } else {
-    return roomUsersModel.create(room);
+    resolve();
   }
 }
 
@@ -27,4 +31,5 @@ module.exports = {
   allRooms,
   userJoin,
   roomInfo,
+  checkTheRoomName,
 };

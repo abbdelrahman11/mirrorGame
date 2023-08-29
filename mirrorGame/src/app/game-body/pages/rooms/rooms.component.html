@@ -19,14 +19,17 @@
             PointToWin: {{ room.roomPoints }}
           </span>
         </div>
-        <div class="my-3 mx-0 d-flex justify-content-center">
+        <div
+          class="my-3 mx-0 d-flex justify-content-center"
+          *ngIf="room.usersId.length == 4"
+        >
           <span class="badge badge-danger"> Completed </span>
         </div>
         <div class="text-center">
           <button
             [disabled]="room.usersId.length == 4"
             class="btn btn-dark btn-sm"
-            (click)="joinTheRoom(i)"
+            (click)="joinTheRoom(room)"
           >
             Join The Room
           </button>
@@ -66,7 +69,7 @@
     <button
       style="width: 90%"
       class="d-block m-3 btn btn-outline-primary"
-      [disabled]="!selectedPoint || !RoomName "
+      [disabled]="!selectedPoint || !RoomName"
       (click)="CreateRoom()"
     >
       Start

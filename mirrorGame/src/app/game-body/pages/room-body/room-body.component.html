@@ -19,10 +19,21 @@
         [Cards]="pullCards"
         [gameId]="gameId"
         [roomName]="roomName"
+        (selectCard)="selectTheCard($event)"
+        (selectedCard)="theSelectedCard($event)"
+        [updatePullCards]="updatedPullCard"
       ></app-pull-cards>
     </div>
     <div class="">
-      <app-main-player [Cards]="playerCards"></app-main-player>
+      <app-main-player
+        [gameId]="gameId"
+        [playersIndex]="playersIndex"
+        [roomName]="roomName"
+        [Cards]="playerCards"
+        [canSelectCard]="canSelectCard"
+        [selectedPullCard]="selectedPullCard"
+        (updatePullCards)="updatePullCards($event)"
+      ></app-main-player>
     </div>
     <div class=""></div>
   </div>

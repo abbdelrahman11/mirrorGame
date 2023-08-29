@@ -52,8 +52,8 @@ export class RoomsComponent implements OnInit {
       this.allRooms = res;
     });
   }
-  joinTheRoom(index: number) {
-    let data = this.allRooms[index];
+  joinTheRoom(room: Room) {
+    let data = room;
     data.usersId.push(this.userId);
     this.RoomName = data.roomName;
     this.socket.emit('joinRoom', data);

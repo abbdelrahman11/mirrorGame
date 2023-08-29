@@ -1,24 +1,30 @@
 module.exports = (io: any, socket: any) => {
-  const { getGame, UpdateGame, UpdateTheGame } = require("../utils/game");
-  const handledeleteCards = async ({
+  const { getGame, UpdateOneKey, UpdatePullCards } = require("../utils/game");
+  const handledeaddAndDeleteCards = async ({
     gameId,
-    cards,
     roomName,
-    keyName,
+    deleteCards,
+    addCards,
+    deleteKeyName,
+    addKeyName,
   }: any) => {
-    await UpdateGame(gameId, keyName, cards);
-    // const cardsUpdate = await getGame(gameId);
-    // io.to(roomName).emit("allCards", cardsUpdate);
-    // socket.emit("cardDeleted", true);
-  };
-
-  const handledeaddCard = async ({ gameId, card, roomName, keyName }: any) => {
-    await UpdateTheGame(gameId, keyName, card);
+    await UpdateOneKey(gameId, deleteKeyName, deleteCards);
+    await UpdatePullCards(gameId, addKeyName, addCards);
     const cardsUpdate = await getGame(gameId);
     io.to(roomName).emit("allCards", cardsUpdate);
-    socket.emit("cardAded", true);
   };
 
-  socket.on("deleteCards", handledeleteCards);
-  socket.on("addCard", handledeaddCard);
+  const handledeupdatePlayerCards = async ({
+    gameId,
+    roomName,
+    cards,
+    keyName,
+  }: any) => {
+    await UpdateOneKey(gameId, keyName, cards);
+    const cardsUpdate = await getGame(gameId);
+    io.to(roomName).emit("allCards", cardsUpdate);
+  };
+
+  socket.on("addAndDeleteCards", handledeaddAndDeleteCards);
+  socket.on("updatePlayerCards", handledeupdatePlayerCards);
 };

@@ -1,5 +1,3 @@
-<div class="outer">
-  <div *ngFor="let card of Cards; let i = index" class="inner">
-    <app-card [CardData]="card"></app-card>
-  </div>
+<div *ngFor="let card of Cards; let i = index" class="inner">
+  <app-card [CardData]="card"></app-card>
 </div>

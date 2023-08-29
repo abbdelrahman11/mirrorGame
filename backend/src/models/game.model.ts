@@ -3,17 +3,13 @@ import { Card } from "./card.model";
 export interface Game {
   _id: string;
   cards: Array<Card>;
-  player1: playerCards;
-  player2: playerCards;
-  player3: playerCards;
-  player4: playerCards;
+  player1: Array<Card>;
+  player2: Array<Card>;
+  player3: Array<Card>;
+  player4: Array<Card>;
   pullCards: Array<Card>;
   tableCards: Array<Card>;
   gameStarted: boolean;
-}
-export interface playerCards {
-  cards: Array<Card>;
-  userId: mongoose.Types.ObjectId;
 }
 
 export const GameSchema = new Schema<Game>(

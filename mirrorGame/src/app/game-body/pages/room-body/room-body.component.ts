@@ -22,6 +22,9 @@ export class RoomBodyComponent implements OnInit {
   userId!: string | undefined;
   gameId!: string | undefined;
   playersIndex!: number;
+  canSelectCard!: boolean;
+  selectedPullCard!: Card;
+  updatedPullCard!: boolean;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute
@@ -42,7 +45,7 @@ export class RoomBodyComponent implements OnInit {
       this.playersIndex = res;
     });
     this.socket.on('allCards', (res) => {
-      this.playerCards = res[0][`player${this.playersIndex}`].cards;
+      this.playerCards = res[0][`player${this.playersIndex}`];
       this.pullCards = res[0].pullCards;
       this.tableCards = res[0].tableCards;
       console.log(res, 'game');
@@ -58,8 +61,15 @@ export class RoomBodyComponent implements OnInit {
       },
     });
   }
-
-  HandOutTheCardsToThePlayers(cards: any) {}
+  selectTheCard(value: boolean) {
+    this.canSelectCard = value;
+  }
+  theSelectedCard(card: Card) {
+    this.selectedPullCard = card;
+  }
+  updatePullCards(event: boolean) {
+    this.updatedPullCard = event;
+  }
   getRouteParams(): void {
     const roomNameParam = this.ActivatedRoute.snapshot.paramMap.get('roomName');
     this.roomName = roomNameParam !== null ? roomNameParam : undefined;

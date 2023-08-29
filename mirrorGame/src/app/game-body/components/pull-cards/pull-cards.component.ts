@@ -1,4 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
 import { Card } from 'src/app/core/interfaces/card';
 import * as socketIO from 'socket.io-client';
 import { environment } from 'src/environments/environment';
@@ -13,7 +20,10 @@ export class PullCardsComponent implements OnInit {
   @Input() Cards!: Card[] | [];
   splicedCards!: Card[];
   @Input() gameId!: string | undefined;
+  @Input() updatePullCards!: boolean;
   @Input() roomName!: string | undefined;
+  @Output() selectCard = new EventEmitter<boolean>(false);
+  @Output() selectedCard = new EventEmitter<Card>();
   cardToShowToThePlayer!: Card;
   showTheCard: boolean = false;
   cardIndex!: number;
@@ -23,33 +33,38 @@ export class PullCardsComponent implements OnInit {
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
   }
-  ngOnChanges(): void {
+  ngOnChanges(changes: SimpleChanges): void {
     if (this.Cards) {
       this.splicedCards = [...this.Cards];
     }
+    console.log(changes['updatePullCards']);
+    if (changes['updatePullCards']?.currentValue === true) {
+      console.log('dlvn');
+      // this.toGround();
+    }
   }
-  showToThePlayer(card: any, index: number) {
+
+  showToThePlayer(card: Card, index: number) {
     this.showTheCard = true;
     this.cardToShowToThePlayer = card;
     this.cardIndex = index;
   }
   takeTheCard() {
-    this.splicedCards.splice(this.cardIndex, 1);
+    this.selectCard.emit(true);
+    const card = this.splicedCards.splice(this.cardIndex, 1)[0];
+    this.selectedCard.emit(card);
   }
   toGround() {
+    console.log('dc dvcsf');
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];
     this.showTheCard = false;
-    this.socket.emit('deleteCards', {
+    this.socket.emit('addAndDeleteCards', {
       gameId: this.gameId,
-      cards: this.splicedCards,
+      deleteCards: this.splicedCards,
+      addCards: card,
       roomName: this.roomName,
-      keyName: 'pullCards',
-    });
-    this.socket.emit('addCard', {
-      gameId: this.gameId,
-      card: card,
-      roomName: this.roomName,
-      keyName: 'tableCards',
+      deleteKeyName: 'pullCards',
+      addKeyName: 'tableCards',
     });
   }
 }
