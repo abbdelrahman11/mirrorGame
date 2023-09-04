@@ -1,11 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Card } from 'src/app/core/interfaces/card';
 import * as socketIO from 'socket.io-client';
 import { environment } from 'src/environments/environment';
@@ -20,27 +13,26 @@ export class PullCardsComponent implements OnInit {
   @Input() Cards!: Card[] | [];
   splicedCards!: Card[];
   @Input() gameId!: string | undefined;
-  @Input() updatePullCards!: boolean;
   @Input() roomName!: string | undefined;
-  @Output() selectCard = new EventEmitter<boolean>(false);
+  @Input() hideTheCard!: boolean;
+  @Output() canSelectCard = new EventEmitter<boolean>();
   @Output() selectedCard = new EventEmitter<Card>();
+  @Output() allPullCards = new EventEmitter<Card[]>();
   cardToShowToThePlayer!: Card;
   showTheCard: boolean = false;
   cardIndex!: number;
-
   constructor() {}
 
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
+    this.hideThCard();
   }
-  ngOnChanges(changes: SimpleChanges): void {
+  ngOnChanges(): void {
     if (this.Cards) {
       this.splicedCards = [...this.Cards];
     }
-    console.log(changes['updatePullCards']);
-    if (changes['updatePullCards']?.currentValue === true) {
-      console.log('dlvn');
-      // this.toGround();
+    if (this.hideTheCard) {
+      this.showTheCard = !this.hideTheCard;
     }
   }
 
@@ -50,15 +42,14 @@ export class PullCardsComponent implements OnInit {
     this.cardIndex = index;
   }
   takeTheCard() {
-    this.selectCard.emit(true);
+    this.canSelectCard.emit(true);
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];
     this.selectedCard.emit(card);
+    this.allPullCards.emit(this.splicedCards);
   }
   toGround() {
-    console.log('dc dvcsf');
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];
-    this.showTheCard = false;
-    this.socket.emit('addAndDeleteCards', {
+    this.socket.emit('fromPullCardsToTable', {
       gameId: this.gameId,
       deleteCards: this.splicedCards,
       addCards: card,
@@ -66,5 +57,9 @@ export class PullCardsComponent implements OnInit {
       deleteKeyName: 'pullCards',
       addKeyName: 'tableCards',
     });
+    this.hideThCard();
+  }
+  hideThCard() {
+    this.showTheCard = false;
   }
 }

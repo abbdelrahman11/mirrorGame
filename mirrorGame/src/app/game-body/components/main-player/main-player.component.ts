@@ -10,12 +10,14 @@ import { environment } from 'src/environments/environment';
 export class MainPlayerComponent implements OnInit {
   private socket!: socketIO.Socket;
   @Input() Cards!: Card[];
+  @Input() PullCards!: Card[];
   @Input() canSelectCard!: boolean;
   @Input() selectedPullCard!: Card;
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() playersIndex!: number;
-  @Output() updatePullCards = new EventEmitter<boolean>(false);
+  @Output() hideTheCard = new EventEmitter<boolean>(false);
+  playercard!: Card;
 
   constructor() {}
 
@@ -23,17 +25,24 @@ export class MainPlayerComponent implements OnInit {
     this.socket = socketIO.io(environment.baseUrl);
   }
   ngOnChanges(): void {
-    // console.log(this.canSelectCard);
-    // console.log(this.selectedPullCard);
+    console.log(this.selectedPullCard);
+    console.log(this.canSelectCard);
+    console.log(this.PullCards);
   }
   playerCard(playercard: Card, index: number) {
+    this.playercard = playercard;
     this.Cards[index] = this.selectedPullCard;
-    this.updatePullCards.emit(true);
-    // this.socket.emit('updatePlayerCards', {
-    //   gameId: this.gameId,
-    //   roomName: this.roomName,
-    //   cards: this.Cards,
-    //   keyName: `player${this.playersIndex}`,
-    // });
+    this.socket.emit('playerTakesCard', {
+      gameId: this.gameId,
+      roomName: this.roomName,
+      playercards: this.Cards,
+      playerkeyName: `player${this.playersIndex}`,
+      PullCards: this.PullCards,
+      tableCards: this.playercard,
+      PullCardsKeyName: 'pullCards',
+      tableCardsKeyName: 'tableCards',
+    });
+    this.canSelectCard = false;
+    this.hideTheCard.emit(true);
   }
 }

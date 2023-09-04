@@ -18,7 +18,8 @@ const joinRoom = require("./socketEvents/joinRoom");
 // const disconnect = require("./socketEvents/disconnect");
 const createRoom = require("./socketEvents/createRoom");
 const inRoom = require("./socketEvents/InRoom");
-const addAndDeleteCards = require("./socketEvents/addAndDeleteCards");
+const fromPullCardsToTable = require("./socketEvents/fromPullCardsToTable");
+const playerTakesCard = require("./socketEvents/playerTakesCard");
 
 const app = express();
 const server = http.createServer(app);
@@ -59,7 +60,8 @@ const onConnection = (socket: any) => {
   // disconnect(io, socket);
   createRoom(io, socket);
   inRoom(io, socket);
-  addAndDeleteCards(io, socket);
+  fromPullCardsToTable(io, socket);
+  playerTakesCard(io, socket);
 };
 
 io.on("connection", onConnection);

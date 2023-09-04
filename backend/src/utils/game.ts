@@ -7,16 +7,12 @@ async function CreateGame(Game: Game) {
 async function getGame(id: string) {
   return GameModel.find({ _id: id });
 }
-async function UpdatePullCards(id: string, key: string, value: any) {
-  return GameModel.findByIdAndUpdate(id, { $push: { [key]: value } });
+async function UpdateTheGame(id: string, updatedFields: any) {
+  return GameModel.findByIdAndUpdate(id, updatedFields, { new: true });
 }
 
-async function UpdateOneKey(id: string, key: string, value: any) {
-  return GameModel.findByIdAndUpdate(id, { [key]: value });
-}
 module.exports = {
   CreateGame,
   getGame,
-  UpdatePullCards,
-  UpdateOneKey,
+  UpdateTheGame,
 };

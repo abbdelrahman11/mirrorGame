@@ -3,9 +3,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import * as socketIO from 'socket.io-client';
 import { Card } from 'src/app/core/interfaces/card';
 import { Room } from 'src/app/core/interfaces/room';
-import { CardsService } from 'src/app/core/services/cards.service';
 import { RoomBodyService } from 'src/app/core/services/roomBody.service';
 import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-room-body',
@@ -24,13 +24,22 @@ export class RoomBodyComponent implements OnInit {
   playersIndex!: number;
   canSelectCard!: boolean;
   selectedPullCard!: Card;
-  updatedPullCard!: boolean;
+  PullCards!: Card[];
+  hideTheCard!: boolean;
   constructor(
     private service: RoomBodyService,
-    private ActivatedRoute: ActivatedRoute
+    private ActivatedRoute: ActivatedRoute,
+    private spinner: NgxSpinnerService
   ) {}
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
+    this.socket.on('connect', () => {
+      this.spinner.hide();
+    });
+
+    this.socket.on('disconnect', () => {
+      this.spinner.show();
+    });
     this.getRouteParams();
     this.getRoomInfo();
     this.socket.emit('inRoom', {
@@ -45,6 +54,7 @@ export class RoomBodyComponent implements OnInit {
       this.playersIndex = res;
     });
     this.socket.on('allCards', (res) => {
+      console.log(res);
       this.playerCards = res[0][`player${this.playersIndex}`];
       this.pullCards = res[0].pullCards;
       this.tableCards = res[0].tableCards;
@@ -67,8 +77,11 @@ export class RoomBodyComponent implements OnInit {
   theSelectedCard(card: Card) {
     this.selectedPullCard = card;
   }
-  updatePullCards(event: boolean) {
-    this.updatedPullCard = event;
+  allPullCards(cards: Card[]) {
+    this.PullCards = cards;
+  }
+  hideTheCards(value: boolean) {
+    this.hideTheCard = value;
   }
   getRouteParams(): void {
     const roomNameParam = this.ActivatedRoute.snapshot.paramMap.get('roomName');

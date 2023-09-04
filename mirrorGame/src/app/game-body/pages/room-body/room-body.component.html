@@ -19,9 +19,10 @@
         [Cards]="pullCards"
         [gameId]="gameId"
         [roomName]="roomName"
-        (selectCard)="selectTheCard($event)"
+        [hideTheCard]="hideTheCard"
+        (canSelectCard)="selectTheCard($event)"
         (selectedCard)="theSelectedCard($event)"
-        [updatePullCards]="updatedPullCard"
+        (allPullCards)="allPullCards($event)"
       ></app-pull-cards>
     </div>
     <div class="">
@@ -32,7 +33,8 @@
         [Cards]="playerCards"
         [canSelectCard]="canSelectCard"
         [selectedPullCard]="selectedPullCard"
-        (updatePullCards)="updatePullCards($event)"
+        [PullCards]="PullCards"
+        (hideTheCard)="hideTheCards($event)"
       ></app-main-player>
     </div>
     <div class=""></div>
