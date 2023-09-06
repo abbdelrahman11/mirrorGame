@@ -74,6 +74,9 @@ export class RoomBodyComponent implements OnInit {
   selectTheCard(value: boolean) {
     this.canSelectCard = value;
   }
+  onCanSelectCardChange(newValue: boolean) {
+    this.canSelectCard = newValue;
+  }
   theSelectedCard(card: Card) {
     this.selectedPullCard = card;
   }

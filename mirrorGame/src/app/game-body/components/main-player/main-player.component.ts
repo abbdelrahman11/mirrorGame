@@ -18,17 +18,14 @@ export class MainPlayerComponent implements OnInit {
   @Input() playersIndex!: number;
   @Output() hideTheCard = new EventEmitter<boolean>(false);
   playercard!: Card;
-
+  @Output() changeCanSelectCard: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
   constructor() {}
 
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
   }
-  ngOnChanges(): void {
-    console.log(this.selectedPullCard);
-    console.log(this.canSelectCard);
-    console.log(this.PullCards);
-  }
+
   playerCard(playercard: Card, index: number) {
     this.playercard = playercard;
     this.Cards[index] = this.selectedPullCard;
@@ -43,6 +40,7 @@ export class MainPlayerComponent implements OnInit {
       tableCardsKeyName: 'tableCards',
     });
     this.canSelectCard = false;
+    this.changeCanSelectCard.emit(this.canSelectCard);
     this.hideTheCard.emit(true);
   }
 }
