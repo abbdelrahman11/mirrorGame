@@ -26,6 +26,7 @@ export class RoomBodyComponent implements OnInit {
   selectedPullCard!: Card;
   PullCards!: Card[];
   hideTheCard!: boolean;
+  activeUserIndex!: number;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -33,13 +34,13 @@ export class RoomBodyComponent implements OnInit {
   ) {}
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
-    this.socket.on('connect', () => {
-      this.spinner.hide();
-    });
+    // this.socket.on('connect', () => {
+    //   this.spinner.hide();
+    // });
 
-    this.socket.on('disconnect', () => {
-      this.spinner.show();
-    });
+    // this.socket.on('disconnect', () => {
+    //   this.spinner.show();
+    // });
     this.getRouteParams();
     this.getRoomInfo();
     this.socket.emit('inRoom', {
@@ -54,14 +55,17 @@ export class RoomBodyComponent implements OnInit {
       this.playersIndex = res;
     });
     this.socket.on('allCards', (res) => {
-      console.log(res);
       this.playerCards = res[0][`player${this.playersIndex}`];
       this.pullCards = res[0].pullCards;
       this.tableCards = res[0].tableCards;
-      console.log(res, 'game');
-      console.log(this.playerCards, 'playerCards');
-      console.log(this.pullCards, 'pullCards');
-      console.log(this.tableCards, 'tableCard');
+      this.activeUserIndex = res[0].activeUserIndex;
+      // console.log(res, 'game');
+      // console.log(this.playerCards, 'playerCards');
+      // console.log(this.pullCards, 'pullCards');
+      // console.log(this.tableCards, 'tableCard');
+      console.log(this.playersIndex);
+      console.log(this.activeUserIndex);
+      console.log(this.checkIfItIsYourTurn());
     });
   }
   getRoomInfo() {
@@ -85,6 +89,9 @@ export class RoomBodyComponent implements OnInit {
   }
   hideTheCards(value: boolean) {
     this.hideTheCard = value;
+  }
+  checkIfItIsYourTurn() {
+    return this.playersIndex == this.activeUserIndex;
   }
   getRouteParams(): void {
     const roomNameParam = this.ActivatedRoute.snapshot.paramMap.get('roomName');

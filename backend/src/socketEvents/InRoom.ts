@@ -4,16 +4,74 @@ module.exports = (io: any, socket: any) => {
   const handleinRoom = async ({ userId, roomName, gameId }: any) => {
     try {
       const roomRes = await roomInfo(roomName);
-      const cards = await getGame(gameId);
-      if (cards[0].gameStarted) {
-        gameStarted(userId, roomRes, cards, roomName);
+      const theGame = await getGame(gameId);
+      if (theGame[0].gameStarted) {
+        gameStarted(userId, roomRes, theGame, roomName);
       } else {
-        HandOutTheCardsToThePlayers(userId, roomName, gameId, cards, roomRes);
+        await HandOutTheCardsToThePlayers(
+          userId,
+          roomName,
+          gameId,
+          theGame,
+          roomRes
+        );
       }
     } catch (error) {
       console.log(error);
     }
   };
+
+  function gameStarted(
+    userId: any,
+    roomRes: any,
+    theGame: any,
+    roomName: string
+  ) {
+    socket.join(userId);
+    socket.join(roomName);
+    const userIndex = roomRes[0].usersId.indexOf(userId);
+    io.to(userId).emit("playerIndex", userIndex + 1);
+    io.to(userId).emit("allCards", theGame);
+  }
+
+  async function HandOutTheCardsToThePlayers(
+    userId: string,
+    roomName: string,
+    gameId: string,
+    theGame: any,
+    roomRes: any
+  ) {
+    socket.join(roomName);
+    socket.join(userId);
+    if (theGame.length > 0) {
+      const userIndex = roomRes[0].usersId.indexOf(userId);
+      await UpdateTheGame(gameId, {
+        [`player${userIndex + 1}`]: getRandomNumbers(
+          theGame[0].cards,
+          userIndex
+        ),
+      });
+      io.to(userId).emit("playerIndex", userIndex + 1);
+      if (roomRes[0].usersId.length == 4) {
+        await RoomIsComplete(theGame, gameId, roomName);
+      }
+    }
+  }
+
+  async function RoomIsComplete(
+    theGame: any,
+    gameId: string,
+    roomName: string
+  ) {
+    getPullCards(theGame[0].cards, 16);
+    const updatedFields = {
+      gameStarted: true,
+      pullCards: theGame[0].cards,
+      activeUserIndex: 1,
+    };
+    const theGameUpdate = await UpdateTheGame(gameId, updatedFields);
+    io.to(roomName).emit("allCards", [theGameUpdate]);
+  }
 
   function getRandomNumbers(arr: Array<any>, count: number) {
     let randomNumbers;
@@ -25,47 +83,6 @@ module.exports = (io: any, socket: any) => {
     let randomNumbers;
     randomNumbers = arr.splice(0, count);
     return randomNumbers;
-  }
-
-  function gameStarted(
-    userId: any,
-    roomRes: any,
-    cards: any,
-    roomName: string
-  ) {
-    socket.join(userId);
-    socket.join(roomName);
-    const userIndex = roomRes[0].usersId.indexOf(userId);
-    io.to(userId).emit("playerIndex", userIndex + 1);
-    io.to(userId).emit("allCards", cards);
-  }
-
-  async function HandOutTheCardsToThePlayers(
-    userId: string,
-    roomName: string,
-    gameId: string,
-    cards: any,
-    roomRes: any
-  ) {
-    socket.join(roomName);
-    socket.join(userId);
-    if (cards.length > 0) {
-      const userIndex = roomRes[0].usersId.indexOf(userId);
-      await UpdateTheGame(gameId, {
-        [`player${userIndex + 1}`]: getRandomNumbers(cards[0].cards, userIndex),
-      });
-      io.to(userId).emit("playerIndex", userIndex + 1);
-      if (roomRes[0].usersId.length == 4) {
-        getPullCards(cards[0].cards, 16);
-        const updatedFields = {
-          gameStarted: true,
-          pullCards: cards[0].cards,
-        };
-        const cardsUpdate = await UpdateTheGame(gameId, updatedFields);
-
-        io.to(roomName).emit("allCards", [cardsUpdate]);
-      }
-    }
   }
 
   socket.on("inRoom", handleinRoom);

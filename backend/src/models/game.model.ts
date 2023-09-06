@@ -10,6 +10,7 @@ export interface Game {
   pullCards: Array<Card>;
   tableCards: Array<Card>;
   gameStarted: boolean;
+  activeUserIndex: number;
 }
 
 export const GameSchema = new Schema<Game>(
@@ -22,6 +23,7 @@ export const GameSchema = new Schema<Game>(
     pullCards: { type: [] },
     tableCards: { type: [] },
     gameStarted: { type: Boolean, default: false },
+    activeUserIndex: { type: Number },
   },
   {
     timestamps: true,
