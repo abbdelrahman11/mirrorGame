@@ -26,7 +26,8 @@ export class RoomBodyComponent implements OnInit {
   selectedPullCard!: Card;
   PullCards!: Card[];
   hideTheCard!: boolean;
-  activeUserIndex!: number;
+  playerCanPlay!: boolean;
+  activePlayer!: number;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -54,18 +55,17 @@ export class RoomBodyComponent implements OnInit {
     this.socket.on('playerIndex', (res) => {
       this.playersIndex = res;
     });
+
     this.socket.on('allCards', (res) => {
       this.playerCards = res[0][`player${this.playersIndex}`];
       this.pullCards = res[0].pullCards;
       this.tableCards = res[0].tableCards;
-      this.activeUserIndex = res[0].activeUserIndex;
-      // console.log(res, 'game');
-      // console.log(this.playerCards, 'playerCards');
-      // console.log(this.pullCards, 'pullCards');
-      // console.log(this.tableCards, 'tableCard');
-      console.log(this.playersIndex);
-      console.log(this.activeUserIndex);
-      console.log(this.checkIfItIsYourTurn());
+      this.activePlayer = res[0].activeUserIndex;
+      this.checkIfPlayerCanPlay();
+      console.log(res, 'game');
+      console.log(this.playerCards, 'playerCards');
+      console.log(this.pullCards, 'pullCards');
+      console.log(this.tableCards, 'tableCard');
     });
   }
   getRoomInfo() {
@@ -90,8 +90,17 @@ export class RoomBodyComponent implements OnInit {
   hideTheCards(value: boolean) {
     this.hideTheCard = value;
   }
-  checkIfItIsYourTurn() {
-    return this.playersIndex == this.activeUserIndex;
+  showNotification() {
+    console.log('cd');
+  }
+  checkIfPlayerCanPlay() {
+    if (this.activePlayer % 4 == 0) {
+      this.activePlayer = 4;
+      this.playerCanPlay = this.playersIndex == this.activePlayer;
+    } else {
+      this.playerCanPlay = this.playersIndex == this.activePlayer % 4;
+    }
+    console.log(this.playerCanPlay, 'playerCanPlay');
   }
   getRouteParams(): void {
     const roomNameParam = this.ActivatedRoute.snapshot.paramMap.get('roomName');

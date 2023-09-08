@@ -11,6 +11,7 @@ module.exports = (io: any, socket: any) => {
     const updatedFields = {
       [deleteKeyName]: deleteCards,
       $push: { [addKeyName]: addCards },
+      $inc: { activeUserIndex: 1 },
     };
     const cardsUpdate = await UpdateTheGame(gameId, updatedFields);
     io.to(roomName).emit("allCards", [cardsUpdate]);

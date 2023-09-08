@@ -27,20 +27,22 @@ export class MainPlayerComponent implements OnInit {
   }
 
   playerCard(playercard: Card, index: number) {
-    this.playercard = playercard;
-    this.Cards[index] = this.selectedPullCard;
-    this.socket.emit('playerTakesCard', {
-      gameId: this.gameId,
-      roomName: this.roomName,
-      playercards: this.Cards,
-      playerkeyName: `player${this.playersIndex}`,
-      PullCards: this.PullCards,
-      tableCards: this.playercard,
-      PullCardsKeyName: 'pullCards',
-      tableCardsKeyName: 'tableCards',
-    });
-    this.canSelectCard = false;
-    this.changeCanSelectCard.emit(this.canSelectCard);
-    this.hideTheCard.emit(true);
+    if (this.canSelectCard) {
+      this.playercard = playercard;
+      this.Cards[index] = this.selectedPullCard;
+      this.socket.emit('playerTakesCard', {
+        gameId: this.gameId,
+        roomName: this.roomName,
+        playercards: this.Cards,
+        playerkeyName: `player${this.playersIndex}`,
+        PullCards: this.PullCards,
+        tableCards: this.playercard,
+        PullCardsKeyName: 'pullCards',
+        tableCardsKeyName: 'tableCards',
+      });
+      this.canSelectCard = false;
+      this.changeCanSelectCard.emit(this.canSelectCard);
+      this.hideTheCard.emit(true);
+    }
   }
 }

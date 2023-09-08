@@ -23,7 +23,7 @@ export const GameSchema = new Schema<Game>(
     pullCards: { type: [] },
     tableCards: { type: [] },
     gameStarted: { type: Boolean, default: false },
-    activeUserIndex: { type: Number },
+    activeUserIndex: { type: Number, default: 1 },
   },
   {
     timestamps: true,
