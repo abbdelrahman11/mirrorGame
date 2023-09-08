@@ -15,6 +15,7 @@ import { MainPlayerComponent } from './components/main-player/main-player.compon
 import { PullCardsComponent } from './components/pull-cards/pull-cards.component';
 import { TableCardsComponent } from './components/table-cards/table-cards.component';
 import { ResultsComponent } from './components/results/results.component';
+import { WaitThePlayerComponent } from './components/wait-the-player/wait-the-player.component';
 
 @NgModule({
   declarations: [
@@ -27,6 +28,7 @@ import { ResultsComponent } from './components/results/results.component';
     PullCardsComponent,
     TableCardsComponent,
     ResultsComponent,
+    WaitThePlayerComponent,
   ],
   imports: [
     CommonModule,

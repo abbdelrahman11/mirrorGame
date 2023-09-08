@@ -100,7 +100,6 @@ export class RoomBodyComponent implements OnInit {
     } else {
       this.playerCanPlay = this.playersIndex == this.activePlayer % 4;
     }
-    console.log(this.playerCanPlay, 'playerCanPlay');
   }
   getRouteParams(): void {
     const roomNameParam = this.ActivatedRoute.snapshot.paramMap.get('roomName');
