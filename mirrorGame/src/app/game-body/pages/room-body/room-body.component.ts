@@ -28,6 +28,10 @@ export class RoomBodyComponent implements OnInit {
   hideTheCard!: boolean;
   playerCanPlay!: boolean;
   activePlayer!: number;
+  canPullFromTheGround!: boolean;
+  selectedTableCard!: Card;
+  allThetableCards!: Card[];
+  hideTheButton!: boolean;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -81,17 +85,32 @@ export class RoomBodyComponent implements OnInit {
   onCanSelectCardChange(newValue: boolean) {
     this.canSelectCard = newValue;
   }
+  onCanPullFromTheGroundChange(newValue: boolean) {
+    this.canPullFromTheGround = newValue;
+  }
   theSelectedCard(card: Card) {
     this.selectedPullCard = card;
   }
   allPullCards(cards: Card[]) {
     this.PullCards = cards;
   }
+  theSelectedTableCard(card: Card) {
+    this.selectedTableCard = card;
+  }
+  allTableCards(cards: Card[]) {
+    this.allThetableCards = cards;
+  }
   hideTheCards(value: boolean) {
     this.hideTheCard = value;
   }
+  hideButton(value: boolean) {
+    this.hideTheButton = value;
+  }
   showNotification() {
     console.log('cd');
+  }
+  canPullFromGround(event: boolean) {
+    this.canPullFromTheGround = event;
   }
   checkIfPlayerCanPlay() {
     if (this.activePlayer % 4 == 0) {

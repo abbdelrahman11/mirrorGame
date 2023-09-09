@@ -1,6 +1,6 @@
 <div class="d-flex">
   <div
-    [ngClass]="canSelectCard ? 'player-card' : ''"
+    [ngClass]="canSelectCard || canPullFromTheGround ? 'player-card' : ''"
     *ngFor="let card of Cards; let i = index"
   >
     <app-card [CardData]="card" (click)="playerCard(card, i)"></app-card>

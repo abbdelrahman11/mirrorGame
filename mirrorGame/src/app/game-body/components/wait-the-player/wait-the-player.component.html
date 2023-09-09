@@ -1,3 +1,10 @@
-<div class="position-absolute my-3 mx-0" style="left: 2%">
-  <p class="badge badge-warning">Wait Other Player To Finish</p>
+<div class="position-absolute my-3 mx-0" style="left: 2%" *ngIf="playerCanPlay">
+  <p class="badge badge-danger">Wait Other Player To Finish</p>
+</div>
+<div
+  class="position-absolute my-3 mx-0"
+  style="left: 2%"
+  *ngIf="!playerCanPlay"
+>
+  <p class="badge badge-primary">Your Turn</p>
 </div>

@@ -19,6 +19,7 @@ const joinRoom = require("./socketEvents/joinRoom");
 const createRoom = require("./socketEvents/createRoom");
 const inRoom = require("./socketEvents/InRoom");
 const fromPullCardsToTable = require("./socketEvents/fromPullCardsToTable");
+const playerTakesCardFromGround = require("./socketEvents/playerTakesCardFromGround");
 const playerTakesCard = require("./socketEvents/playerTakesCard");
 
 const app = express();
@@ -62,6 +63,7 @@ const onConnection = (socket: any) => {
   inRoom(io, socket);
   fromPullCardsToTable(io, socket);
   playerTakesCard(io, socket);
+  playerTakesCardFromGround(io, socket);
 };
 
 io.on("connection", onConnection);

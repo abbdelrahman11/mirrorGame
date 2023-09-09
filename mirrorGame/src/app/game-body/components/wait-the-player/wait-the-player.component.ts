@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-wait-the-player',
   templateUrl: './wait-the-player.component.html',
-  styleUrls: ['./wait-the-player.component.css']
+  styleUrls: ['./wait-the-player.component.css'],
 })
 export class WaitThePlayerComponent implements OnInit {
+  @Input() playerCanPlay!: boolean;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

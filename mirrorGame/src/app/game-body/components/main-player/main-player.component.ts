@@ -9,17 +9,21 @@ import { environment } from 'src/environments/environment';
 })
 export class MainPlayerComponent implements OnInit {
   private socket!: socketIO.Socket;
-  @Input() Cards!: Card[];
-  @Input() PullCards!: Card[];
-  @Input() canSelectCard!: boolean;
-  @Input() selectedPullCard!: Card;
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() playersIndex!: number;
+  @Input() Cards!: Card[];
+  @Input() PullCards!: Card[];
+  @Input() canSelectCard!: boolean;
+  @Input() canPullFromTheGround!: boolean;
+  @Input() selectedPullCard!: Card;
+  @Input() selectedTableCard!: Card;
+  @Input() tableCards!: Card[];
   @Output() hideTheCard = new EventEmitter<boolean>(false);
-  playercard!: Card;
-  @Output() changeCanSelectCard: EventEmitter<boolean> =
-    new EventEmitter<boolean>();
+  @Output() hideTheButton = new EventEmitter<boolean>(false);
+  @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
+  @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
+
   constructor() {}
 
   ngOnInit(): void {
@@ -28,7 +32,6 @@ export class MainPlayerComponent implements OnInit {
 
   playerCard(playercard: Card, index: number) {
     if (this.canSelectCard) {
-      this.playercard = playercard;
       this.Cards[index] = this.selectedPullCard;
       this.socket.emit('playerTakesCard', {
         gameId: this.gameId,
@@ -36,13 +39,28 @@ export class MainPlayerComponent implements OnInit {
         playercards: this.Cards,
         playerkeyName: `player${this.playersIndex}`,
         PullCards: this.PullCards,
-        tableCards: this.playercard,
+        tableCards: playercard,
         PullCardsKeyName: 'pullCards',
         tableCardsKeyName: 'tableCards',
       });
       this.canSelectCard = false;
       this.changeCanSelectCard.emit(this.canSelectCard);
       this.hideTheCard.emit(true);
+    }
+    if (this.canPullFromTheGround) {
+      this.tableCards.push(this.Cards[index]);
+      this.Cards[index] = this.selectedTableCard;
+      this.socket.emit('playerTakesCardFromGround', {
+        gameId: this.gameId,
+        roomName: this.roomName,
+        playercards: this.Cards,
+        playerkeyName: `player${this.playersIndex}`,
+        tableCards: this.tableCards,
+        tableCardsKeyName: 'tableCards',
+      });
+      this.canPullFromTheGround = false;
+      this.changeCanPullFromTheGround.emit(this.canPullFromTheGround);
+      this.hideTheButton.emit(true);
     }
   }
 }

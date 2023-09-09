@@ -1,3 +1,16 @@
-<div *ngFor="let card of Cards; let i = index" class="inner" style="left: 45%">
-  <app-card [CardData]="card"></app-card>
+<div
+  *ngFor="let card of Cards; let i = index"
+  class="inner"
+  style="left: 45%"
+  [ngClass]="showTakeButton ? 'player-card' : ''"
+>
+  <app-card [CardData]="card" (click)="playerCard(i)"> </app-card>
+</div>
+
+<div
+  class="position-absolute text-center"
+  style="left: 46.5%; bottom: 43%"
+  *ngIf="showTakeButton"
+>
+  <button class="btn btn-warning" (click)="takeTheCard()">Take</button>
 </div>
