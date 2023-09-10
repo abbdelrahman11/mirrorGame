@@ -13,8 +13,9 @@ export class MainPlayerComponent implements OnInit {
   @Input() roomName!: string | undefined;
   @Input() playersIndex!: number;
   @Input() Cards!: Card[];
+  @Input() copyOfCards!: Card[];
   @Input() PullCards!: Card[];
-  @Input() canSelectCard!: boolean;
+  @Input() canPullFromPullCard!: boolean;
   @Input() canPullFromTheGround!: boolean;
   @Input() selectedPullCard!: Card;
   @Input() selectedTableCard!: Card;
@@ -25,35 +26,40 @@ export class MainPlayerComponent implements OnInit {
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
 
   constructor() {}
+  ngOnChanges(): void {
+    if (this.Cards) {
+      this.copyOfCards = [...this.Cards];
+    }
+  }
 
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
   }
 
   playerCard(playercard: Card, index: number) {
-    if (this.canSelectCard) {
-      this.Cards[index] = this.selectedPullCard;
+    if (this.canPullFromPullCard) {
+      this.copyOfCards[index] = this.selectedPullCard;
       this.socket.emit('playerTakesCard', {
         gameId: this.gameId,
         roomName: this.roomName,
-        playercards: this.Cards,
+        playercards: this.copyOfCards,
         playerkeyName: `player${this.playersIndex}`,
         PullCards: this.PullCards,
         tableCards: playercard,
         PullCardsKeyName: 'pullCards',
         tableCardsKeyName: 'tableCards',
       });
-      this.canSelectCard = false;
-      this.changeCanSelectCard.emit(this.canSelectCard);
+      this.canPullFromPullCard = false;
+      this.changeCanSelectCard.emit(this.canPullFromPullCard);
       this.hideTheCard.emit(true);
     }
     if (this.canPullFromTheGround) {
-      this.tableCards.push(this.Cards[index]);
-      this.Cards[index] = this.selectedTableCard;
+      this.tableCards.push(this.copyOfCards[index]);
+      this.copyOfCards[index] = this.selectedTableCard;
       this.socket.emit('playerTakesCardFromGround', {
         gameId: this.gameId,
         roomName: this.roomName,
-        playercards: this.Cards,
+        playercards: this.copyOfCards,
         playerkeyName: `player${this.playersIndex}`,
         tableCards: this.tableCards,
         tableCardsKeyName: 'tableCards',

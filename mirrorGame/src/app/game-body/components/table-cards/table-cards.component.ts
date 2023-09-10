@@ -34,8 +34,6 @@ export class TableCardsComponent implements OnInit {
   takeTheCard() {
     this.canPullFromGround.emit(true);
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];
-    console.log(card, 'card');
-    console.log(this.splicedCards, 'this.splicedCards');
     this.selectedTableCard.emit(card);
     this.allTableCards.emit(this.splicedCards);
   }

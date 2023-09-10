@@ -22,7 +22,7 @@ export class RoomBodyComponent implements OnInit {
   userId!: string | undefined;
   gameId!: string | undefined;
   playersIndex!: number;
-  canSelectCard!: boolean;
+  canPullFromPullCard!: boolean;
   selectedPullCard!: Card;
   PullCards!: Card[];
   hideTheCard!: boolean;
@@ -79,11 +79,11 @@ export class RoomBodyComponent implements OnInit {
       },
     });
   }
-  selectTheCard(value: boolean) {
-    this.canSelectCard = value;
+  canPullFromPullCards(value: boolean) {
+    this.canPullFromPullCard = value;
   }
   onCanSelectCardChange(newValue: boolean) {
-    this.canSelectCard = newValue;
+    this.canPullFromPullCard = newValue;
   }
   onCanPullFromTheGroundChange(newValue: boolean) {
     this.canPullFromTheGround = newValue;
@@ -106,9 +106,7 @@ export class RoomBodyComponent implements OnInit {
   hideButton(value: boolean) {
     this.hideTheButton = value;
   }
-  showNotification() {
-    console.log('cd');
-  }
+
   canPullFromGround(event: boolean) {
     this.canPullFromTheGround = event;
   }

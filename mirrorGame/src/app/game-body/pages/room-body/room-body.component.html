@@ -32,7 +32,7 @@
         [gameId]="gameId"
         [roomName]="roomName"
         [hideTheCard]="hideTheCard"
-        (canSelectCard)="selectTheCard($event)"
+        (canPullFromPullCards)="canPullFromPullCards($event)"
         (selectedCard)="theSelectedCard($event)"
         (allPullCards)="allPullCards($event)"
       ></app-pull-cards>
@@ -43,7 +43,7 @@
         [gameId]="gameId"
         [roomName]="roomName"
         [playersIndex]="playersIndex"
-        [canSelectCard]="canSelectCard"
+        [canPullFromPullCard]="canPullFromPullCard"
         [selectedPullCard]="selectedPullCard"
         [PullCards]="PullCards"
         (hideTheCard)="hideTheCards($event)"
@@ -62,4 +62,4 @@
   <div class="loader"></div>
   <p class="mt-3">Waiting For All Members To Join The Room</p>
 </div>
-<div class="overlay" *ngIf="!playerCanPlay" (click)="showNotification()"></div>
+<div class="overlay" *ngIf="!playerCanPlay"></div>

@@ -63,7 +63,6 @@ router.post(
 const generateTokenReponse = (user: User) => {
   const jwtSecret = process.env.JWT_SECRET || "default_secret";
 
-  console.log(jwtSecret);
   const token = jwt.sign(
     {
       id: user.id,

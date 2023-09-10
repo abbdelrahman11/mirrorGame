@@ -1,11 +1,11 @@
 <div class="d-flex">
   <div
-    [ngClass]="canSelectCard || canPullFromTheGround ? 'player-card' : ''"
+    [ngClass]="canPullFromPullCard || canPullFromTheGround ? 'player-card' : ''"
     *ngFor="let card of Cards; let i = index"
   >
     <app-card [CardData]="card" (click)="playerCard(card, i)"></app-card>
   </div>
 </div>
-<div class="text m-4 text-center" *ngIf="canSelectCard">
+<div class="text m-4 text-center" *ngIf="canPullFromPullCard">
   <span class="badge badge-warning">select One The Card</span>
 </div>

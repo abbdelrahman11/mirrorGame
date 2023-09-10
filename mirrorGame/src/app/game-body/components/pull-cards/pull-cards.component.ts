@@ -15,7 +15,7 @@ export class PullCardsComponent implements OnInit {
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() hideTheCard!: boolean;
-  @Output() canSelectCard = new EventEmitter<boolean>();
+  @Output() canPullFromPullCards = new EventEmitter<boolean>();
   @Output() selectedCard = new EventEmitter<Card>();
   @Output() allPullCards = new EventEmitter<Card[]>();
   cardToShowToThePlayer!: Card;
@@ -42,7 +42,7 @@ export class PullCardsComponent implements OnInit {
     this.cardIndex = index;
   }
   takeTheCard() {
-    this.canSelectCard.emit(true);
+    this.canPullFromPullCards.emit(true);
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];
     this.selectedCard.emit(card);
     this.allPullCards.emit(this.splicedCards);
