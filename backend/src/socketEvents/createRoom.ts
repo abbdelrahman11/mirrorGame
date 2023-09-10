@@ -1,3 +1,5 @@
+import { Card } from "../models/card.model";
+import { Game } from "../models/game.model";
 import { roomUsers } from "../models/roomUsers.model";
 
 module.exports = (io: any, socket: any, callback: any) => {
@@ -9,15 +11,15 @@ module.exports = (io: any, socket: any, callback: any) => {
     roomPoints,
     usersId,
     gameId,
-  }: any) => {
-    const room = { roomName, roomPoints, usersId, gameId };
+  }: roomUsers) => {
+    const room: roomUsers = { roomName, roomPoints, usersId, gameId };
     try {
       await checkTheRoomName(room);
-      const gameresCards = await getAllCards();
-      const createdGame = await CreateGame({ cards: gameresCards });
+      const gameresCards: Card = await getAllCards();
+      const createdGame: Game = await CreateGame({ cards: gameresCards });
       room.gameId = createdGame._id;
       await CreateRoom(room);
-      const allRoomsRes = await allRooms();
+      const allRoomsRes: roomUsers = await allRooms();
       io.emit("allRooms", allRoomsRes);
       socket.emit("canRoute", createdGame._id);
     } catch (error) {

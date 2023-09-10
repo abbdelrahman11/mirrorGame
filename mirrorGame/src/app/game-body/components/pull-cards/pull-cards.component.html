@@ -3,6 +3,7 @@
     <app-card
       [CardData]="card"
       [disabled]="showTheCard"
+      [flip]="false"
       (click)="showToThePlayer(card, i)"
     ></app-card>
   </div>
@@ -13,6 +14,7 @@
     [CardData]="cardToShowToThePlayer"
     [cardWidth]="160"
     [cardHeight]="200"
+    [flip]="false"
     style="position: absolute; top: 30%; right: 45%; z-index: 2"
   ></app-card>
   <div class="btn" class="btns">

@@ -4,7 +4,8 @@
   style="left: 45%"
   [ngClass]="showTakeButton ? 'player-card' : ''"
 >
-  <app-card [CardData]="card" (click)="playerCard(i)"> </app-card>
+  <app-card [flip]="false" [CardData]="card" (click)="playerCard(i)">
+  </app-card>
 </div>
 
 <div

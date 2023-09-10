@@ -32,6 +32,7 @@ export class RoomBodyComponent implements OnInit {
   selectedTableCard!: Card;
   allThetableCards!: Card[];
   hideTheButton!: boolean;
+  showTwoCards!: boolean;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -66,11 +67,20 @@ export class RoomBodyComponent implements OnInit {
       this.tableCards = res[0].tableCards;
       this.activePlayer = res[0].activeUserIndex;
       this.checkIfPlayerCanPlay();
-      console.log(res, 'game');
-      console.log(this.playerCards, 'playerCards');
-      console.log(this.pullCards, 'pullCards');
-      console.log(this.tableCards, 'tableCard');
+      this.showLogs();
+      this.showTwoCardsToThePlayer(res[0].showTwoCards);
     });
+  }
+  showLogs() {
+    console.log(this.playerCards, 'playerCards');
+    console.log(this.pullCards, 'pullCards');
+    console.log(this.tableCards, 'tableCard');
+  }
+  showTwoCardsToThePlayer(showTwoCards: boolean) {
+    console.log(showTwoCards);
+    if (showTwoCards) {
+      this.showTwoCards = showTwoCards;
+    }
   }
   getRoomInfo() {
     this.service.getRoomInfo({ roomName: this.roomName }).subscribe({
@@ -110,6 +120,7 @@ export class RoomBodyComponent implements OnInit {
   canPullFromGround(event: boolean) {
     this.canPullFromTheGround = event;
   }
+
   checkIfPlayerCanPlay() {
     if (this.activePlayer % 4 == 0) {
       this.activePlayer = 4;
@@ -118,6 +129,7 @@ export class RoomBodyComponent implements OnInit {
       this.playerCanPlay = this.playersIndex == this.activePlayer % 4;
     }
   }
+
   getRouteParams(): void {
     const roomNameParam = this.ActivatedRoute.snapshot.paramMap.get('roomName');
     this.roomName = roomNameParam !== null ? roomNameParam : undefined;

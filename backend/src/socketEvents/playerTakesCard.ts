@@ -19,6 +19,18 @@ module.exports = (io: any, socket: any) => {
     const cardsUpdate = await UpdateTheGame(gameId, updatedFields);
     io.to(roomName).emit("allCards", [cardsUpdate]);
   };
-
+  const handlechandeshowTwoCardsValue = async ({
+    gameId,
+    value,
+    playersIndex,
+  }: any) => {
+    if (playersIndex == 1) {
+      const updatedFields = {
+        showTwoCards: value,
+      };
+      await UpdateTheGame(gameId, updatedFields);
+    }
+  };
   socket.on("playerTakesCard", handledeupdatePlayerCards);
+  socket.on("chandeshowTwoCardsValue", handlechandeshowTwoCardsValue);
 };

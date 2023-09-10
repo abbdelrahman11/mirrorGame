@@ -1,6 +1,6 @@
 import mongoose, { Schema, model } from "mongoose";
 export interface roomUsers {
-  _id: string;
+  _id?: string;
   roomName: string;
   roomPoints: string;
   usersId: any;

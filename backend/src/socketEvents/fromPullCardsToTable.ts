@@ -1,3 +1,5 @@
+import { Game } from "../models/game.model";
+
 module.exports = (io: any, socket: any) => {
   const { UpdateTheGame } = require("../utils/game");
   const handledefromPullCardsToTable = async ({
@@ -13,7 +15,7 @@ module.exports = (io: any, socket: any) => {
       $push: { [addKeyName]: addCards },
       $inc: { activeUserIndex: 1 },
     };
-    const cardsUpdate = await UpdateTheGame(gameId, updatedFields);
+    const cardsUpdate: Game = await UpdateTheGame(gameId, updatedFields);
     io.to(roomName).emit("allCards", [cardsUpdate]);
   };
 
