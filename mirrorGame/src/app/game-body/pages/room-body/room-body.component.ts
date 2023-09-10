@@ -24,13 +24,13 @@ export class RoomBodyComponent implements OnInit {
   playersIndex!: number;
   canPullFromPullCard!: boolean;
   selectedPullCard!: Card;
-  PullCards!: Card[];
+  PullCardsAfterSpliced!: Card[];
   hideTheCard!: boolean;
   playerCanPlay!: boolean;
   activePlayer!: number;
   canPullFromTheGround!: boolean;
   selectedTableCard!: Card;
-  allThetableCards!: Card[];
+  tableCardsAfterSpliced!: Card[];
   hideTheButton!: boolean;
   showTwoCards!: boolean;
   constructor(
@@ -102,13 +102,13 @@ export class RoomBodyComponent implements OnInit {
     this.selectedPullCard = card;
   }
   allPullCards(cards: Card[]) {
-    this.PullCards = cards;
+    this.PullCardsAfterSpliced = cards;
   }
   theSelectedTableCard(card: Card) {
     this.selectedTableCard = card;
   }
   allTableCards(cards: Card[]) {
-    this.allThetableCards = cards;
+    this.tableCardsAfterSpliced = cards;
   }
   hideTheCards(value: boolean) {
     this.hideTheCard = value;
@@ -120,7 +120,6 @@ export class RoomBodyComponent implements OnInit {
   canPullFromGround(event: boolean) {
     this.canPullFromTheGround = event;
   }
-
   checkIfPlayerCanPlay() {
     if (this.activePlayer % 4 == 0) {
       this.activePlayer = 4;

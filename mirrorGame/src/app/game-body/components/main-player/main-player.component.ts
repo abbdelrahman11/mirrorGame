@@ -25,7 +25,10 @@ export class MainPlayerComponent implements OnInit {
   @Output() hideTheButton = new EventEmitter<boolean>(false);
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
-  flipCardsArray: Array<boolean> = [true, true, true, true];
+  flipCardsArray: Array<boolean> = [false, false, false, false]; //true
+  showToGround!: boolean;
+  showSelectedCard: Array<boolean> = [false, false, false, false];
+  playerCardToCheck!: Card;
   constructor() {}
   ngOnChanges(): void {
     if (this.Cards) {
@@ -42,6 +45,8 @@ export class MainPlayerComponent implements OnInit {
   }
 
   playerCard(playercard: Card, index: number) {
+    if (!this.canPullFromPullCard && !this.canPullFromTheGround)
+      this.showToGroundButton(index, playercard);
     if (this.canPullFromPullCard) {
       this.pullFromPullCard(playercard, index);
     }
@@ -49,7 +54,13 @@ export class MainPlayerComponent implements OnInit {
       this.pullFromTheGround(index);
     }
   }
-
+  showToGroundButton(index: number, playercard: Card) {
+    if (this.showSelectedCard.every((element) => element === false)) {
+      this.showSelectedCard[index] = true;
+      this.showToGround = true;
+      this.playerCardToCheck = playercard;
+    }
+  }
   pullFromPullCard(playercard: Card, index: number) {
     this.copyOfCards[index] = this.selectedPullCard;
     this.socket.emit('playerTakesCard', {
@@ -92,8 +103,13 @@ export class MainPlayerComponent implements OnInit {
         value: false,
         playersIndex: this.playersIndex,
       });
-      this.flipCardsArray[0] = true;
-      this.flipCardsArray[1] = true;
+      this.flipCardsArray[0] = false; //true
+      this.flipCardsArray[1] = false; //true
     }, 5000);
+  }
+  checkIfValuesAreEquals() {
+    console.log(this.playerCardToCheck);
+    // const card = this.PullCards.pop();
+    console.log(this.PullCards);
   }
 }

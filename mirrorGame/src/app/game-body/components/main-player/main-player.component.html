@@ -1,7 +1,11 @@
 <div class="d-flex">
   <div
-    [ngClass]="canPullFromPullCard || canPullFromTheGround ? 'player-card' : ''"
     *ngFor="let card of Cards; let i = index"
+    [ngClass]="
+      canPullFromPullCard || canPullFromTheGround || showSelectedCard[i]
+        ? 'player-card'
+        : ''
+    "
   >
     <app-card
       [CardData]="card"
@@ -9,6 +13,11 @@
       (click)="playerCard(card, i)"
     ></app-card>
   </div>
+</div>
+<div class="text-center m-3" *ngIf="showToGround">
+  <button class="btn btn-primary rounded" (click)="checkIfValuesAreEquals()">
+    To Ground
+  </button>
 </div>
 <div class="text m-4 text-center" *ngIf="canPullFromPullCard">
   <span class="badge badge-warning">select One The Card</span>
