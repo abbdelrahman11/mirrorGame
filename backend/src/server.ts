@@ -21,6 +21,7 @@ const inRoom = require("./socketEvents/InRoom");
 const fromPullCardsToTable = require("./socketEvents/fromPullCardsToTable");
 const playerTakesCardFromGround = require("./socketEvents/playerTakesCardFromGround");
 const playerTakesCard = require("./socketEvents/playerTakesCard");
+const updatePlayerCards = require("./socketEvents/updatePlayerCards");
 
 const app = express();
 const server = http.createServer(app);
@@ -64,6 +65,7 @@ const onConnection = (socket: any) => {
   fromPullCardsToTable(io, socket);
   playerTakesCard(io, socket);
   playerTakesCardFromGround(io, socket);
+  updatePlayerCards(io, socket);
 };
 
 io.on("connection", onConnection);

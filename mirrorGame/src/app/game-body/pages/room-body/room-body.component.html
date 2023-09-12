@@ -9,11 +9,23 @@
         [playerCanPlay]="!playerCanPlay"
       ></app-wait-the-player>
     </div>
-    <div class="mt-4"><app-player></app-player></div>
+    <div class="mt-4">
+      <app-player
+        *ngIf="player2"
+        [playerCard]="player2.playerCards"
+        [playerNumber]="player2.number"
+      ></app-player>
+    </div>
     <div class=""><app-results></app-results></div>
   </div>
   <div class="d-flex justify-content-between first-line">
-    <div class="ml-3"><app-player></app-player></div>
+    <div class="ml-3">
+      <app-player
+        *ngIf="player1"
+        [playerCard]="player1.playerCards"
+        [playerNumber]="player1.number"
+      ></app-player>
+    </div>
     <div class="">
       <app-table-cards
         [Cards]="tableCards"
@@ -23,7 +35,13 @@
         (allTableCards)="allTableCards($event)"
       ></app-table-cards>
     </div>
-    <div class="mr-3"><app-player></app-player></div>
+    <div class="mr-3">
+      <app-player
+        *ngIf="player3"
+        [playerCard]="player3.playerCards"
+        [playerNumber]="player3.number"
+      ></app-player>
+    </div>
   </div>
   <div class="d-flex justify-content-around first-line">
     <div class="">
@@ -52,8 +70,10 @@
         (changeCanPullFromTheGround)="onCanPullFromTheGroundChange($event)"
         [canPullFromTheGround]="canPullFromTheGround"
         [tableCards]="tableCardsAfterSpliced"
+        [allTableCards]="tableCards"
         [selectedTableCard]="selectedTableCard"
         [showTwoCards]="showTwoCards"
+        [playerNumber]="activePlayerNumber"
       ></app-main-player>
     </div>
     <div class=""></div>

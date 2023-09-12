@@ -21,14 +21,19 @@ export class MainPlayerComponent implements OnInit {
   @Input() selectedPullCard!: Card;
   @Input() selectedTableCard!: Card;
   @Input() tableCards!: Card[];
+  @Input() allTableCards!: Card[];
   @Output() hideTheCard = new EventEmitter<boolean>(false);
   @Output() hideTheButton = new EventEmitter<boolean>(false);
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
-  flipCardsArray: Array<boolean> = [false, false, false, false]; //true
+  @Input() playerNumber!: number;
+  flipCardsArray: Array<boolean> = [];
   showToGround!: boolean;
-  showSelectedCard: Array<boolean> = [false, false, false, false];
+  showSelectedCard: Array<boolean> = [];
   playerCardToCheck!: Card;
+  allTableCardsCopy!: Card[];
+  playerCardToCheckInex!: number;
+
   constructor() {}
   ngOnChanges(): void {
     if (this.Cards) {
@@ -37,6 +42,9 @@ export class MainPlayerComponent implements OnInit {
 
     if (this.showTwoCards) {
       this.showTwoCardsToThePlayer();
+    }
+    if (this.allTableCards) {
+      this.allTableCardsCopy = [...this.allTableCards];
     }
   }
 
@@ -59,6 +67,7 @@ export class MainPlayerComponent implements OnInit {
       this.showSelectedCard[index] = true;
       this.showToGround = true;
       this.playerCardToCheck = playercard;
+      this.playerCardToCheckInex = index;
     }
   }
   pullFromPullCard(playercard: Card, index: number) {
@@ -95,21 +104,52 @@ export class MainPlayerComponent implements OnInit {
   }
 
   showTwoCardsToThePlayer() {
-    this.flipCardsArray[0] = false;
-    this.flipCardsArray[1] = false;
+    this.flipCardsArray[0] = true;
+    this.flipCardsArray[1] = true;
     setTimeout(() => {
       this.socket.emit('chandeshowTwoCardsValue', {
         gameId: this.gameId,
         value: false,
         playersIndex: this.playersIndex,
       });
-      this.flipCardsArray[0] = false; //true
-      this.flipCardsArray[1] = false; //true
+      this.flipCardsArray[0] = false;
+      this.flipCardsArray[1] = false;
     }, 5000);
   }
   checkIfValuesAreEquals() {
-    console.log(this.playerCardToCheck);
-    // const card = this.PullCards.pop();
-    console.log(this.PullCards);
+    const tableCard = this.allTableCardsCopy.pop();
+    if (this.playerCardToCheck.content == tableCard?.content) {
+      this.ValuesAreEquals(tableCard);
+    } else {
+      this.ValuesAreNotEquals(tableCard);
+    }
+  }
+  ValuesAreEquals(tableCard: Card) {
+    this.allTableCardsCopy.push(tableCard);
+    this.allTableCardsCopy.push(tableCard);
+    this.Cards.splice(this.playerCardToCheckInex, 1);
+    this.showSelectedCard[this.playerCardToCheckInex] = false;
+    this.showToGround = false;
+    this.socket.emit('updatePlayerCards', {
+      gameId: this.gameId,
+      roomName: this.roomName,
+      playerCards: this.Cards,
+      TableCards: this.allTableCardsCopy,
+      playerkeyName: `player${this.playersIndex}`,
+      tableCardsKeyName: 'tableCards',
+    });
+  }
+  ValuesAreNotEquals(tableCard?: Card) {
+    if (tableCard) this.Cards.push(tableCard);
+    this.showSelectedCard[this.playerCardToCheckInex] = false;
+    this.showToGround = false;
+    this.socket.emit('updatePlayerCards', {
+      gameId: this.gameId,
+      roomName: this.roomName,
+      playerCards: this.Cards,
+      TableCards: this.allTableCardsCopy,
+      playerkeyName: `player${this.playersIndex}`,
+      tableCardsKeyName: 'tableCards',
+    });
   }
 }

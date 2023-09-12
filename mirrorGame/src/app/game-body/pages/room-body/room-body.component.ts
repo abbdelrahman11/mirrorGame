@@ -6,6 +6,7 @@ import { Room } from 'src/app/core/interfaces/room';
 import { RoomBodyService } from 'src/app/core/services/roomBody.service';
 import { environment } from 'src/environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { Game } from 'src/app/core/interfaces/game';
 
 @Component({
   selector: 'app-room-body',
@@ -33,6 +34,11 @@ export class RoomBodyComponent implements OnInit {
   tableCardsAfterSpliced!: Card[];
   hideTheButton!: boolean;
   showTwoCards!: boolean;
+  player1!: { number: number; playerCards: Card[] };
+  player2!: { number: number; playerCards: Card[] };
+  player3!: { number: number; playerCards: Card[] };
+  players: Array<any> = [];
+  activePlayerNumber!: number;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -66,10 +72,24 @@ export class RoomBodyComponent implements OnInit {
       this.pullCards = res[0].pullCards;
       this.tableCards = res[0].tableCards;
       this.activePlayer = res[0].activeUserIndex;
+      console.log(res[0], 'game');
       this.checkIfPlayerCanPlay();
-      this.showLogs();
+      // this.showLogs();
       this.showTwoCardsToThePlayer(res[0].showTwoCards);
+      this.fourPlayerCards(res[0], this.playersIndex);
     });
+  }
+  fourPlayerCards(game: any, playersIndex: number) {
+    for (let index = 1; index < 5; index++) {
+      this.players.push({ number: index, playerCards: game[`player${index}`] });
+    }
+    console.log(playersIndex);
+    let playersCopy = [...this.players];
+    playersCopy.splice(playersIndex - 1, 1);
+    console.log(playersCopy);
+    this.player1 = playersCopy[0];
+    this.player2 = playersCopy[1];
+    this.player3 = playersCopy[2];
   }
   showLogs() {
     console.log(this.playerCards, 'playerCards');
@@ -77,7 +97,6 @@ export class RoomBodyComponent implements OnInit {
     console.log(this.tableCards, 'tableCard');
   }
   showTwoCardsToThePlayer(showTwoCards: boolean) {
-    console.log(showTwoCards);
     if (showTwoCards) {
       this.showTwoCards = showTwoCards;
     }
@@ -127,6 +146,7 @@ export class RoomBodyComponent implements OnInit {
     } else {
       this.playerCanPlay = this.playersIndex == this.activePlayer % 4;
     }
+    this.activePlayerNumber = this.playersIndex;
   }
 
   getRouteParams(): void {
