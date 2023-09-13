@@ -34,10 +34,8 @@ export class RoomBodyComponent implements OnInit {
   tableCardsAfterSpliced!: Card[];
   hideTheButton!: boolean;
   showTwoCards!: boolean;
-  player1!: { number: number; playerCards: Card[] };
-  player2!: { number: number; playerCards: Card[] };
-  player3!: { number: number; playerCards: Card[] };
-  players: Array<any> = [];
+  players: Array<{ number: number; playerCards: Card[] }> = [];
+  daynamicPlayer: Array<any> = [];
   activePlayerNumber!: number;
   constructor(
     private service: RoomBodyService,
@@ -83,13 +81,53 @@ export class RoomBodyComponent implements OnInit {
     for (let index = 1; index < 5; index++) {
       this.players.push({ number: index, playerCards: game[`player${index}`] });
     }
-    console.log(playersIndex);
     let playersCopy = [...this.players];
     playersCopy.splice(playersIndex - 1, 1);
-    console.log(playersCopy);
-    this.player1 = playersCopy[0];
-    this.player2 = playersCopy[1];
-    this.player3 = playersCopy[2];
+    let x2 =
+      (this.activePlayerNumber + 1) % 4 == 0
+        ? 4
+        : (this.activePlayerNumber + 1) % 4;
+    let x: Array<{ number: number; playerCards: Card[] }> = playersCopy.filter(
+      (val) => {
+        return val.number == x2;
+      }
+    );
+    this.daynamicPlayer[
+      (this.activePlayerNumber + 1) % 4 == 0
+        ? 4
+        : (this.activePlayerNumber + 1) % 4
+    ] = x[0];
+
+    let y2 =
+      (this.activePlayerNumber + 2) % 4 == 0
+        ? 4
+        : (this.activePlayerNumber + 2) % 4;
+    let y: Array<{ number: number; playerCards: Card[] }> = playersCopy.filter(
+      (val) => {
+        return val.number == y2;
+      }
+    );
+
+    this.daynamicPlayer[
+      (this.activePlayerNumber + 2) % 4 == 0
+        ? 4
+        : (this.activePlayerNumber + 2) % 4
+    ] = y[0];
+
+    let z2 =
+      (this.activePlayerNumber + 3) % 4 == 0
+        ? 4
+        : (this.activePlayerNumber + 3) % 4;
+    let z: Array<{ number: number; playerCards: Card[] }> = playersCopy.filter(
+      (val) => {
+        return val.number == z2;
+      }
+    );
+    this.daynamicPlayer[
+      (this.activePlayerNumber + 3) % 4 == 0
+        ? 4
+        : (this.activePlayerNumber + 3) % 4
+    ] = z[0];
   }
   showLogs() {
     console.log(this.playerCards, 'playerCards');

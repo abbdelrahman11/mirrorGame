@@ -11,9 +11,21 @@
     </div>
     <div class="mt-4">
       <app-player
-        *ngIf="player2"
-        [playerCard]="player2.playerCards"
-        [playerNumber]="player2.number"
+        *ngIf="
+          daynamicPlayer[
+            (activePlayerNumber + 2) % 4 == 0 ? 4 : (activePlayerNumber + 2) % 4
+          ]
+        "
+        [playerCard]="
+          daynamicPlayer[
+            (activePlayerNumber + 2) % 4 == 0 ? 4 : (activePlayerNumber + 2) % 4
+          ].playerCards
+        "
+        [playerNumber]="
+          daynamicPlayer[
+            (activePlayerNumber + 2) % 4 == 0 ? 4 : (activePlayerNumber + 2) % 4
+          ].number
+        "
       ></app-player>
     </div>
     <div class=""><app-results></app-results></div>
@@ -21,9 +33,21 @@
   <div class="d-flex justify-content-between first-line">
     <div class="ml-3">
       <app-player
-        *ngIf="player1"
-        [playerCard]="player1.playerCards"
-        [playerNumber]="player1.number"
+        *ngIf="
+          daynamicPlayer[
+            (activePlayerNumber + 3) % 4 == 0 ? 4 : (activePlayerNumber + 3) % 4
+          ]
+        "
+        [playerCard]="
+          daynamicPlayer[
+            (activePlayerNumber + 3) % 4 == 0 ? 4 : (activePlayerNumber + 3) % 4
+          ].playerCards
+        "
+        [playerNumber]="
+          daynamicPlayer[
+            (activePlayerNumber + 3) % 4 == 0 ? 4 : (activePlayerNumber + 3) % 4
+          ].number
+        "
       ></app-player>
     </div>
     <div class="">
@@ -37,9 +61,21 @@
     </div>
     <div class="mr-3">
       <app-player
-        *ngIf="player3"
-        [playerCard]="player3.playerCards"
-        [playerNumber]="player3.number"
+        *ngIf="
+          daynamicPlayer[
+            (activePlayerNumber + 1) % 4 == 0 ? 4 : (activePlayerNumber + 1) % 4
+          ]
+        "
+        [playerCard]="
+          daynamicPlayer[
+            (activePlayerNumber + 1) % 4 == 0 ? 4 : (activePlayerNumber + 1) % 4
+          ].playerCards
+        "
+        [playerNumber]="
+          daynamicPlayer[
+            (activePlayerNumber + 1) % 4 == 0 ? 4 : (activePlayerNumber + 1) % 4
+          ].number
+        "
       ></app-player>
     </div>
   </div>
