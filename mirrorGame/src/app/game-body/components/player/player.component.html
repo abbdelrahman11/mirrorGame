@@ -1,3 +1,8 @@
+<div class="text-center">
+  <p class="badge badge-primary" *ngIf="activePlayerNumber == playerNumber">
+    player is now playing
+  </p>
+</div>
 <div class="d-flex">
   <ng-container *ngFor="let card of playerCard">
     <app-card [flip]="false" [CardData]="card"></app-card>

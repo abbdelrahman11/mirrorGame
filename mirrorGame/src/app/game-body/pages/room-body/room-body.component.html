@@ -26,6 +26,7 @@
             (activePlayerNumber + 2) % 4 == 0 ? 4 : (activePlayerNumber + 2) % 4
           ].number
         "
+        [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
       ></app-player>
     </div>
     <div class=""><app-results></app-results></div>
@@ -48,6 +49,7 @@
             (activePlayerNumber + 3) % 4 == 0 ? 4 : (activePlayerNumber + 3) % 4
           ].number
         "
+        [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
       ></app-player>
     </div>
     <div class="">
@@ -76,6 +78,7 @@
             (activePlayerNumber + 1) % 4 == 0 ? 4 : (activePlayerNumber + 1) % 4
           ].number
         "
+        [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
       ></app-player>
     </div>
   </div>

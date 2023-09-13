@@ -9,8 +9,12 @@ import { Card } from 'src/app/core/interfaces/card';
 export class PlayerComponent implements OnInit {
   @Input() playerCard!: Card[];
   @Input() playerNumber!: number;
+  @Input() activePlayerNumber!: number;
 
   constructor() {}
-
+  ngOnChanges() {
+    console.log(this.activePlayerNumber, 'activePlayerNumber');
+    console.log(this.playerNumber, 'playerNumber');
+  }
   ngOnInit(): void {}
 }
