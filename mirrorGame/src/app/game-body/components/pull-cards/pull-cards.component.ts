@@ -21,6 +21,7 @@ export class PullCardsComponent implements OnInit {
   cardToShowToThePlayer!: Card;
   showTheCard: boolean = false;
   cardIndex!: number;
+  hideButtons!: boolean;
   constructor() {}
 
   ngOnInit(): void {
@@ -46,6 +47,7 @@ export class PullCardsComponent implements OnInit {
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];
     this.selectedCard.emit(card);
     this.allPullCards.emit(this.splicedCards);
+    this.hideButtons = true;
   }
   toGround() {
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];

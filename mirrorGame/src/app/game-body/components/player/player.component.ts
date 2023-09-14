@@ -12,9 +12,6 @@ export class PlayerComponent implements OnInit {
   @Input() activePlayerNumber!: number;
 
   constructor() {}
-  ngOnChanges() {
-    console.log(this.activePlayerNumber, 'activePlayerNumber');
-    console.log(this.playerNumber, 'playerNumber');
-  }
+  ngOnChanges() {}
   ngOnInit(): void {}
 }

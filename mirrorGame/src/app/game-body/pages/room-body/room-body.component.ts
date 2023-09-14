@@ -34,8 +34,7 @@ export class RoomBodyComponent implements OnInit {
   hideTheButton!: boolean;
   showTwoCards!: boolean;
   allPlayersCards: Array<{ number: number; playerCards: Card[] }> = [];
-  daynamicPlayer: Array<any> = [];
-  activePlayerNumber!: number;
+  daynamicPlayer: Array<{ number: number; playerCards: Card[] }> = [];
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -73,7 +72,6 @@ export class RoomBodyComponent implements OnInit {
       this.showLogs();
       this.showTwoCardsToThePlayer(res[0].showTwoCards);
       this.fourPlayerCards(res[0], this.playersIndex);
-      console.log(this.playersIndex, 'playersIndex');
     });
   }
   fourPlayerCards(game: any, playersIndex: number) {
@@ -94,9 +92,9 @@ export class RoomBodyComponent implements OnInit {
   ) {
     for (let index = 1; index < playersCount; index++) {
       let playernumber: number =
-        (this.activePlayerNumber + index) % playersCount == 0
+        (this.playersIndex + index) % playersCount == 0
           ? playersCount
-          : (this.activePlayerNumber + index) % playersCount;
+          : (this.playersIndex + index) % playersCount;
       let playerCards: Array<{ number: number; playerCards: Card[] }> =
         playersCopy.filter((val) => {
           return val.number == playernumber;
@@ -160,7 +158,6 @@ export class RoomBodyComponent implements OnInit {
     } else {
       this.playerCanPlay = this.playersIndex == this.activePlayer % 4;
     }
-    this.activePlayerNumber = this.playersIndex;
   }
 
   getRouteParams(): void {

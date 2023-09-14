@@ -2,7 +2,9 @@
   <div
     *ngFor="let card of Cards; let i = index"
     [ngClass]="
-      canPullFromPullCard || canPullFromTheGround || showSelectedCard[i]
+      (canPullFromPullCard && makeCanPullFromPullCardActive) ||
+      canPullFromTheGround ||
+      showSelectedCard[i]
         ? 'player-card'
         : ''
     "
@@ -20,7 +22,10 @@
     To Ground
   </button>
 </div>
-<div class="text m-4 text-center" *ngIf="canPullFromPullCard">
+<div
+  class="text m-4 text-center"
+  *ngIf="canPullFromPullCard && makeCanPullFromPullCardActive"
+>
   <span class="badge badge-warning">select One The Card</span>
 </div>
 <div>{{ playerNumber }}</div>

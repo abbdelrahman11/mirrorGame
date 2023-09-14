@@ -18,10 +18,18 @@
     style="position: absolute; top: 30%; right: 45%; z-index: 2"
   ></app-card>
   <div class="btn" class="btns">
-    <button class="btn btn-primary m-3 rounded" (click)="takeTheCard()">
+    <button
+      class="btn btn-primary m-3 rounded"
+      (click)="takeTheCard()"
+      *ngIf="!hideButtons"
+    >
       Take
     </button>
-    <button class="btn btn-primary rounded" (click)="toGround()">
+    <button
+      class="btn btn-primary rounded"
+      (click)="toGround()"
+      *ngIf="!hideButtons"
+    >
       To Ground
     </button>
   </div>

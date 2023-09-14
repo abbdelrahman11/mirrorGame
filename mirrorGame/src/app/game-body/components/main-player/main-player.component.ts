@@ -13,7 +13,6 @@ export class MainPlayerComponent implements OnInit {
   @Input() roomName!: string | undefined;
   @Input() playersIndex!: number;
   @Input() Cards!: Card[];
-  @Input() copyOfCards!: Card[];
   @Input() PullCards!: Card[];
   @Input() canPullFromPullCard!: boolean;
   @Input() canPullFromTheGround!: boolean;
@@ -27,17 +26,19 @@ export class MainPlayerComponent implements OnInit {
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
   @Input() playerNumber!: number;
+  copyOfPlayerCards!: Card[];
   flipCardsArray: Array<boolean> = [];
   showToGround!: boolean;
   showSelectedCard: Array<boolean> = [];
   playerCardToCheck!: Card;
   allTableCardsCopy!: Card[];
   playerCardToCheckInex!: number;
+  makeCanPullFromPullCardActive!: boolean;
 
   constructor() {}
   ngOnChanges(): void {
     if (this.Cards) {
-      this.copyOfCards = [...this.Cards];
+      this.copyOfPlayerCards = [...this.Cards];
     }
 
     if (this.showTwoCards) {
@@ -45,6 +46,9 @@ export class MainPlayerComponent implements OnInit {
     }
     if (this.allTableCards) {
       this.allTableCardsCopy = [...this.allTableCards];
+    }
+    if (this.canPullFromPullCard) {
+      this.checkCardType(this.selectedPullCard);
     }
   }
 
@@ -55,7 +59,7 @@ export class MainPlayerComponent implements OnInit {
   playerCard(playercard: Card, index: number) {
     if (!this.canPullFromPullCard && !this.canPullFromTheGround)
       this.showToGroundButton(index, playercard);
-    if (this.canPullFromPullCard) {
+    if (this.canPullFromPullCard && this.makeCanPullFromPullCardActive) {
       this.pullFromPullCard(playercard, index);
     }
     if (this.canPullFromTheGround) {
@@ -70,15 +74,30 @@ export class MainPlayerComponent implements OnInit {
       this.playerCardToCheckInex = index;
     }
   }
-  pullFromPullCard(playercard: Card, index: number) {
-    this.copyOfCards[index] = this.selectedPullCard;
+  checkCardType(card: Card) {
+    if (card.content == '7' || card.content == '8') {
+      this.showOneOfYourCards();
+    } else if (card.content == '9' || card.content == '10') {
+      this.showOneCardOfThePlayer();
+    } else if (card.content == '=><=') {
+      this.TakeOneCardAndGive();
+    } else if (card.content == 'Basra') {
+      this.Basra();
+    } else if (card.content == '*') {
+      this.showCardFromAllThePlayers();
+    } else {
+      this.makeCanPullFromPullCardActive = true;
+    }
+  }
+  pullFromPullCard(selectedplayercard: Card, index: number) {
+    this.copyOfPlayerCards[index] = this.selectedPullCard;
     this.socket.emit('playerTakesCard', {
       gameId: this.gameId,
       roomName: this.roomName,
-      playercards: this.copyOfCards,
+      playercards: this.copyOfPlayerCards,
       playerkeyName: `player${this.playersIndex}`,
       PullCards: this.PullCards,
-      tableCards: playercard,
+      tableCards: selectedplayercard,
       PullCardsKeyName: 'pullCards',
       tableCardsKeyName: 'tableCards',
     });
@@ -88,12 +107,12 @@ export class MainPlayerComponent implements OnInit {
   }
 
   pullFromTheGround(index: number) {
-    this.tableCards.push(this.copyOfCards[index]);
-    this.copyOfCards[index] = this.selectedTableCard;
+    this.tableCards.push(this.copyOfPlayerCards[index]);
+    this.copyOfPlayerCards[index] = this.selectedTableCard;
     this.socket.emit('playerTakesCardFromGround', {
       gameId: this.gameId,
       roomName: this.roomName,
-      playercards: this.copyOfCards,
+      playercards: this.copyOfPlayerCards,
       playerkeyName: `player${this.playersIndex}`,
       tableCards: this.tableCards,
       tableCardsKeyName: 'tableCards',
@@ -151,5 +170,20 @@ export class MainPlayerComponent implements OnInit {
       playerkeyName: `player${this.playersIndex}`,
       tableCardsKeyName: 'tableCards',
     });
+  }
+  showOneOfYourCards() {
+    console.log('showOneOfYourCards');
+  }
+  showOneCardOfThePlayer() {
+    console.log('showOneCardOfThePlayer()');
+  }
+  TakeOneCardAndGive() {
+    console.log('TakeOneCardAndGive()');
+  }
+  Basra() {
+    console.log('Basra');
+  }
+  showCardFromAllThePlayers() {
+    console.log('showCardFromAllThePlayers');
   }
 }

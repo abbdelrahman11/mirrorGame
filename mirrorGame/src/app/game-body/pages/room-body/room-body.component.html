@@ -13,17 +13,17 @@
       <app-player
         *ngIf="
           daynamicPlayer[
-            (activePlayerNumber + 2) % 4 == 0 ? 4 : (activePlayerNumber + 2) % 4
+            (playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4
           ]
         "
         [playerCard]="
           daynamicPlayer[
-            (activePlayerNumber + 2) % 4 == 0 ? 4 : (activePlayerNumber + 2) % 4
+            (playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4
           ].playerCards
         "
         [playerNumber]="
           daynamicPlayer[
-            (activePlayerNumber + 2) % 4 == 0 ? 4 : (activePlayerNumber + 2) % 4
+            (playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4
           ].number
         "
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
@@ -36,17 +36,17 @@
       <app-player
         *ngIf="
           daynamicPlayer[
-            (activePlayerNumber + 3) % 4 == 0 ? 4 : (activePlayerNumber + 3) % 4
+            (playersIndex + 3) % 4 == 0 ? 4 : (playersIndex + 3) % 4
           ]
         "
         [playerCard]="
           daynamicPlayer[
-            (activePlayerNumber + 3) % 4 == 0 ? 4 : (activePlayerNumber + 3) % 4
+            (playersIndex + 3) % 4 == 0 ? 4 : (playersIndex + 3) % 4
           ].playerCards
         "
         [playerNumber]="
           daynamicPlayer[
-            (activePlayerNumber + 3) % 4 == 0 ? 4 : (activePlayerNumber + 3) % 4
+            (playersIndex + 3) % 4 == 0 ? 4 : (playersIndex + 3) % 4
           ].number
         "
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
@@ -65,17 +65,17 @@
       <app-player
         *ngIf="
           daynamicPlayer[
-            (activePlayerNumber + 1) % 4 == 0 ? 4 : (activePlayerNumber + 1) % 4
+            (playersIndex + 1) % 4 == 0 ? 4 : (playersIndex + 1) % 4
           ]
         "
         [playerCard]="
           daynamicPlayer[
-            (activePlayerNumber + 1) % 4 == 0 ? 4 : (activePlayerNumber + 1) % 4
+            (playersIndex + 1) % 4 == 0 ? 4 : (playersIndex + 1) % 4
           ].playerCards
         "
         [playerNumber]="
           daynamicPlayer[
-            (activePlayerNumber + 1) % 4 == 0 ? 4 : (activePlayerNumber + 1) % 4
+            (playersIndex + 1) % 4 == 0 ? 4 : (playersIndex + 1) % 4
           ].number
         "
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
@@ -112,7 +112,7 @@
         [allTableCards]="tableCards"
         [selectedTableCard]="selectedTableCard"
         [showTwoCards]="showTwoCards"
-        [playerNumber]="activePlayerNumber"
+        [playerNumber]="playersIndex"
       ></app-main-player>
     </div>
     <div class=""></div>
