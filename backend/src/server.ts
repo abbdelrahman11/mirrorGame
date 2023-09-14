@@ -27,7 +27,7 @@ const app = express();
 const server = http.createServer(app);
 const io = require("socket.io")(server, {
   cors: {
-    origin: "http://localhost:4200",
+    origin: "*",
     methods: ["GET", "POST"],
     allowedHeaders: ["my-custom-header"],
     credentials: true,
@@ -35,7 +35,7 @@ const io = require("socket.io")(server, {
 });
 app.use(
   cors({
-    origin: "http://localhost:4200",
+    origin: "*",
     methods: "GET,POST,PUT,DELETE",
     credentials: true,
   })

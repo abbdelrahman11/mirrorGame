@@ -13,6 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
+            "baseHref": "https://abbdelrahman11.github.io/mirrorGame/",
             "outputPath": "dist/mirror-game",
             "index": "src/index.html",
             "main": "src/main.ts",
