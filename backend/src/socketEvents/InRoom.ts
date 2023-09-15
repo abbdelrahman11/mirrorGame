@@ -27,11 +27,10 @@ module.exports = (io: any, socket: any) => {
     theGame: any,
     roomName: string
   ) {
-    socket.join(userId);
     socket.join(roomName);
     const userIndex = roomRes[0].usersId.indexOf(userId);
-    io.to(userId).emit("playerIndex", userIndex + 1);
-    io.to(userId).emit("allCards", theGame);
+    socket.emit("playerIndex", userIndex + 1);
+    socket.emit("allCards", theGame);
   }
 
   async function HandOutTheCardsToThePlayers(
@@ -42,7 +41,6 @@ module.exports = (io: any, socket: any) => {
     roomRes: any
   ) {
     socket.join(roomName);
-    socket.join(userId);
     if (theGame.length > 0) {
       const userIndex = roomRes[0].usersId.indexOf(userId);
       await UpdateTheGame(gameId, {
@@ -51,7 +49,7 @@ module.exports = (io: any, socket: any) => {
           userIndex
         ),
       });
-      io.to(userId).emit("playerIndex", userIndex + 1);
+      socket.emit("playerIndex", userIndex + 1);
       if (roomRes[0].usersId.length == 4) {
         await RoomIsComplete(theGame, gameId, roomName);
       }

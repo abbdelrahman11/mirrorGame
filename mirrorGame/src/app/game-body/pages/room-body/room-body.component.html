@@ -89,6 +89,7 @@
         [gameId]="gameId"
         [roomName]="roomName"
         [hideTheCard]="hideTheCard"
+        [hideTheButtons]="hideButtons"
         (canPullFromPullCards)="canPullFromPullCards($event)"
         (selectedCard)="theSelectedCard($event)"
         (allPullCards)="allPullCards($event)"
@@ -96,6 +97,7 @@
     </div>
     <div class="">
       <app-main-player
+        [allPullCards]="pullCards"
         [Cards]="playerCards"
         [gameId]="gameId"
         [roomName]="roomName"
@@ -104,6 +106,7 @@
         [selectedPullCard]="selectedPullCard"
         [PullCards]="PullCardsAfterSpliced"
         (hideTheCard)="hideTheCards($event)"
+        (hideTheCardAndButton)="hideTheCardAndButton($event)"
         (hideTheButton)="hideButton($event)"
         (changeCanSelectCard)="onCanSelectCardChange($event)"
         (changeCanPullFromTheGround)="onCanPullFromTheGroundChange($event)"

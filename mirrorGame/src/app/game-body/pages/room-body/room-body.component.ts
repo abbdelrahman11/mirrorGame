@@ -26,6 +26,7 @@ export class RoomBodyComponent implements OnInit {
   selectedPullCard!: Card;
   PullCardsAfterSpliced!: Card[];
   hideTheCard!: boolean;
+  hideButtons!: boolean;
   playerCanPlay!: boolean;
   activePlayer!: number;
   canPullFromTheGround!: boolean;
@@ -143,6 +144,10 @@ export class RoomBodyComponent implements OnInit {
   }
   hideTheCards(value: boolean) {
     this.hideTheCard = value;
+  }
+  hideTheCardAndButton(value: boolean) {
+    this.hideTheCard = value;
+    this.hideButtons = value;
   }
   hideButton(value: boolean) {
     this.hideTheButton = value;

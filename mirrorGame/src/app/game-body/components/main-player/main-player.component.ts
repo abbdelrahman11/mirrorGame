@@ -21,7 +21,9 @@ export class MainPlayerComponent implements OnInit {
   @Input() selectedTableCard!: Card;
   @Input() tableCards!: Card[];
   @Input() allTableCards!: Card[];
+  @Input() allPullCards!: Card[];
   @Output() hideTheCard = new EventEmitter<boolean>(false);
+  @Output() hideTheCardAndButton = new EventEmitter<boolean>(false);
   @Output() hideTheButton = new EventEmitter<boolean>(false);
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
@@ -51,20 +53,20 @@ export class MainPlayerComponent implements OnInit {
       this.checkCardType(this.selectedPullCard);
     }
   }
-
   ngOnInit(): void {
     this.socket = socketIO.io(environment.baseUrl);
   }
 
   playerCard(playercard: Card, index: number) {
-    if (!this.canPullFromPullCard && !this.canPullFromTheGround)
-      this.showToGroundButton(index, playercard);
+    // if (!this.canPullFromPullCard && !this.canPullFromTheGround) {
+    //   this.showToGroundButton(index, playercard);
+    // }
     if (this.canPullFromPullCard && this.makeCanPullFromPullCardActive) {
       this.pullFromPullCard(playercard, index);
     }
-    if (this.canPullFromTheGround) {
-      this.pullFromTheGround(index);
-    }
+    // if (this.canPullFromTheGround) {
+    //   this.pullFromTheGround(index);
+    // }
   }
   showToGroundButton(index: number, playercard: Card) {
     if (this.showSelectedCard.every((element) => element === false)) {
@@ -101,11 +103,24 @@ export class MainPlayerComponent implements OnInit {
       PullCardsKeyName: 'pullCards',
       tableCardsKeyName: 'tableCards',
     });
-    this.canPullFromPullCard = false;
-    this.changeCanSelectCard.emit(this.canPullFromPullCard);
-    this.hideTheCard.emit(true);
+    this.makeCanPullFromPullCardActive = false;
+    this.changeCanSelectCard.emit(false);
+    this.hideTheCardAndButton.emit(true);
   }
-
+  toGround() {
+    let allPullCardsCopy = [...this.allPullCards];
+    const card = allPullCardsCopy.pop();
+    this.socket.emit('fromPullCardsToTable', {
+      gameId: this.gameId,
+      deleteCards: allPullCardsCopy,
+      addCards: card,
+      roomName: this.roomName,
+      deleteKeyName: 'pullCards',
+      addKeyName: 'tableCards',
+    });
+    this.changeCanSelectCard.emit(false);
+    this.hideTheCardAndButton.emit(true);
+  }
   pullFromTheGround(index: number) {
     this.tableCards.push(this.copyOfPlayerCards[index]);
     this.copyOfPlayerCards[index] = this.selectedTableCard;
@@ -173,17 +188,22 @@ export class MainPlayerComponent implements OnInit {
   }
   showOneOfYourCards() {
     console.log('showOneOfYourCards');
+    this.toGround();
   }
   showOneCardOfThePlayer() {
-    console.log('showOneCardOfThePlayer()');
+    console.log('showOneCardOfOtherPlayer()');
+    this.toGround();
   }
   TakeOneCardAndGive() {
     console.log('TakeOneCardAndGive()');
+    this.toGround();
   }
   Basra() {
     console.log('Basra');
+    this.toGround();
   }
   showCardFromAllThePlayers() {
     console.log('showCardFromAllThePlayers');
+    this.toGround();
   }
 }
