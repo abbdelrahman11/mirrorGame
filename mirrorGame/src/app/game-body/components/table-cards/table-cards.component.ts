@@ -9,8 +9,6 @@ import { Card } from 'src/app/core/interfaces/card';
 export class TableCardsComponent implements OnInit {
   @Input() Cards!: Card[];
   @Input() hideTheButton!: boolean;
-  @Output() selectedTableCard = new EventEmitter<Card>();
-  @Output() allTableCards = new EventEmitter<Card[]>();
   @Output() canPullFromGround = new EventEmitter<boolean>();
   cardIndex!: number;
   splicedCards!: Card[];
@@ -33,8 +31,5 @@ export class TableCardsComponent implements OnInit {
   }
   takeTheCard() {
     this.canPullFromGround.emit(true);
-    const card = this.splicedCards.splice(this.cardIndex, 1)[0];
-    this.selectedTableCard.emit(card);
-    this.allTableCards.emit(this.splicedCards);
   }
 }

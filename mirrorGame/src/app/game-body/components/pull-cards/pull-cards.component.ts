@@ -15,10 +15,9 @@ export class PullCardsComponent implements OnInit {
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() hideTheCard!: boolean;
-  @Input() hideTheButtons!: boolean;
+  // @Input() hideTheButtons!: boolean;
   @Output() canPullFromPullCards = new EventEmitter<boolean>();
   @Output() selectedCard = new EventEmitter<Card>();
-  @Output() allPullCards = new EventEmitter<Card[]>();
   cardToShowToThePlayer!: Card;
   showTheCard: boolean = false;
   cardIndex!: number;
@@ -36,9 +35,6 @@ export class PullCardsComponent implements OnInit {
     if (this.hideTheCard) {
       this.showTheCard = !this.hideTheCard;
     }
-    if (this.hideTheButtons) {
-      this.showButtons = !this.hideTheButtons;
-    }
   }
 
   showToThePlayer(card: Card, index: number) {
@@ -51,7 +47,6 @@ export class PullCardsComponent implements OnInit {
     this.canPullFromPullCards.emit(true);
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];
     this.selectedCard.emit(card);
-    this.allPullCards.emit(this.splicedCards);
     this.showButtons = false;
   }
   toGround() {

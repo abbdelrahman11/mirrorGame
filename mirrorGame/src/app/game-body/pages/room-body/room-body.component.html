@@ -57,8 +57,6 @@
         [Cards]="tableCards"
         [hideTheButton]="hideTheButton"
         (canPullFromGround)="canPullFromGround($event)"
-        (selectedTableCard)="theSelectedTableCard($event)"
-        (allTableCards)="allTableCards($event)"
       ></app-table-cards>
     </div>
     <div class="mr-3">
@@ -89,10 +87,8 @@
         [gameId]="gameId"
         [roomName]="roomName"
         [hideTheCard]="hideTheCard"
-        [hideTheButtons]="hideButtons"
         (canPullFromPullCards)="canPullFromPullCards($event)"
         (selectedCard)="theSelectedCard($event)"
-        (allPullCards)="allPullCards($event)"
       ></app-pull-cards>
     </div>
     <div class="">
@@ -104,16 +100,12 @@
         [playersIndex]="playersIndex"
         [canPullFromPullCard]="canPullFromPullCard"
         [selectedPullCard]="selectedPullCard"
-        [PullCards]="PullCardsAfterSpliced"
-        (hideTheCard)="hideTheCards($event)"
         (hideTheCardAndButton)="hideTheCardAndButton($event)"
         (hideTheButton)="hideButton($event)"
         (changeCanSelectCard)="onCanSelectCardChange($event)"
         (changeCanPullFromTheGround)="onCanPullFromTheGroundChange($event)"
         [canPullFromTheGround]="canPullFromTheGround"
-        [tableCards]="tableCardsAfterSpliced"
         [allTableCards]="tableCards"
-        [selectedTableCard]="selectedTableCard"
         [showTwoCards]="showTwoCards"
         [playerNumber]="playersIndex"
       ></app-main-player>

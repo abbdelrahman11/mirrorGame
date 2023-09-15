@@ -18,11 +18,10 @@ export class MainPlayerComponent implements OnInit {
   @Input() canPullFromTheGround!: boolean;
   @Input() showTwoCards!: boolean;
   @Input() selectedPullCard!: Card;
-  @Input() selectedTableCard!: Card;
-  @Input() tableCards!: Card[];
+  // @Input() selectedTableCard!: Card;
+  // @Input() tableCards!: Card[];
   @Input() allTableCards!: Card[];
   @Input() allPullCards!: Card[];
-  @Output() hideTheCard = new EventEmitter<boolean>(false);
   @Output() hideTheCardAndButton = new EventEmitter<boolean>(false);
   @Output() hideTheButton = new EventEmitter<boolean>(false);
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
@@ -58,15 +57,15 @@ export class MainPlayerComponent implements OnInit {
   }
 
   playerCard(playercard: Card, index: number) {
-    // if (!this.canPullFromPullCard && !this.canPullFromTheGround) {
-    //   this.showToGroundButton(index, playercard);
-    // }
+    if (!this.canPullFromPullCard && !this.canPullFromTheGround) {
+      this.showToGroundButton(index, playercard);
+    }
     if (this.canPullFromPullCard && this.makeCanPullFromPullCardActive) {
       this.pullFromPullCard(playercard, index);
     }
-    // if (this.canPullFromTheGround) {
-    //   this.pullFromTheGround(index);
-    // }
+    if (this.canPullFromTheGround) {
+      this.pullFromTheGround(index);
+    }
   }
   showToGroundButton(index: number, playercard: Card) {
     if (this.showSelectedCard.every((element) => element === false)) {
@@ -93,12 +92,14 @@ export class MainPlayerComponent implements OnInit {
   }
   pullFromPullCard(selectedplayercard: Card, index: number) {
     this.copyOfPlayerCards[index] = this.selectedPullCard;
+    let allPullCardsCopy = [...this.allPullCards];
+    const card = allPullCardsCopy.pop();
     this.socket.emit('playerTakesCard', {
       gameId: this.gameId,
       roomName: this.roomName,
       playercards: this.copyOfPlayerCards,
       playerkeyName: `player${this.playersIndex}`,
-      PullCards: this.PullCards,
+      PullCards: allPullCardsCopy,
       tableCards: selectedplayercard,
       PullCardsKeyName: 'pullCards',
       tableCardsKeyName: 'tableCards',
@@ -107,7 +108,7 @@ export class MainPlayerComponent implements OnInit {
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
   }
-  toGround() {
+  cardsFeatures() {
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();
     this.socket.emit('fromPullCardsToTable', {
@@ -122,14 +123,16 @@ export class MainPlayerComponent implements OnInit {
     this.hideTheCardAndButton.emit(true);
   }
   pullFromTheGround(index: number) {
-    this.tableCards.push(this.copyOfPlayerCards[index]);
-    this.copyOfPlayerCards[index] = this.selectedTableCard;
+    let tableCardsCopy = [...this.allTableCards];
+    let card = tableCardsCopy.pop();
+    tableCardsCopy.push(this.copyOfPlayerCards[index]);
+    if (card) this.copyOfPlayerCards[index] = card;
     this.socket.emit('playerTakesCardFromGround', {
       gameId: this.gameId,
       roomName: this.roomName,
       playercards: this.copyOfPlayerCards,
       playerkeyName: `player${this.playersIndex}`,
-      tableCards: this.tableCards,
+      tableCards: tableCardsCopy,
       tableCardsKeyName: 'tableCards',
     });
     this.canPullFromTheGround = false;
@@ -188,22 +191,22 @@ export class MainPlayerComponent implements OnInit {
   }
   showOneOfYourCards() {
     console.log('showOneOfYourCards');
-    this.toGround();
+    this.cardsFeatures();
   }
   showOneCardOfThePlayer() {
     console.log('showOneCardOfOtherPlayer()');
-    this.toGround();
+    this.cardsFeatures();
   }
   TakeOneCardAndGive() {
     console.log('TakeOneCardAndGive()');
-    this.toGround();
+    this.cardsFeatures();
   }
   Basra() {
     console.log('Basra');
-    this.toGround();
+    this.cardsFeatures();
   }
   showCardFromAllThePlayers() {
     console.log('showCardFromAllThePlayers');
-    this.toGround();
+    this.cardsFeatures();
   }
 }
