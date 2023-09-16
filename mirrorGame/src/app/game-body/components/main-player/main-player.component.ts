@@ -35,6 +35,11 @@ export class MainPlayerComponent implements OnInit {
   allTableCardsCopy!: Card[];
   playerCardToCheckInex!: number;
   makeCanPullFromPullCardActive!: boolean;
+  showOneOfYourCard!: boolean;
+  showOneCardOfOtherPlayerCards!: boolean;
+  TakeOneCardAndGiveOne: boolean = true;
+  cardIsBasra!: boolean;
+  showOneCardFromAllThePlayers!: boolean;
 
   constructor() {}
   ngOnChanges(): void {
@@ -75,21 +80,7 @@ export class MainPlayerComponent implements OnInit {
       this.playerCardToCheckInex = index;
     }
   }
-  checkCardType(card: Card) {
-    if (card.content == '7' || card.content == '8') {
-      this.showOneOfYourCards();
-    } else if (card.content == '9' || card.content == '10') {
-      this.showOneCardOfThePlayer();
-    } else if (card.content == '=><=') {
-      this.TakeOneCardAndGive();
-    } else if (card.content == 'Basra') {
-      this.Basra();
-    } else if (card.content == '*') {
-      this.showCardFromAllThePlayers();
-    } else {
-      this.makeCanPullFromPullCardActive = true;
-    }
-  }
+
   pullFromPullCard(selectedplayercard: Card, index: number) {
     this.copyOfPlayerCards[index] = this.selectedPullCard;
     let allPullCardsCopy = [...this.allPullCards];
@@ -108,20 +99,7 @@ export class MainPlayerComponent implements OnInit {
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
   }
-  cardsFeatures() {
-    let allPullCardsCopy = [...this.allPullCards];
-    const card = allPullCardsCopy.pop();
-    this.socket.emit('fromPullCardsToTable', {
-      gameId: this.gameId,
-      deleteCards: allPullCardsCopy,
-      addCards: card,
-      roomName: this.roomName,
-      deleteKeyName: 'pullCards',
-      addKeyName: 'tableCards',
-    });
-    this.changeCanSelectCard.emit(false);
-    this.hideTheCardAndButton.emit(true);
-  }
+
   pullFromTheGround(index: number) {
     let tableCardsCopy = [...this.allTableCards];
     let card = tableCardsCopy.pop();
@@ -189,24 +167,58 @@ export class MainPlayerComponent implements OnInit {
       tableCardsKeyName: 'tableCards',
     });
   }
+  checkCardType(card: Card) {
+    if (card.content == '7' || card.content == '8') {
+      this.showOneOfYourCards();
+    } else if (card.content == '9' || card.content == '10') {
+      this.showOneCardOfThePlayer();
+    } else if (card.content == '=><=') {
+      this.TakeOneCardAndGive();
+    } else if (card.content == 'Basra') {
+      this.Basra();
+    } else if (card.content == '*') {
+      this.showCardFromAllThePlayers();
+    } else {
+      this.makeCanPullFromPullCardActive = true;
+    }
+  }
+  cardsFeatures() {
+    let allPullCardsCopy = [...this.allPullCards];
+    const card = allPullCardsCopy.pop();
+    this.socket.emit('fromPullCardsToTable', {
+      gameId: this.gameId,
+      deleteCards: allPullCardsCopy,
+      addCards: card,
+      roomName: this.roomName,
+      deleteKeyName: 'pullCards',
+      addKeyName: 'tableCards',
+    });
+    this.changeCanSelectCard.emit(false);
+    this.hideTheCardAndButton.emit(true);
+  }
   showOneOfYourCards() {
     console.log('showOneOfYourCards');
+    this.showOneOfYourCard = true;
     this.cardsFeatures();
   }
   showOneCardOfThePlayer() {
     console.log('showOneCardOfOtherPlayer()');
+    this.showOneCardOfOtherPlayerCards = true;
     this.cardsFeatures();
   }
   TakeOneCardAndGive() {
     console.log('TakeOneCardAndGive()');
+    this.TakeOneCardAndGiveOne = true;
     this.cardsFeatures();
   }
   Basra() {
     console.log('Basra');
+    this.cardIsBasra = true;
     this.cardsFeatures();
   }
   showCardFromAllThePlayers() {
     console.log('showCardFromAllThePlayers');
+    this.showOneCardFromAllThePlayers = true;
     this.cardsFeatures();
   }
 }
