@@ -27,6 +27,9 @@
           ].number
         "
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
+        [showPlayerCards]="showPlayerCards"
+        (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
+        (updateTheCards)="updateTheCards($event)"
       ></app-player>
     </div>
     <div class=""><app-results></app-results></div>
@@ -50,6 +53,9 @@
           ].number
         "
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
+        [showPlayerCards]="showPlayerCards"
+        (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
+        (updateTheCards)="updateTheCards($event)"
       ></app-player>
     </div>
     <div class="">
@@ -77,6 +83,9 @@
           ].number
         "
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
+        [showPlayerCards]="showPlayerCards"
+        (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
+        (updateTheCards)="updateTheCards($event)"
       ></app-player>
     </div>
   </div>
@@ -104,10 +113,12 @@
         (hideTheButton)="hideButton($event)"
         (changeCanSelectCard)="onCanSelectCardChange($event)"
         (changeCanPullFromTheGround)="onCanPullFromTheGroundChange($event)"
+        (showPlayerCard)="showPlayerCard($event)"
         [canPullFromTheGround]="canPullFromTheGround"
         [allTableCards]="tableCards"
         [showTwoCards]="showTwoCards"
         [playerNumber]="playersIndex"
+        [updateTheCard]="updateTheCard"
       ></app-main-player>
     </div>
     <div class=""></div>

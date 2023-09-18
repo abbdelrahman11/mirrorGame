@@ -18,10 +18,12 @@ export class MainPlayerComponent implements OnInit {
   @Input() allTableCards!: Card[];
   @Input() allPullCards!: Card[];
   @Output() hideTheCardAndButton = new EventEmitter<boolean>(false);
+  @Output() showPlayerCard = new EventEmitter<boolean>(false);
   @Output() hideTheButton = new EventEmitter<boolean>(false);
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
   @Input() playerNumber!: number;
+  @Input() updateTheCard!: boolean;
   copyOfPlayerCards!: Card[];
   flipCardsArray: Array<boolean> = [];
   showToGround!: boolean;
@@ -32,7 +34,7 @@ export class MainPlayerComponent implements OnInit {
   makeCanPullFromPullCardActive!: boolean;
   showOneOfYourCard!: boolean;
   showOneCardOfOtherPlayerCards!: boolean;
-  TakeOneCardAndGiveOne: boolean = true;
+  TakeOneCardAndGiveOne!: boolean;
   cardIsBasra!: boolean;
   showOneCardFromAllThePlayers!: boolean;
 
@@ -48,21 +50,29 @@ export class MainPlayerComponent implements OnInit {
     if (this.allTableCards) {
       this.allTableCardsCopy = [...this.allTableCards];
     }
-    if (this.canPullFromPullCard) {
+    if (!this.updateTheCard && this.canPullFromPullCard) {
       this.checkCardType(this.selectedPullCard);
+    }
+    if (this.updateTheCard && this.canPullFromPullCard) {
+      this.showOneCardOfOtherPlayerCards = !this.updateTheCard;
+      this.cardsFeatures();
     }
   }
   ngOnInit(): void {}
 
   playerCard(playercard: Card, index: number) {
-    if (!this.canPullFromPullCard && !this.canPullFromTheGround) {
-      this.showToGroundButton(index, playercard);
-    }
-    if (this.canPullFromPullCard && this.makeCanPullFromPullCardActive) {
-      this.pullFromPullCard(playercard, index);
-    }
-    if (this.canPullFromTheGround) {
-      this.pullFromTheGround(index);
+    if (this.showOneOfYourCard) {
+      this.showOneOfYourCardFeature(index);
+    } else {
+      if (!this.canPullFromPullCard && !this.canPullFromTheGround) {
+        this.showToGroundButton(index, playercard);
+      }
+      if (this.canPullFromPullCard && this.makeCanPullFromPullCardActive) {
+        this.pullFromPullCard(playercard, index);
+      }
+      if (this.canPullFromTheGround) {
+        this.pullFromTheGround(index);
+      }
     }
   }
   showToGroundButton(index: number, playercard: Card) {
@@ -162,18 +172,38 @@ export class MainPlayerComponent implements OnInit {
   }
   checkCardType(card: Card) {
     if (card.content == '7' || card.content == '8') {
-      this.showOneOfYourCards();
+      this.showOneOfYourCard = true;
     } else if (card.content == '9' || card.content == '10') {
       this.showOneCardOfThePlayer();
     } else if (card.content == '=><=') {
-      this.TakeOneCardAndGive();
+      // this.TakeOneCardAndGive();
+      this.TakeOneCardAndGiveOne = true;
     } else if (card.content == 'Basra') {
-      this.Basra();
+      // this.Basra()
+      this.cardIsBasra = true;
     } else if (card.content == '*') {
-      this.showCardFromAllThePlayers();
+      // this.showCardFromAllThePlayers();
+      this.showOneCardFromAllThePlayers = true;
     } else {
       this.makeCanPullFromPullCardActive = true;
     }
+  }
+  showOneCardOfThePlayer() {
+    this.showOneCardOfOtherPlayerCards = true;
+    this.showPlayerCard.emit(true);
+  }
+
+  TakeOneCardAndGive() {
+    console.log('TakeOneCardAndGive()');
+    // this.cardsFeatures();
+  }
+  Basra() {
+    console.log('Basra');
+    // this.cardsFeatures();
+  }
+  showCardFromAllThePlayers() {
+    console.log('showCardFromAllThePlayers');
+    // this.cardsFeatures();
   }
   cardsFeatures() {
     let allPullCardsCopy = [...this.allPullCards];
@@ -189,29 +219,12 @@ export class MainPlayerComponent implements OnInit {
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
   }
-  showOneOfYourCards() {
-    console.log('showOneOfYourCards');
-    this.showOneOfYourCard = true;
-    this.cardsFeatures();
-  }
-  showOneCardOfThePlayer() {
-    console.log('showOneCardOfOtherPlayer()');
-    this.showOneCardOfOtherPlayerCards = true;
-    this.cardsFeatures();
-  }
-  TakeOneCardAndGive() {
-    console.log('TakeOneCardAndGive()');
-    this.TakeOneCardAndGiveOne = true;
-    this.cardsFeatures();
-  }
-  Basra() {
-    console.log('Basra');
-    this.cardIsBasra = true;
-    this.cardsFeatures();
-  }
-  showCardFromAllThePlayers() {
-    console.log('showCardFromAllThePlayers');
-    this.showOneCardFromAllThePlayers = true;
-    this.cardsFeatures();
+  showOneOfYourCardFeature(index: number) {
+    this.flipCardsArray[index] = true;
+    setTimeout(() => {
+      this.flipCardsArray[index] = false;
+      this.showOneOfYourCard = false;
+      this.cardsFeatures();
+    }, 5000);
   }
 }

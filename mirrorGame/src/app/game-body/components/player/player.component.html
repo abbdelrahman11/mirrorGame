@@ -4,8 +4,13 @@
   </p>
 </div>
 <div class="d-flex">
-  <ng-container *ngFor="let card of playerCard">
-    <app-card [flip]="false" [CardData]="card"></app-card>
+  <ng-container *ngFor="let card of playerCard; let i = index">
+    <app-card
+      [flip]="flipCardsArray[i]"
+      [CardData]="card"
+      (click)="CardChecked(i)"
+    ></app-card>
   </ng-container>
 </div>
 <div>{{ playerNumber }}</div>
+<p *ngIf="showPlayerCards">showPlayerCards</p>

@@ -34,6 +34,8 @@ export class RoomBodyComponent implements OnInit {
   showTwoCards!: boolean;
   allPlayersCards: Array<{ number: number; playerCards: Card[] }> = [];
   daynamicPlayer: Array<{ number: number; playerCards: Card[] }> = [];
+  showPlayerCards!: boolean;
+  updateTheCard!: boolean;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -143,6 +145,17 @@ export class RoomBodyComponent implements OnInit {
 
   canPullFromGround(event: boolean) {
     this.canPullFromTheGround = event;
+  }
+  onShowPlayerCardChange(newvalue: boolean) {
+    console.log(newvalue, 'newvalue');
+    this.showPlayerCards = newvalue;
+  }
+  showPlayerCard(value: boolean) {
+    this.showPlayerCards = value;
+  }
+  updateTheCards(value: boolean) {
+    console.log(value, 'updateTheCard');
+    this.updateTheCard = value;
   }
   checkIfPlayerCanPlay() {
     if (this.activePlayer % 4 == 0) {
