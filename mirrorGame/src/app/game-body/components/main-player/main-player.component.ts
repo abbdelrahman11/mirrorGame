@@ -1,25 +1,20 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Card } from 'src/app/core/interfaces/card';
-import * as socketIO from 'socket.io-client';
-import { environment } from 'src/environments/environment';
+import { SocketService } from 'src/app/core/services/socket-service.service';
 @Component({
   selector: 'app-main-player',
   templateUrl: './main-player.component.html',
   styleUrls: ['./main-player.component.css'],
 })
 export class MainPlayerComponent implements OnInit {
-  private socket!: socketIO.Socket;
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() playersIndex!: number;
   @Input() Cards!: Card[];
-  @Input() PullCards!: Card[];
   @Input() canPullFromPullCard!: boolean;
   @Input() canPullFromTheGround!: boolean;
   @Input() showTwoCards!: boolean;
   @Input() selectedPullCard!: Card;
-  // @Input() selectedTableCard!: Card;
-  // @Input() tableCards!: Card[];
   @Input() allTableCards!: Card[];
   @Input() allPullCards!: Card[];
   @Output() hideTheCardAndButton = new EventEmitter<boolean>(false);
@@ -41,7 +36,7 @@ export class MainPlayerComponent implements OnInit {
   cardIsBasra!: boolean;
   showOneCardFromAllThePlayers!: boolean;
 
-  constructor() {}
+  constructor(private socket: SocketService) {}
   ngOnChanges(): void {
     if (this.Cards) {
       this.copyOfPlayerCards = [...this.Cards];
@@ -57,9 +52,7 @@ export class MainPlayerComponent implements OnInit {
       this.checkCardType(this.selectedPullCard);
     }
   }
-  ngOnInit(): void {
-    this.socket = socketIO.io(environment.baseUrl);
-  }
+  ngOnInit(): void {}
 
   playerCard(playercard: Card, index: number) {
     if (!this.canPullFromPullCard && !this.canPullFromTheGround) {

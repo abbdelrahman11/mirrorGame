@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import * as socketIO from 'socket.io-client';
+import { ActivatedRoute } from '@angular/router';
 import { Card } from 'src/app/core/interfaces/card';
 import { Room } from 'src/app/core/interfaces/room';
 import { RoomBodyService } from 'src/app/core/services/roomBody.service';
-import { environment } from 'src/environments/environment';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { SocketService } from 'src/app/core/services/socket-service.service';
+import { Game } from 'src/app/core/interfaces/game';
 
 @Component({
   selector: 'app-room-body',
@@ -13,7 +13,6 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./room-body.component.css'],
 })
 export class RoomBodyComponent implements OnInit {
-  private socket!: socketIO.Socket;
   roomInfo!: Room;
   playerCards!: Card[];
   pullCards!: Card[];
@@ -38,10 +37,10 @@ export class RoomBodyComponent implements OnInit {
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
-    private spinner: NgxSpinnerService
+    private spinner: NgxSpinnerService,
+    private socket: SocketService
   ) {}
   ngOnInit(): void {
-    this.socket = socketIO.io(environment.baseUrl);
     // this.socket.on('connect', () => {
     //   this.spinner.hide();
     // });
@@ -56,15 +55,17 @@ export class RoomBodyComponent implements OnInit {
       userId: this.userId,
       gameId: this.gameId,
     });
-    this.socket.on('joinedTheRoom', (res) => {
-      this.getRoomInfo();
+    this.socket.listen('joinedTheRoom').subscribe({
+      next: (res) => {
+        this.getRoomInfo();
+      },
     });
-    this.socket.on('playerIndex', (res) => {
-      this.playersIndex = res;
+    this.socket.listen('playerIndex').subscribe((res: number) => {
+      this.playersIndex = res as number;
     });
 
-    this.socket.on('allCards', (res) => {
-      this.playerCards = res[0][`player${this.playersIndex}`];
+    this.socket.listen('allCards').subscribe((res: any) => {
+      this.playerCards = res[0]['player' + this.playersIndex];
       this.pullCards = res[0].pullCards;
       this.tableCards = res[0].tableCards;
       this.activePlayer = res[0].activeUserIndex;
@@ -159,8 +160,5 @@ export class RoomBodyComponent implements OnInit {
     this.userId = userIdParam !== null ? userIdParam : undefined;
     const gameIdParam = this.ActivatedRoute.snapshot.paramMap.get('gameId');
     this.gameId = gameIdParam !== null ? gameIdParam : undefined;
-  }
-  ngOnDestroy(): void {
-    this.socket.disconnect();
   }
 }

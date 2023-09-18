@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Card } from 'src/app/core/interfaces/card';
-import * as socketIO from 'socket.io-client';
-import { environment } from 'src/environments/environment';
+import { SocketService } from 'src/app/core/services/socket-service.service';
 
 @Component({
   selector: 'app-pull-cards',
@@ -9,23 +8,20 @@ import { environment } from 'src/environments/environment';
   styleUrls: ['./pull-cards.component.css'],
 })
 export class PullCardsComponent implements OnInit {
-  private socket!: socketIO.Socket;
   @Input() Cards!: Card[] | [];
   splicedCards!: Card[];
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() hideTheCard!: boolean;
-  // @Input() hideTheButtons!: boolean;
   @Output() canPullFromPullCards = new EventEmitter<boolean>();
   @Output() selectedCard = new EventEmitter<Card>();
   cardToShowToThePlayer!: Card;
   showTheCard: boolean = false;
   cardIndex!: number;
   showButtons: boolean = true;
-  constructor() {}
+  constructor(private socket: SocketService) {}
 
   ngOnInit(): void {
-    this.socket = socketIO.io(environment.baseUrl);
     this.hideThCard();
   }
   ngOnChanges(): void {

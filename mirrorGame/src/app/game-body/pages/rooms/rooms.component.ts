@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import * as socketIO from 'socket.io-client';
 import { ToastrService } from 'ngx-toastr';
 import { RoomsService } from 'src/app/core/services/rooms.service';
-import { environment } from 'src/environments/environment';
-import { User } from 'src/app/core/interfaces/user';
 import { Room } from 'src/app/core/interfaces/room';
+import { SocketService } from 'src/app/core/services/socket-service.service';
 interface points {
   name: string;
 }
@@ -15,7 +13,6 @@ interface points {
   styleUrls: ['./rooms.component.css'],
 })
 export class RoomsComponent implements OnInit {
-  private socket!: socketIO.Socket;
   display: boolean = false;
   selectedPoint!: string;
   RoomName!: string;
@@ -28,7 +25,8 @@ export class RoomsComponent implements OnInit {
     private service: RoomsService,
     private router: Router,
     private toastr: ToastrService,
-    private ActivatedRoute: ActivatedRoute
+    private ActivatedRoute: ActivatedRoute,
+    private socket: SocketService
   ) {
     this.points = [{ name: '50 Point' }, { name: '100 Point' }];
   }
@@ -36,13 +34,12 @@ export class RoomsComponent implements OnInit {
   ngOnInit(): void {
     const userIdParam = this.ActivatedRoute.snapshot.paramMap.get('id');
     this.userId = userIdParam !== null ? userIdParam : undefined;
-    this.socket = socketIO.io(environment.baseUrl);
     this.getCreatedRoom();
     this.getAllRooms();
     this.socketsOn();
   }
   getCreatedRoom() {
-    this.socket.on('allRooms', (res: any) => {
+    this.socket.listen('allRooms').subscribe((res: any) => {
       if (res.error) {
         this.toastr.error(res.error);
         return;
@@ -79,13 +76,13 @@ export class RoomsComponent implements OnInit {
     });
   }
   socketsOn() {
-    this.socket.on('joinedTheRoom', (res: any) => {
+    this.socket.listen('joinedTheRoom').subscribe((res: any) => {
       this.getAllRooms();
     });
-    this.socket.on('canRoute', (res: any) => {
+    this.socket.listen('canRoute').subscribe((res: any) => {
       this.router.navigate(['roombody', this.RoomName, res, this.userId]);
     });
-    this.socket.on('canJoinRoom', (res: any) => {
+    this.socket.listen('canJoinRoom').subscribe((res: any) => {
       this.router.navigate([
         'roombody',
         this.RoomName,
@@ -93,9 +90,5 @@ export class RoomsComponent implements OnInit {
         this.userId,
       ]);
     });
-  }
-
-  ngOnDestroy(): void {
-    this.socket.disconnect();
   }
 }
