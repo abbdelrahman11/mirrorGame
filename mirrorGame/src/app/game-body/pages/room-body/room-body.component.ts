@@ -35,7 +35,9 @@ export class RoomBodyComponent implements OnInit {
   allPlayersCards: Array<{ number: number; playerCards: Card[] }> = [];
   daynamicPlayer: Array<{ number: number; playerCards: Card[] }> = [];
   showPlayerCards!: boolean;
+  showFourPlayerCards!: boolean;
   updateTheCard!: boolean;
+  updateCounterForPlayers!: number;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -85,12 +87,11 @@ export class RoomBodyComponent implements OnInit {
         playerCards: game[`player${index}`],
       });
     }
-    let playersCardsCopy = [...this.allPlayersCards];
-    playersCardsCopy.splice(playersIndex - 1, 1);
-    this.makeDaynamicPlayer(playersCardsCopy, 4);
+    this.allPlayersCards.splice(playersIndex - 1, 1);
+    this.makeDaynamicPlayer(this.allPlayersCards, 4);
   }
   makeDaynamicPlayer(
-    playersCopy: Array<{ number: number; playerCards: Card[] }>,
+    players: Array<{ number: number; playerCards: Card[] }>,
     playersCount: number
   ) {
     for (let index = 1; index < playersCount; index++) {
@@ -99,7 +100,7 @@ export class RoomBodyComponent implements OnInit {
           ? playersCount
           : (this.playersIndex + index) % playersCount;
       let playerCards: Array<{ number: number; playerCards: Card[] }> =
-        playersCopy.filter((val) => {
+        players.filter((val) => {
           return val.number == playernumber;
         });
       this.daynamicPlayer[playernumber] = playerCards[0];
@@ -147,15 +148,22 @@ export class RoomBodyComponent implements OnInit {
     this.canPullFromTheGround = event;
   }
   onShowPlayerCardChange(newvalue: boolean) {
-    console.log(newvalue, 'newvalue');
     this.showPlayerCards = newvalue;
   }
   showPlayerCard(value: boolean) {
     this.showPlayerCards = value;
   }
+  onshowFourPlayerCardChange(newvalue: boolean) {
+    this.showFourPlayerCards = newvalue;
+  }
+  showFourPlayerCard(value: boolean) {
+    this.showFourPlayerCards = value;
+  }
   updateTheCards(value: boolean) {
-    console.log(value, 'updateTheCard');
     this.updateTheCard = value;
+  }
+  updateCounter(value: number) {
+    this.updateCounterForPlayers = value;
   }
   checkIfPlayerCanPlay() {
     if (this.activePlayer % 4 == 0) {

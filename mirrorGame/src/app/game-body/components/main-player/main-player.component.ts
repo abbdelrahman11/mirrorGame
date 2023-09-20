@@ -19,6 +19,7 @@ export class MainPlayerComponent implements OnInit {
   @Input() allPullCards!: Card[];
   @Output() hideTheCardAndButton = new EventEmitter<boolean>(false);
   @Output() showPlayerCard = new EventEmitter<boolean>(false);
+  @Output() showFourPlayerCard = new EventEmitter<boolean>(false);
   @Output() hideTheButton = new EventEmitter<boolean>(false);
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
@@ -55,6 +56,7 @@ export class MainPlayerComponent implements OnInit {
     }
     if (this.updateTheCard && this.canPullFromPullCard) {
       this.showOneCardOfOtherPlayerCards = !this.updateTheCard;
+      this.showOneCardFromAllThePlayers = !this.updateTheCard;
       this.cardsFeatures();
     }
   }
@@ -63,16 +65,28 @@ export class MainPlayerComponent implements OnInit {
   playerCard(playercard: Card, index: number) {
     if (this.showOneOfYourCard) {
       this.showOneOfYourCardFeature(index);
-    } else {
-      if (!this.canPullFromPullCard && !this.canPullFromTheGround) {
-        this.showToGroundButton(index, playercard);
-      }
-      if (this.canPullFromPullCard && this.makeCanPullFromPullCardActive) {
-        this.pullFromPullCard(playercard, index);
-      }
-      if (this.canPullFromTheGround) {
-        this.pullFromTheGround(index);
-      }
+      console.log('1');
+    }
+    if (
+      !this.canPullFromPullCard &&
+      !this.canPullFromTheGround &&
+      !this.cardIsBasra &&
+      !this.showOneOfYourCard
+    ) {
+      this.showToGroundButton(index, playercard);
+      console.log('2');
+    }
+    if (this.canPullFromPullCard && this.makeCanPullFromPullCardActive) {
+      this.pullFromPullCard(playercard, index);
+      console.log('3');
+    }
+    if (this.canPullFromTheGround) {
+      this.pullFromTheGround(index);
+      console.log('4');
+    }
+    if (this.cardIsBasra) {
+      this.Basra(playercard, index);
+      console.log('5');
     }
   }
   showToGroundButton(index: number, playercard: Card) {
@@ -179,11 +193,9 @@ export class MainPlayerComponent implements OnInit {
       // this.TakeOneCardAndGive();
       this.TakeOneCardAndGiveOne = true;
     } else if (card.content == 'Basra') {
-      // this.Basra()
       this.cardIsBasra = true;
     } else if (card.content == '*') {
-      // this.showCardFromAllThePlayers();
-      this.showOneCardFromAllThePlayers = true;
+      this.showOneCardFromAllPlayers();
     } else {
       this.makeCanPullFromPullCardActive = true;
     }
@@ -192,19 +204,42 @@ export class MainPlayerComponent implements OnInit {
     this.showOneCardOfOtherPlayerCards = true;
     this.showPlayerCard.emit(true);
   }
+  showOneCardFromAllPlayers() {
+    this.showOneCardFromAllThePlayers = true;
+    this.showFourPlayerCard.emit(true);
+  }
 
   TakeOneCardAndGive() {
     console.log('TakeOneCardAndGive()');
     // this.cardsFeatures();
   }
-  Basra() {
-    console.log('Basra');
-    // this.cardsFeatures();
+  async emitEvent() {
+    return new Promise((resolve, reject) => {
+      resolve(this.cardsFeatures());
+    });
   }
-  showCardFromAllThePlayers() {
-    console.log('showCardFromAllThePlayers');
-    // this.cardsFeatures();
+
+  async Basra(playercard: Card, index: number) {
+    let allPullCardsCopy = [...this.allPullCards];
+    const card = allPullCardsCopy.pop();
+    if (card) this.allTableCardsCopy.push(card);
+    this.allTableCardsCopy.push(playercard);
+    this.Cards.splice(index, 1);
+    this.socket.emit('Basra', {
+      gameId: this.gameId,
+      roomName: this.roomName,
+      playerCards: this.Cards,
+      TableCards: this.allTableCardsCopy,
+      playerkeyName: `player${this.playersIndex}`,
+      tableCardsKeyName: 'tableCards',
+      pullCardsKeyName: 'pullCards',
+      pullCards: allPullCardsCopy,
+    });
+    this.cardIsBasra = false;
+    this.changeCanSelectCard.emit(false);
+    this.hideTheCardAndButton.emit(true);
   }
+
   cardsFeatures() {
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();

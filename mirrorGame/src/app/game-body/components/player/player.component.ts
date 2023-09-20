@@ -11,26 +11,54 @@ export class PlayerComponent implements OnInit {
   @Input() playerNumber!: number;
   @Input() activePlayerNumber!: number;
   @Input() showPlayerCards!: boolean;
+  @Input() showFourPlayerCards!: boolean;
+  @Input() counterUpdatedForPlayers!: number;
   flipCardsArray: Array<boolean> = [];
+  counter: number = 1;
+  clickedCards: number[] = [];
   @Output() onShowPlayerCardChange = new EventEmitter<boolean>(false);
+  @Output() updateCounterForPlayers = new EventEmitter<number>();
+  @Output() onshowFourPlayerCardsChange = new EventEmitter<boolean>(false);
   @Output() updateTheCards = new EventEmitter<boolean>(false);
 
   constructor() {}
-  ngOnChanges() {
-    console.log(this.showPlayerCards, 'showPlayerCards');
-  }
+  ngOnChanges() {}
   ngOnInit(): void {}
   CardChecked(index: number) {
     if (this.showPlayerCards) {
       this.showOneOfYourCardFeature(index);
     }
+    if (this.showFourPlayerCards) {
+      this.showFourPlayerCardsFeature(index, this.playerNumber);
+    }
   }
   showOneOfYourCardFeature(index: number) {
     this.flipCardsArray[index] = true;
+    this.onShowPlayerCardChange.emit(false);
     setTimeout(() => {
       this.flipCardsArray[index] = false;
       this.updateTheCards.emit(true);
-      this.onShowPlayerCardChange.emit(false);
     }, 2000);
+  }
+  showFourPlayerCardsFeature(index: number, playerNumber: number) {
+    this.counter = this.counterUpdatedForPlayers;
+    if (!this.clickedCards.includes(playerNumber)) {
+      this.counter++;
+      this.updateCounterForPlayers.emit(this.counter | 0);
+      if (this.counter != 2) {
+        this.clickedCards.push(playerNumber);
+        this.flipCardsArray[index] = true;
+        setTimeout(() => {
+          this.flipCardsArray[index] = false;
+        }, 2000);
+      } else {
+        this.flipCardsArray[index] = true;
+        this.onshowFourPlayerCardsChange.emit(false);
+        setTimeout(() => {
+          this.flipCardsArray[index] = false;
+          this.updateTheCards.emit(true);
+        }, 2000);
+      }
+    }
   }
 }
