@@ -19,12 +19,21 @@ export class MainPlayerComponent implements OnInit {
   @Input() allPullCards!: Card[];
   @Output() hideTheCardAndButton = new EventEmitter<boolean>(false);
   @Output() showPlayerCard = new EventEmitter<boolean>(false);
+  @Output() takeAndGive = new EventEmitter<boolean>(false);
   @Output() showFourPlayerCard = new EventEmitter<boolean>(false);
   @Output() hideTheButton = new EventEmitter<boolean>(false);
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
   @Input() playerNumber!: number;
   @Input() updateTheCard!: boolean;
+  @Input() takeAndGiveSelectedCard!:
+    | {
+        card: Card;
+        playerNumber: number;
+        allCard: Card[];
+        cardIndex: number;
+      }
+    | undefined;
   copyOfPlayerCards!: Card[];
   flipCardsArray: Array<boolean> = [];
   showToGround!: boolean;
@@ -38,6 +47,8 @@ export class MainPlayerComponent implements OnInit {
   TakeOneCardAndGiveOne!: boolean;
   cardIsBasra!: boolean;
   showOneCardFromAllThePlayers!: boolean;
+  mainPlayerCard!: Card;
+  mainPlayerCardIndex!: number;
 
   constructor(private socket: SocketService) {}
   ngOnChanges(): void {
@@ -59,34 +70,32 @@ export class MainPlayerComponent implements OnInit {
       this.showOneCardFromAllThePlayers = !this.updateTheCard;
       this.cardsFeatures();
     }
+    if (this.takeAndGiveSelectedCard) {
+      this.TakeOneCardAndGiveFeature(this.takeAndGiveSelectedCard);
+    }
   }
   ngOnInit(): void {}
 
   playerCard(playercard: Card, index: number) {
     if (this.showOneOfYourCard) {
       this.showOneOfYourCardFeature(index);
-      console.log('1');
     }
-    if (
-      !this.canPullFromPullCard &&
-      !this.canPullFromTheGround &&
-      !this.cardIsBasra &&
-      !this.showOneOfYourCard
-    ) {
+    if (!this.canPullFromPullCard && !this.canPullFromTheGround) {
       this.showToGroundButton(index, playercard);
-      console.log('2');
     }
     if (this.canPullFromPullCard && this.makeCanPullFromPullCardActive) {
       this.pullFromPullCard(playercard, index);
-      console.log('3');
     }
     if (this.canPullFromTheGround) {
       this.pullFromTheGround(index);
-      console.log('4');
     }
     if (this.cardIsBasra) {
       this.Basra(playercard, index);
-      console.log('5');
+    }
+    if (this.TakeOneCardAndGiveOne) {
+      this.takeAndGive.emit(true);
+      this.mainPlayerCard = playercard;
+      this.mainPlayerCardIndex = index;
     }
   }
   showToGroundButton(index: number, playercard: Card) {
@@ -189,8 +198,8 @@ export class MainPlayerComponent implements OnInit {
       this.showOneOfYourCard = true;
     } else if (card.content == '9' || card.content == '10') {
       this.showOneCardOfThePlayer();
-    } else if (card.content == '=><=') {
-      // this.TakeOneCardAndGive();
+    } else if (card.content == '6') {
+      //=><=
       this.TakeOneCardAndGiveOne = true;
     } else if (card.content == 'Basra') {
       this.cardIsBasra = true;
@@ -209,16 +218,38 @@ export class MainPlayerComponent implements OnInit {
     this.showFourPlayerCard.emit(true);
   }
 
-  TakeOneCardAndGive() {
-    console.log('TakeOneCardAndGive()');
-    // this.cardsFeatures();
-  }
-  async emitEvent() {
-    return new Promise((resolve, reject) => {
-      resolve(this.cardsFeatures());
-    });
-  }
+  TakeOneCardAndGiveFeature(takeAndGiveSelectedCard: {
+    card: Card;
+    playerNumber: number;
+    allCard: Card[];
+    cardIndex: number;
+  }) {
+    let allPullCardsCopy = [...this.allPullCards];
+    const card = allPullCardsCopy.pop();
+    if (card) this.allTableCardsCopy.push(card);
 
+    let mainplayerCards = [...this.Cards];
+    mainplayerCards[this.mainPlayerCardIndex] = takeAndGiveSelectedCard.card;
+    let secondplayerCards = [...takeAndGiveSelectedCard.allCard];
+    secondplayerCards[takeAndGiveSelectedCard.cardIndex] = this.mainPlayerCard;
+
+    this.socket.emit('TakeAndGive', {
+      gameId: this.gameId,
+      roomName: this.roomName,
+      mainplayerkeyName: `player${this.playersIndex}`,
+      mainplayerCards: mainplayerCards,
+      secondplayerkeyName: `player${takeAndGiveSelectedCard.playerNumber}`,
+      secondplayerCards: secondplayerCards,
+      tableCardsKeyName: 'tableCards',
+      pullCardsKeyName: 'pullCards',
+      pullCards: allPullCardsCopy,
+      TableCards: this.allTableCardsCopy,
+    });
+    this.TakeOneCardAndGiveOne = false;
+    this.takeAndGiveSelectedCard = undefined;
+    this.changeCanSelectCard.emit(false);
+    this.hideTheCardAndButton.emit(true);
+  }
   async Basra(playercard: Card, index: number) {
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();

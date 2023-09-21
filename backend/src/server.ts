@@ -23,6 +23,7 @@ const playerTakesCardFromGround = require("./socketEvents/playerTakesCardFromGro
 const playerTakesCard = require("./socketEvents/playerTakesCard");
 const updatePlayerCards = require("./socketEvents/updatePlayerCards");
 const Basra = require("./socketEvents/Basra");
+const TakeAndGive = require("./socketEvents/TakeAndGive");
 
 const app = express();
 const server = http.createServer(app);
@@ -68,6 +69,7 @@ const onConnection = (socket: any) => {
   playerTakesCardFromGround(io, socket);
   updatePlayerCards(io, socket);
   Basra(io, socket);
+  TakeAndGive(io, socket);
 };
 
 io.on("connection", onConnection);

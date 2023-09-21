@@ -11,15 +11,23 @@ export class PlayerComponent implements OnInit {
   @Input() playerNumber!: number;
   @Input() activePlayerNumber!: number;
   @Input() showPlayerCards!: boolean;
+  @Input() takeAndGive!: boolean;
   @Input() showFourPlayerCards!: boolean;
   @Input() counterUpdatedForPlayers!: number;
-  flipCardsArray: Array<boolean> = [];
-  counter: number = 1;
-  clickedCards: number[] = [];
   @Output() onShowPlayerCardChange = new EventEmitter<boolean>(false);
   @Output() updateCounterForPlayers = new EventEmitter<number>();
   @Output() onshowFourPlayerCardsChange = new EventEmitter<boolean>(false);
+  @Output() ontakeAndGiveChange = new EventEmitter<boolean>(false);
   @Output() updateTheCards = new EventEmitter<boolean>(false);
+  @Output() takeAndGiveSelectedCard = new EventEmitter<{
+    allCard: Card[];
+    card: Card;
+    playerNumber: number;
+    cardIndex: number;
+  }>();
+  flipCardsArray: Array<boolean> = [];
+  counter!: number;
+  clickedCards: number[] = [];
 
   constructor() {}
   ngOnChanges() {}
@@ -31,6 +39,9 @@ export class PlayerComponent implements OnInit {
     if (this.showFourPlayerCards) {
       this.showFourPlayerCardsFeature(index, this.playerNumber);
     }
+    if (this.takeAndGive) {
+      this.takeAndGiveCard(index, this.playerNumber);
+    }
   }
   showOneOfYourCardFeature(index: number) {
     this.flipCardsArray[index] = true;
@@ -40,6 +51,7 @@ export class PlayerComponent implements OnInit {
       this.updateTheCards.emit(true);
     }, 2000);
   }
+
   showFourPlayerCardsFeature(index: number, playerNumber: number) {
     this.counter = this.counterUpdatedForPlayers;
     if (!this.clickedCards.includes(playerNumber)) {
@@ -60,5 +72,15 @@ export class PlayerComponent implements OnInit {
         }, 2000);
       }
     }
+  }
+
+  takeAndGiveCard(index: number, playerNumber: number) {
+    this.takeAndGiveSelectedCard.emit({
+      allCard: this.playerCard,
+      card: this.playerCard[index],
+      playerNumber,
+      cardIndex: index,
+    });
+    this.ontakeAndGiveChange.emit(false);
   }
 }

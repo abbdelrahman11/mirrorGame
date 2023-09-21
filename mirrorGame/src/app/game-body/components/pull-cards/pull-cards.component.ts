@@ -9,12 +9,12 @@ import { SocketService } from 'src/app/core/services/socket-service.service';
 })
 export class PullCardsComponent implements OnInit {
   @Input() Cards!: Card[] | [];
-  splicedCards!: Card[];
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() hideTheCard!: boolean;
   @Output() canPullFromPullCards = new EventEmitter<boolean>();
   @Output() selectedCard = new EventEmitter<Card>();
+  splicedCards!: Card[];
   cardToShowToThePlayer!: Card;
   showTheCard: boolean = false;
   cardIndex!: number;

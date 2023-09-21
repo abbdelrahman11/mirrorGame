@@ -28,12 +28,15 @@
         "
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
         [showPlayerCards]="showPlayerCards"
+        [takeAndGive]="takeAndGive"
         [showFourPlayerCards]="showFourPlayerCards"
         (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
         (onshowFourPlayerCardsChange)="onshowFourPlayerCardChange($event)"
         (updateTheCards)="updateTheCards($event)"
         [counterUpdatedForPlayers]="updateCounterForPlayers"
         (updateCounterForPlayers)="updateCounter($event)"
+        (takeAndGiveSelectedCard)="takeAndGiveSelectedCards($event)"
+        (ontakeAndGiveChange)="ontakeAndGiveChange($event)"
       ></app-player>
     </div>
     <div class=""><app-results></app-results></div>
@@ -58,12 +61,15 @@
         "
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
         [showPlayerCards]="showPlayerCards"
+        [takeAndGive]="takeAndGive"
         [showFourPlayerCards]="showFourPlayerCards"
         (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
         (onshowFourPlayerCardsChange)="onshowFourPlayerCardChange($event)"
         (updateTheCards)="updateTheCards($event)"
         [counterUpdatedForPlayers]="updateCounterForPlayers"
         (updateCounterForPlayers)="updateCounter($event)"
+        (takeAndGiveSelectedCard)="takeAndGiveSelectedCards($event)"
+        (ontakeAndGiveChange)="ontakeAndGiveChange($event)"
       ></app-player>
     </div>
     <div class="">
@@ -92,12 +98,15 @@
         "
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
         [showPlayerCards]="showPlayerCards"
+        [takeAndGive]="takeAndGive"
         [showFourPlayerCards]="showFourPlayerCards"
         (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
         (onshowFourPlayerCardsChange)="onshowFourPlayerCardChange($event)"
         (updateTheCards)="updateTheCards($event)"
         [counterUpdatedForPlayers]="updateCounterForPlayers"
         (updateCounterForPlayers)="updateCounter($event)"
+        (takeAndGiveSelectedCard)="takeAndGiveSelectedCards($event)"
+        (ontakeAndGiveChange)="ontakeAndGiveChange($event)"
       ></app-player>
     </div>
   </div>
@@ -126,12 +135,14 @@
         (changeCanSelectCard)="onCanSelectCardChange($event)"
         (changeCanPullFromTheGround)="onCanPullFromTheGroundChange($event)"
         (showPlayerCard)="showPlayerCard($event)"
+        (takeAndGive)="takeAndGiveCard($event)"
         (showFourPlayerCard)="showFourPlayerCard($event)"
         [canPullFromTheGround]="canPullFromTheGround"
         [allTableCards]="tableCards"
         [showTwoCards]="showTwoCards"
         [playerNumber]="playersIndex"
         [updateTheCard]="updateTheCard"
+        [takeAndGiveSelectedCard]="takeAndGiveSelectedCard"
       ></app-main-player>
     </div>
     <div class=""></div>

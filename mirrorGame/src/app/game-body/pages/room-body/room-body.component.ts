@@ -38,6 +38,13 @@ export class RoomBodyComponent implements OnInit {
   showFourPlayerCards!: boolean;
   updateTheCard!: boolean;
   updateCounterForPlayers!: number;
+  takeAndGive!: boolean;
+  takeAndGiveSelectedCard!: {
+    card: Card;
+    playerNumber: number;
+    allCard: Card[];
+    cardIndex: number;
+  };
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -99,6 +106,7 @@ export class RoomBodyComponent implements OnInit {
         (this.playersIndex + index) % playersCount == 0
           ? playersCount
           : (this.playersIndex + index) % playersCount;
+
       let playerCards: Array<{ number: number; playerCards: Card[] }> =
         players.filter((val) => {
           return val.number == playernumber;
@@ -153,6 +161,9 @@ export class RoomBodyComponent implements OnInit {
   showPlayerCard(value: boolean) {
     this.showPlayerCards = value;
   }
+  takeAndGiveCard(value: boolean) {
+    this.takeAndGive = value;
+  }
   onshowFourPlayerCardChange(newvalue: boolean) {
     this.showFourPlayerCards = newvalue;
   }
@@ -164,6 +175,17 @@ export class RoomBodyComponent implements OnInit {
   }
   updateCounter(value: number) {
     this.updateCounterForPlayers = value;
+  }
+  ontakeAndGiveChange(newvalue: boolean) {
+    this.takeAndGive = newvalue;
+  }
+  takeAndGiveSelectedCards(value: {
+    card: Card;
+    playerNumber: number;
+    allCard: Card[];
+    cardIndex: number;
+  }) {
+    this.takeAndGiveSelectedCard = value;
   }
   checkIfPlayerCanPlay() {
     if (this.activePlayer % 4 == 0) {

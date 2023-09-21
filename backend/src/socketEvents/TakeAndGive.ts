@@ -1,18 +1,21 @@
 module.exports = (io: any, socket: any) => {
   const { UpdateTheGame } = require("../utils/game");
 
-  const handleBasra = async ({
+  const handleTakeAndGive = async ({
     gameId,
     roomName,
-    playerCards,
-    playerkeyName,
+    mainplayerkeyName,
+    mainplayerCards,
+    secondplayerkeyName,
+    secondplayerCards,
     TableCards,
     tableCardsKeyName,
     pullCardsKeyName,
     pullCards,
   }: any) => {
     const updatedFields = {
-      [playerkeyName]: playerCards,
+      [mainplayerkeyName]: mainplayerCards,
+      [secondplayerkeyName]: secondplayerCards,
       [tableCardsKeyName]: TableCards,
       [pullCardsKeyName]: pullCards,
       $inc: { activeUserIndex: 1 },
@@ -21,5 +24,5 @@ module.exports = (io: any, socket: any) => {
     io.to(roomName).emit("allCards", [cardsUpdate]);
   };
 
-  socket.on("Basra", handleBasra);
+  socket.on("TakeAndGive", handleTakeAndGive);
 };
