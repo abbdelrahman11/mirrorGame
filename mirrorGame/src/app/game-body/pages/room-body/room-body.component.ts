@@ -176,9 +176,6 @@ export class RoomBodyComponent implements OnInit {
   updateCounter(value: number) {
     this.updateCounterForPlayers = value;
   }
-  ontakeAndGiveChange(newvalue: boolean) {
-    this.takeAndGive = newvalue;
-  }
   takeAndGiveSelectedCards(value: {
     card: Card;
     playerNumber: number;

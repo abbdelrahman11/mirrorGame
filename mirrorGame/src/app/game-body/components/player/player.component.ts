@@ -17,7 +17,6 @@ export class PlayerComponent implements OnInit {
   @Output() onShowPlayerCardChange = new EventEmitter<boolean>(false);
   @Output() updateCounterForPlayers = new EventEmitter<number>();
   @Output() onshowFourPlayerCardsChange = new EventEmitter<boolean>(false);
-  @Output() ontakeAndGiveChange = new EventEmitter<boolean>(false);
   @Output() updateTheCards = new EventEmitter<boolean>(false);
   @Output() takeAndGiveSelectedCard = new EventEmitter<{
     allCard: Card[];
@@ -81,6 +80,5 @@ export class PlayerComponent implements OnInit {
       playerNumber,
       cardIndex: index,
     });
-    this.ontakeAndGiveChange.emit(false);
   }
 }

@@ -17,13 +17,6 @@ export class MainPlayerComponent implements OnInit {
   @Input() selectedPullCard!: Card;
   @Input() allTableCards!: Card[];
   @Input() allPullCards!: Card[];
-  @Output() hideTheCardAndButton = new EventEmitter<boolean>(false);
-  @Output() showPlayerCard = new EventEmitter<boolean>(false);
-  @Output() takeAndGive = new EventEmitter<boolean>(false);
-  @Output() showFourPlayerCard = new EventEmitter<boolean>(false);
-  @Output() hideTheButton = new EventEmitter<boolean>(false);
-  @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
-  @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
   @Input() playerNumber!: number;
   @Input() updateTheCard!: boolean;
   @Input() takeAndGiveSelectedCard!:
@@ -34,6 +27,13 @@ export class MainPlayerComponent implements OnInit {
         cardIndex: number;
       }
     | undefined;
+  @Output() hideTheCardAndButton = new EventEmitter<boolean>(false);
+  @Output() showPlayerCard = new EventEmitter<boolean>(false);
+  @Output() takeAndGive = new EventEmitter<boolean>(false);
+  @Output() showFourPlayerCard = new EventEmitter<boolean>(false);
+  @Output() hideTheButton = new EventEmitter<boolean>(false);
+  @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
+  @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
   copyOfPlayerCards!: Card[];
   flipCardsArray: Array<boolean> = [];
   showToGround!: boolean;
@@ -68,7 +68,7 @@ export class MainPlayerComponent implements OnInit {
     if (this.updateTheCard && this.canPullFromPullCard) {
       this.showOneCardOfOtherPlayerCards = !this.updateTheCard;
       this.showOneCardFromAllThePlayers = !this.updateTheCard;
-      this.cardsFeatures();
+      this.updateTheCards();
     }
     if (this.takeAndGiveSelectedCard) {
       this.TakeOneCardAndGiveFeature(this.takeAndGiveSelectedCard);
@@ -96,6 +96,9 @@ export class MainPlayerComponent implements OnInit {
       this.takeAndGive.emit(true);
       this.mainPlayerCard = playercard;
       this.mainPlayerCardIndex = index;
+    }
+    if (this.showOneCardFromAllThePlayers) {
+      this.showOneOfYourCardAndOtherPlayers(index);
     }
   }
   showToGroundButton(index: number, playercard: Card) {
@@ -198,8 +201,7 @@ export class MainPlayerComponent implements OnInit {
       this.showOneOfYourCard = true;
     } else if (card.content == '9' || card.content == '10') {
       this.showOneCardOfThePlayer();
-    } else if (card.content == '6') {
-      //=><=
+    } else if (card.content == '=><=') {
       this.TakeOneCardAndGiveOne = true;
     } else if (card.content == 'Basra') {
       this.cardIsBasra = true;
@@ -215,6 +217,13 @@ export class MainPlayerComponent implements OnInit {
   }
   showOneCardFromAllPlayers() {
     this.showOneCardFromAllThePlayers = true;
+  }
+
+  showOneOfYourCardAndOtherPlayers(index: number) {
+    this.flipCardsArray[index] = true;
+    setTimeout(() => {
+      this.flipCardsArray[index] = false;
+    }, 2000);
     this.showFourPlayerCard.emit(true);
   }
 
@@ -249,6 +258,7 @@ export class MainPlayerComponent implements OnInit {
     this.takeAndGiveSelectedCard = undefined;
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
+    this.takeAndGive.emit(false);
   }
   async Basra(playercard: Card, index: number) {
     let allPullCardsCopy = [...this.allPullCards];
@@ -271,7 +281,7 @@ export class MainPlayerComponent implements OnInit {
     this.hideTheCardAndButton.emit(true);
   }
 
-  cardsFeatures() {
+  updateTheCards() {
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();
     this.socket.emit('fromPullCardsToTable', {
@@ -290,7 +300,7 @@ export class MainPlayerComponent implements OnInit {
     setTimeout(() => {
       this.flipCardsArray[index] = false;
       this.showOneOfYourCard = false;
-      this.cardsFeatures();
-    }, 5000);
+      this.updateTheCards();
+    }, 2000);
   }
 }
