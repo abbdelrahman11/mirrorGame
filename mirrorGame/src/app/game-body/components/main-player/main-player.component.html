@@ -55,3 +55,21 @@
     >select One Card Of All Other Players To See
   </span>
 </div>
+
+<div
+  class="text m-4 text-center"
+  *ngIf="finishTheRound != playersIndex && finishTheRound"
+>
+  <span class="badge badge-warning text-center">This Is Last Play</span>
+</div>
+
+<div class="text m-4 text-center" *ngIf="finishTheRound == playersIndex">
+  <button
+    class="btn btn-primary text-center position-relative mb-3"
+    style="z-index: 5"
+    (click)="roundFinished()"
+  >
+    Click To End The Game
+  </button>
+</div>
+<div class="overlay" *ngIf="finishTheRound == playersIndex"></div>

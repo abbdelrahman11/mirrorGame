@@ -16,6 +16,7 @@ import { PullCardsComponent } from './components/pull-cards/pull-cards.component
 import { TableCardsComponent } from './components/table-cards/table-cards.component';
 import { ResultsComponent } from './components/results/results.component';
 import { WaitThePlayerComponent } from './components/wait-the-player/wait-the-player.component';
+import { SayMirrorComponent } from './components/say-mirror/say-mirror.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { WaitThePlayerComponent } from './components/wait-the-player/wait-the-pl
     TableCardsComponent,
     ResultsComponent,
     WaitThePlayerComponent,
+    SayMirrorComponent,
   ],
   imports: [
     CommonModule,

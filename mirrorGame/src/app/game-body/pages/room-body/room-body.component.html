@@ -1,14 +1,16 @@
+<app-wait-the-player [playerCanPlay]="!playerCanPlay"></app-wait-the-player>
+<app-say-mirror
+  [gameId]="gameId"
+  [roomName]="roomName"
+  [playersIndex]="playersIndex"
+></app-say-mirror>
 <div
   class="room-body"
   style="height: 100vh"
   *ngIf="roomInfo?.usersId.length == 4"
 >
   <div class="d-flex justify-content-around first-line mt-2">
-    <div class="">
-      <app-wait-the-player
-        [playerCanPlay]="!playerCanPlay"
-      ></app-wait-the-player>
-    </div>
+    <div class=""></div>
     <div class="mt-4">
       <app-player
         *ngIf="
@@ -38,7 +40,7 @@
         (takeAndGiveSelectedCard)="takeAndGiveSelectedCards($event)"
       ></app-player>
     </div>
-    <div class=""><app-results></app-results></div>
+    <div class=""></div>
   </div>
   <div class="d-flex justify-content-between first-line">
     <div class="ml-3">
@@ -140,6 +142,7 @@
         [playerNumber]="playersIndex"
         [updateTheCard]="updateTheCard"
         [takeAndGiveSelectedCard]="takeAndGiveSelectedCard"
+        [finishTheRound]="finishTheRound"
       ></app-main-player>
     </div>
     <div class=""></div>
@@ -150,3 +153,4 @@
   <p class="mt-3">Waiting For All Members To Join The Room</p>
 </div>
 <div class="overlay" *ngIf="!playerCanPlay"></div>
+<app-results [showTheResult]="showTheResult"></app-results>

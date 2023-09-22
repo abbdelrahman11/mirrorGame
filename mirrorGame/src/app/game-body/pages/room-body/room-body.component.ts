@@ -45,6 +45,8 @@ export class RoomBodyComponent implements OnInit {
     allCard: Card[];
     cardIndex: number;
   };
+  finishTheRound!: number;
+  showTheResult!: [];
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -74,16 +76,25 @@ export class RoomBodyComponent implements OnInit {
     this.socket.listen('playerIndex').subscribe((res: number) => {
       this.playersIndex = res as number;
     });
+    this.socket.listen('finishTHeGame').subscribe((res) => {
+      console.log(res, 'finishTHeGame');
+    });
 
     this.socket.listen('allCards').subscribe((res: any) => {
+      console.log(res[0]);
       this.playerCards = res[0]['player' + this.playersIndex];
       this.pullCards = res[0].pullCards;
       this.tableCards = res[0].tableCards;
       this.activePlayer = res[0].activeUserIndex;
+      this.finishTheRound = res[0].finishTheRound;
+      console.log(this.finishTheRound, 'this.finishTheRound');
       this.checkIfPlayerCanPlay();
       this.showLogs();
       this.showTwoCardsToThePlayer(res[0].showTwoCards);
       this.fourPlayerCards(res[0], this.playersIndex);
+    });
+    this.socket.listen('showtheResult').subscribe((res: any) => {
+      this.showTheResult = res;
     });
   }
   fourPlayerCards(game: any, playersIndex: number) {
@@ -192,7 +203,6 @@ export class RoomBodyComponent implements OnInit {
       this.playerCanPlay = this.playersIndex == this.activePlayer % 4;
     }
   }
-
   getRouteParams(): void {
     const roomNameParam = this.ActivatedRoute.snapshot.paramMap.get('roomName');
     this.roomName = roomNameParam !== null ? roomNameParam : undefined;

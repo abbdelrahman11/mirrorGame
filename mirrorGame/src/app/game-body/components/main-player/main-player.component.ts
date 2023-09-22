@@ -19,6 +19,7 @@ export class MainPlayerComponent implements OnInit {
   @Input() allPullCards!: Card[];
   @Input() playerNumber!: number;
   @Input() updateTheCard!: boolean;
+  @Input() finishTheRound!: number;
   @Input() takeAndGiveSelectedCard!:
     | {
         card: Card;
@@ -49,6 +50,8 @@ export class MainPlayerComponent implements OnInit {
   showOneCardFromAllThePlayers!: boolean;
   mainPlayerCard!: Card;
   mainPlayerCardIndex!: number;
+  lastPlay!: boolean;
+  showEndGame!: boolean;
 
   constructor(private socket: SocketService) {}
   ngOnChanges(): void {
@@ -72,6 +75,9 @@ export class MainPlayerComponent implements OnInit {
     }
     if (this.takeAndGiveSelectedCard) {
       this.TakeOneCardAndGiveFeature(this.takeAndGiveSelectedCard);
+    }
+    if (this.finishTheRound) {
+      this.FinishTheRound(this.finishTheRound);
     }
   }
   ngOnInit(): void {}
@@ -302,5 +308,16 @@ export class MainPlayerComponent implements OnInit {
       this.showOneOfYourCard = false;
       this.updateTheCards();
     }, 2000);
+  }
+  FinishTheRound(finishTheRound: number) {
+    if (finishTheRound == this.playersIndex) {
+      this.showEndGame = true;
+    }
+  }
+  roundFinished() {
+    this.socket.emit('roundFinished', {
+      gameId: this.gameId,
+      roomName: this.roomName,
+    });
   }
 }
