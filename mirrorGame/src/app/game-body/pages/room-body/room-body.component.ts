@@ -47,6 +47,7 @@ export class RoomBodyComponent implements OnInit {
   };
   finishTheRound!: number;
   showTheResult!: [];
+  hideThePage!: boolean;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -78,6 +79,9 @@ export class RoomBodyComponent implements OnInit {
     });
     this.socket.listen('finishTHeGame').subscribe((res) => {
       console.log(res, 'finishTHeGame');
+    });
+    this.socket.listen('hideThePage').subscribe((res) => {
+      this.hideThePage = res;
     });
 
     this.socket.listen('allCards').subscribe((res: any) => {
@@ -187,6 +191,7 @@ export class RoomBodyComponent implements OnInit {
   updateCounter(value: number) {
     this.updateCounterForPlayers = value;
   }
+
   takeAndGiveSelectedCards(value: {
     card: Card;
     playerNumber: number;

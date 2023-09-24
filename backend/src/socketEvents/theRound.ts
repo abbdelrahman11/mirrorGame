@@ -13,6 +13,7 @@ module.exports = (io: any, socket: any) => {
     // await create({ round: sum, roomName });
     const result = await getResult(roomName);
     io.to(roomName).emit("showtheResult", result);
+    io.to(roomName).emit("hideThePage", true);
   };
 
   socket.on("finishTheRound", handlefinishTheRound);

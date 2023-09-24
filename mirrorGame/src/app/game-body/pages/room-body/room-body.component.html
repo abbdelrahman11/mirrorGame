@@ -1,5 +1,9 @@
-<app-wait-the-player [playerCanPlay]="!playerCanPlay"></app-wait-the-player>
+<app-wait-the-player
+  [playerCanPlay]="!playerCanPlay"
+  *ngIf="!hideThePage"
+></app-wait-the-player>
 <app-say-mirror
+  *ngIf="!hideThePage"
   [gameId]="gameId"
   [roomName]="roomName"
   [playersIndex]="playersIndex"
@@ -7,7 +11,7 @@
 <div
   class="room-body"
   style="height: 100vh"
-  *ngIf="roomInfo?.usersId.length == 4"
+  *ngIf="roomInfo?.usersId.length == 4 && !hideThePage"
 >
   <div class="d-flex justify-content-around first-line mt-2">
     <div class=""></div>
@@ -136,7 +140,7 @@
         (showPlayerCard)="showPlayerCard($event)"
         (takeAndGive)="takeAndGiveCard($event)"
         (showFourPlayerCard)="showFourPlayerCard($event)"
-        [canPullFromTheGround]="canPullFromTheGround"
+         [canPullFromTheGround]="canPullFromTheGround"
         [allTableCards]="tableCards"
         [showTwoCards]="showTwoCards"
         [playerNumber]="playersIndex"

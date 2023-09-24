@@ -1,4 +1,4 @@
-<table class="table table-bordered" *ngIf="showTheResult">
+<table class="table table-bordered mt-5" *ngIf="showTheResult">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -28,10 +28,20 @@
     </tr>
     <tr>
       <th scope="row">Sum</th>
-      <td></td>
-      <td></td>
-      <td></td>
-      <td></td>
+      <ng-container *ngFor="let item of [sumOfPoints]; let i = index">
+        <td>
+          {{ item["player1"] }}
+        </td>
+        <td>
+          {{ item["player2"] }}
+        </td>
+        <td>
+          {{ item["player3"] }}
+        </td>
+        <td>
+          {{ item["player4"] }}
+        </td>
+      </ng-container>
     </tr>
   </tbody>
 </table>

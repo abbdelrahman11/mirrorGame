@@ -76,9 +76,6 @@ export class MainPlayerComponent implements OnInit {
     if (this.takeAndGiveSelectedCard) {
       this.TakeOneCardAndGiveFeature(this.takeAndGiveSelectedCard);
     }
-    if (this.finishTheRound) {
-      this.FinishTheRound(this.finishTheRound);
-    }
   }
   ngOnInit(): void {}
 
@@ -309,11 +306,7 @@ export class MainPlayerComponent implements OnInit {
       this.updateTheCards();
     }, 2000);
   }
-  FinishTheRound(finishTheRound: number) {
-    if (finishTheRound == this.playersIndex) {
-      this.showEndGame = true;
-    }
-  }
+
   roundFinished() {
     this.socket.emit('roundFinished', {
       gameId: this.gameId,
