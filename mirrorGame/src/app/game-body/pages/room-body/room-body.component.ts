@@ -6,6 +6,7 @@ import { RoomBodyService } from 'src/app/core/services/roomBody.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { SocketService } from 'src/app/core/services/socket-service.service';
 import { Game } from 'src/app/core/interfaces/game';
+import { Result } from 'src/app/core/interfaces/result';
 
 @Component({
   selector: 'app-room-body',
@@ -46,7 +47,7 @@ export class RoomBodyComponent implements OnInit {
     cardIndex: number;
   };
   finishTheRound!: number;
-  showTheResult!: [];
+  showTheResult!: Result[];
   hideThePage!: boolean;
   constructor(
     private service: RoomBodyService,
@@ -69,6 +70,10 @@ export class RoomBodyComponent implements OnInit {
       userId: this.userId,
       gameId: this.gameId,
     });
+    this.socket.emit('checkIfRoundFinished', {
+      roomName: this.roomName,
+      gameId: this.gameId,
+    });
     this.socket.listen('joinedTheRoom').subscribe({
       next: (res) => {
         this.getRoomInfo();
@@ -77,11 +82,10 @@ export class RoomBodyComponent implements OnInit {
     this.socket.listen('playerIndex').subscribe((res: number) => {
       this.playersIndex = res as number;
     });
-    this.socket.listen('finishTHeGame').subscribe((res) => {
-      console.log(res, 'finishTHeGame');
-    });
+    this.socket.listen('finishTHeGame').subscribe((res) => {});
     this.socket.listen('hideThePage').subscribe((res) => {
       this.hideThePage = res;
+      console.log(res);
     });
 
     this.socket.listen('allCards').subscribe((res: any) => {

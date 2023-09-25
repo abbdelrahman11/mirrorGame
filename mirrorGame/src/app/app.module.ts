@@ -9,7 +9,6 @@ import { CoreModule } from './core/core.module';
 import { SharedModule } from './shared/shared.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AccordionModule } from 'primeng/accordion'; //accordion and accordion tab
-import { MenuItem } from 'primeng/api';
 @NgModule({
   declarations: [AppComponent],
   imports: [
@@ -22,7 +21,7 @@ import { MenuItem } from 'primeng/api';
     SharedModule,
     HttpClientModule,
     AccordionModule,
-   ],
+  ],
   providers: [],
   bootstrap: [AppComponent],
 })

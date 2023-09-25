@@ -1,4 +1,4 @@
-export const sample_cards: any[] = [
+export const sample_cards = [
   {
     content: "1",
     type: "1",

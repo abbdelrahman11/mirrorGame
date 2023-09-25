@@ -4,7 +4,9 @@ const { ObjectId } = require("mongodb");
 async function CreateGame(Game: Game) {
   return GameModel.create(Game);
 }
-
+async function deleteTheGame(id: string) {
+  return GameModel.findByIdAndDelete(id);
+}
 async function getGame(id: string) {
   return GameModel.find({ _id: id });
 }
@@ -34,4 +36,5 @@ module.exports = {
   getGame,
   UpdateTheGame,
   cardsSum,
+  deleteTheGame,
 };

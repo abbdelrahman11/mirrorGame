@@ -8,6 +8,9 @@ import { environment } from 'src/environments/environment';
 export class RoomBodyService {
   constructor(private http: HttpClient) {}
   getRoomInfo(roomName: any) {
-    return this.http.post(`${environment.baseUrl}/api/rooms/roomInfo`, roomName);
+    return this.http.post(
+      `${environment.baseUrl}/api/rooms/roomInfo`,
+      roomName
+    );
   }
 }

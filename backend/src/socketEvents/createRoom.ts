@@ -2,7 +2,7 @@ import { Card } from "../models/card.model";
 import { Game } from "../models/game.model";
 import { roomUsers } from "../models/roomUsers.model";
 
-module.exports = (io: any, socket: any, callback: any) => {
+module.exports = (io: any, socket: any) => {
   const { CreateRoom, allRooms, checkTheRoomName } = require("../utils/rooms");
   const { CreateGame } = require("../utils/game");
   const { getAllCards } = require("../utils/cards");

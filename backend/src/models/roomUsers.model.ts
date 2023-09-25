@@ -3,7 +3,7 @@ export interface roomUsers {
   _id?: string;
   roomName: string;
   roomPoints: string;
-  usersId: any;
+  usersId: string;
   gameId: string;
 }
 

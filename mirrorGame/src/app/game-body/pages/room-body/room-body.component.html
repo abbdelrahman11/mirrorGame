@@ -1,6 +1,6 @@
 <app-wait-the-player
   [playerCanPlay]="!playerCanPlay"
-  *ngIf="!hideThePage"
+  *ngIf="!hideThePage && roomInfo?.usersId.length == 4"
 ></app-wait-the-player>
 <app-say-mirror
   *ngIf="!hideThePage"
@@ -140,7 +140,7 @@
         (showPlayerCard)="showPlayerCard($event)"
         (takeAndGive)="takeAndGiveCard($event)"
         (showFourPlayerCard)="showFourPlayerCard($event)"
-         [canPullFromTheGround]="canPullFromTheGround"
+        [canPullFromTheGround]="canPullFromTheGround"
         [allTableCards]="tableCards"
         [showTwoCards]="showTwoCards"
         [playerNumber]="playersIndex"
@@ -156,5 +156,9 @@
   <div class="loader"></div>
   <p class="mt-3">Waiting For All Members To Join The Room</p>
 </div>
-<div class="overlay" *ngIf="!playerCanPlay"></div>
-<app-results [showTheResult]="showTheResult"></app-results>
+<div class="overlay" *ngIf="!playerCanPlay && !hideThePage"></div>
+<app-results
+  [showTheResult]="showTheResult"
+  [gameId]="gameId"
+  [roomName]="roomName"
+></app-results>

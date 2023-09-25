@@ -1,4 +1,4 @@
-<table class="table table-bordered mt-5" *ngIf="showTheResult">
+<table class="table table-bordered mt-5" *ngIf="showTheResult?.length">
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -45,3 +45,6 @@
     </tr>
   </tbody>
 </table>
+<div class="text m-4 text-center" *ngIf="showTheResult?.length">
+  <button class="btn btn-primary" (click)="joinNextRound()">Next Round</button>
+</div>
