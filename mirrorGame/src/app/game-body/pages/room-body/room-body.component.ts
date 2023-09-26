@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Card } from 'src/app/core/interfaces/card';
 import { Room } from 'src/app/core/interfaces/room';
 import { RoomBodyService } from 'src/app/core/services/roomBody.service';
-import { NgxSpinnerService } from 'ngx-spinner';
 import { SocketService } from 'src/app/core/services/socket-service.service';
 import { Game } from 'src/app/core/interfaces/game';
 import { Result } from 'src/app/core/interfaces/result';
@@ -48,21 +47,13 @@ export class RoomBodyComponent implements OnInit {
   };
   finishTheRound!: number;
   showTheResult!: Result[];
-  hideThePage!: boolean;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
-    private spinner: NgxSpinnerService,
+    private router: Router,
     private socket: SocketService
   ) {}
   ngOnInit(): void {
-    // this.socket.on('connect', () => {
-    //   this.spinner.hide();
-    // });
-
-    // this.socket.on('disconnect', () => {
-    //   this.spinner.show();
-    // });
     this.getRouteParams();
     this.getRoomInfo();
     this.socket.emit('inRoom', {
@@ -70,10 +61,10 @@ export class RoomBodyComponent implements OnInit {
       userId: this.userId,
       gameId: this.gameId,
     });
-    this.socket.emit('checkIfRoundFinished', {
-      roomName: this.roomName,
-      gameId: this.gameId,
-    });
+    // this.socket.emit('checkIfRoundFinished', {
+    //   roomName: this.roomName,
+    //   gameId: this.gameId,
+    // });
     this.socket.listen('joinedTheRoom').subscribe({
       next: (res) => {
         this.getRoomInfo();
@@ -83,10 +74,6 @@ export class RoomBodyComponent implements OnInit {
       this.playersIndex = res as number;
     });
     this.socket.listen('finishTHeGame').subscribe((res) => {});
-    this.socket.listen('hideThePage').subscribe((res) => {
-      this.hideThePage = res;
-      console.log(res);
-    });
 
     this.socket.listen('allCards').subscribe((res: any) => {
       console.log(res[0]);
@@ -103,6 +90,21 @@ export class RoomBodyComponent implements OnInit {
     });
     this.socket.listen('showtheResult').subscribe((res: any) => {
       this.showTheResult = res;
+    });
+    this.socket.listen('newGame').subscribe({
+      next: (res) => {
+        console.log(res);
+        this.gameId = res;
+        this.router.navigate([
+          'roombody',
+          this.roomName,
+          this.gameId,
+          this.userId,
+        ]);
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      },
     });
   }
   fourPlayerCards(game: any, playersIndex: number) {
@@ -140,9 +142,7 @@ export class RoomBodyComponent implements OnInit {
     console.log(this.tableCards, 'tableCard');
   }
   showTwoCardsToThePlayer(showTwoCards: boolean) {
-    if (showTwoCards) {
-      this.showTwoCards = showTwoCards;
-    }
+    this.showTwoCards = showTwoCards;
   }
   getRoomInfo() {
     this.service.getRoomInfo({ roomName: this.roomName }).subscribe({

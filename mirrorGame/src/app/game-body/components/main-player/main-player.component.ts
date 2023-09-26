@@ -308,6 +308,7 @@ export class MainPlayerComponent implements OnInit {
   }
 
   roundFinished() {
+    console.log('roundFinished');
     this.socket.emit('roundFinished', {
       gameId: this.gameId,
       roomName: this.roomName,

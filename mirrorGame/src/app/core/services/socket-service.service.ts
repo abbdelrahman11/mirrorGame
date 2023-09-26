@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import * as socketIO from 'socket.io-client';
 import { environment } from 'src/environments/environment';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Injectable({
   providedIn: 'root',
@@ -9,8 +10,15 @@ import { environment } from 'src/environments/environment';
 export class SocketService {
   socket!: socketIO.Socket;
   readonly url: string = environment.baseUrl;
-  constructor() {
+  constructor(private spinner: NgxSpinnerService) {
     this.socket = socketIO.io(this.url);
+    this.socket.on('connect', () => {
+      this.spinner.hide();
+    });
+
+    this.socket.on('disconnect', () => {
+      this.spinner.show();
+    });
   }
 
   listen(eventName: string) {

@@ -13,6 +13,7 @@ export interface Game {
   activeUserIndex: number;
   showTwoCards: boolean;
   finishTheRound: number;
+  gameMembersCount: number;
 }
 
 export const GameSchema = new Schema<Game>(
@@ -28,6 +29,7 @@ export const GameSchema = new Schema<Game>(
     finishTheRound: { type: Number, default: 0 },
     activeUserIndex: { type: Number, default: 1 },
     showTwoCards: { type: Boolean, default: true },
+    gameMembersCount: { type: Number, default: 0 },
   },
   {
     timestamps: true,

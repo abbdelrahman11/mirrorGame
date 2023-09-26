@@ -25,18 +25,8 @@ module.exports = (io: any, socket: any) => {
     const gameresCards: Card = await getAllCards();
     const createdGame: Game = await CreateGame({ cards: gameresCards });
     io.to(roomName).emit("showtheResult", result);
-    io.to(roomName).emit("hideThePage", true);
     io.to(roomName).emit("newGame", createdGame._id);
-  };
-  const handlecheckIfRoundFinished = async ({ gameId, roomName }: any) => {
-    const res = await getGame(gameId);
-    if (res[0].finishTheRound != 0) {
-      const result = await getResult(roomName);
-      socket.emit("showtheResult", result);
-      socket.emit("hideThePage", true);
-    }
   };
   socket.on("finishTheRound", handlefinishTheRound);
   socket.on("roundFinished", handlegaameFinished);
-  socket.on("checkIfRoundFinished", handlecheckIfRoundFinished);
 };

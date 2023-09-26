@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Result } from 'src/app/core/interfaces/result';
-import { ActivatedRoute, Router } from '@angular/router';
-import { SocketService } from 'src/app/core/services/socket-service.service';
+import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-results',
@@ -9,19 +9,13 @@ import { SocketService } from 'src/app/core/services/socket-service.service';
   styleUrls: ['./results.component.css'],
 })
 export class ResultsComponent implements OnInit {
-  @Input() showTheResult!: Result[];
+  @Input() Results!: Result[];
+  showTheResults!: boolean;
   sumOfPoints: any = {};
-  userId: string | undefined;
-  @Input() gameId!: string | undefined;
-  @Input() roomName!: string | undefined;
-  constructor(
-    private router: Router,
-    private ActivatedRoute: ActivatedRoute,
-    private socket: SocketService
-  ) {}
+  constructor(private toastr: ToastrService) {}
   ngOnChanges(): void {
-    if (this.showTheResult) {
-      this.getsumsOfThePlayersPoints(this.showTheResult);
+    if (this.Results) {
+      this.getsumsOfThePlayersPoints(this.Results);
     }
   }
   getsumsOfThePlayersPoints(Result: Result[]) {
@@ -37,19 +31,17 @@ export class ResultsComponent implements OnInit {
         }
       }
     });
+    this.checkIfTheGamEnded(this.sumOfPoints);
   }
-  ngOnInit(): void {
-    const userIdParam = this.ActivatedRoute.snapshot.paramMap.get('id');
-    this.userId = userIdParam !== null ? userIdParam : undefined;
-    this.socket.listen('newGame').subscribe({
-      next: (res) => {
-        this.gameId = res;
-        console.log(this.gameId);
-      },
-    });
+  ngOnInit(): void {}
+  getResult() {
+    if (!this.Results?.length) {
+      this.toastr.info('Result Empty');
+    } else {
+      this.showTheResults = !this.showTheResults;
+    }
   }
-  joinNextRound() {
-    this.router.navigate(['roombody', this.roomName, this.gameId, this.userId]);
-    // location.reload();
+  checkIfTheGamEnded(points: any) {
+    console.log(points);
   }
 }
