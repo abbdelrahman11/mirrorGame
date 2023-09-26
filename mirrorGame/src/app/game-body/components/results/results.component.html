@@ -20,20 +20,18 @@
   <tbody>
     <tr *ngFor="let Result of Results; let i = index">
       <th scope="row">Round {{ i + 1 }}</th>
-      <ng-container *ngFor="let item of Result.round; let i = index">
-        <td>
-          {{ item["player1"] }}
-        </td>
-        <td>
-          {{ item["player2"] }}
-        </td>
-        <td>
-          {{ item["player3"] }}
-        </td>
-        <td>
-          {{ item["player4"] }}
-        </td>
-      </ng-container>
+      <td>
+        {{ Result.round["player1"] }}
+      </td>
+      <td>
+        {{ Result.round["player2"] }}
+      </td>
+      <td>
+        {{ Result.round["player3"] }}
+      </td>
+      <td>
+        {{ Result.round["player4"] }}
+      </td>
     </tr>
     <tr>
       <th scope="row">Sum</th>

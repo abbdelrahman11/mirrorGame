@@ -6,7 +6,7 @@ export interface Result {
     player2: number;
     player3: number;
     player4: number;
-  }[];
+  };
   roomName: string;
   createdAt: string;
   updatedAt: string;

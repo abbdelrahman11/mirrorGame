@@ -20,7 +20,6 @@ export class ResultsComponent implements OnInit {
   showTheResults!: boolean;
   sumOfPoints: any = {};
   @Output() theWinner = new EventEmitter<string>();
-  @Output() startTheGame = new EventEmitter<boolean>(false);
   endTheGame: boolean = false;
 
   // @HostListener('document:click', ['$event'])
@@ -36,14 +35,15 @@ export class ResultsComponent implements OnInit {
   constructor(private toastr: ToastrService) {}
   ngOnChanges(): void {
     if (this.Results) {
+      console.log(this.Results);
       this.getsumsOfThePlayersPoints(this.Results);
     }
   }
   getsumsOfThePlayersPoints(Results: Result[]) {
     this.sumOfPoints = {};
     Results.forEach((element: Result) => {
-      if (element.round.length) {
-        let playersPoints: any = element.round[0];
+      if (element.round) {
+        let playersPoints: any = element.round;
         for (let index = 1; index < 5; index++) {
           if (!this.sumOfPoints['player' + index]) {
             this.sumOfPoints['player' + index] = 0;
@@ -52,7 +52,6 @@ export class ResultsComponent implements OnInit {
         }
       }
     });
-    this.checkIfTheGamEnded(this.sumOfPoints);
   }
   ngOnInit(): void {}
   getResult() {
@@ -60,19 +59,6 @@ export class ResultsComponent implements OnInit {
       this.toastr.info('Result Empty');
     } else {
       this.showTheResults = !this.showTheResults;
-    }
-  }
-  checkIfTheGamEnded(points: Points) {
-    for (const [key, value] of Object.entries(points)) {
-      if (value > 40) {
-        this.theWinner.emit(key);
-        this.endTheGame = true;
-      }
-    }
-    if (this.endTheGame) {
-      this.startTheGame.emit(false);
-    } else {
-      this.startTheGame.emit(true);
     }
   }
 }

@@ -90,6 +90,7 @@ module.exports = (io: any, socket: any) => {
     randomNumbers = arr.splice(0, count);
     return randomNumbers;
   }
-
+  const handlegetResult = async ({ userId, roomName, gameId }: any) => {};
   socket.on("inRoom", handleinRoom);
+  socket.on("getResult", handlegetResult);
 };

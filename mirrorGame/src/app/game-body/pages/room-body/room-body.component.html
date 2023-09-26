@@ -9,11 +9,9 @@
   [playersIndex]="playersIndex"
 ></app-say-mirror>
 <app-results
-  *ngIf="canStartTheGame"
   style="position: fixed; z-index: 100; width: 100%"
   [Results]="showTheResult"
   (theWinner)="gettheWinner($event)"
-  (startTheGame)="checkIfCanStartTheGame($event)"
 ></app-results>
 <div
   class="room-body"

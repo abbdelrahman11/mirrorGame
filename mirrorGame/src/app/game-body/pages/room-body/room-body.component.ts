@@ -64,15 +64,13 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   ngOnInit(): void {
     this.getRouteParams();
     this.getRoomInfo();
-    this.socket.emit('inRoom', {
-      roomName: this.roomName,
-      userId: this.userId,
-      gameId: this.gameId,
-    });
-    // this.socket.emit('checkIfRoundFinished', {
-    //   roomName: this.roomName,
-    //   gameId: this.gameId,
-    // });
+    if (this.canStartTheGame) {
+      this.socket.emit('inRoom', {
+        roomName: this.roomName,
+        userId: this.userId,
+        gameId: this.gameId,
+      });
+    }
     this.socket.listen('joinedTheRoom').subscribe({
       next: (res) => {
         this.getRoomInfo();
@@ -215,7 +213,6 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     }
   }
   checkIfCanStartTheGame(value: boolean) {
-    this.canStartTheGame = value;
     console.log(value);
   }
   takeAndGiveSelectedCards(value: {
