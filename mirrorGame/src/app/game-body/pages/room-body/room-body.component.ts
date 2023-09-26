@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterContentChecked,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+} from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import { Card } from 'src/app/core/interfaces/card';
 import { Room } from 'src/app/core/interfaces/room';
@@ -12,7 +17,7 @@ import { Result } from 'src/app/core/interfaces/result';
   templateUrl: './room-body.component.html',
   styleUrls: ['./room-body.component.css'],
 })
-export class RoomBodyComponent implements OnInit {
+export class RoomBodyComponent implements OnInit, AfterContentChecked {
   roomInfo!: Room;
   playerCards!: Card[];
   pullCards!: Card[];
@@ -47,11 +52,14 @@ export class RoomBodyComponent implements OnInit {
   };
   finishTheRound!: number;
   showTheResult!: Result[];
+  winner!: string;
+  canStartTheGame: boolean = true;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
     private router: Router,
-    private socket: SocketService
+    private socket: SocketService,
+    private changeDetector: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
     this.getRouteParams();
@@ -106,6 +114,9 @@ export class RoomBodyComponent implements OnInit {
         }, 1000);
       },
     });
+  }
+  ngAfterContentChecked(): void {
+    this.changeDetector.detectChanges();
   }
   fourPlayerCards(game: any, playersIndex: number) {
     this.allPlayersCards = [];
@@ -195,7 +206,18 @@ export class RoomBodyComponent implements OnInit {
   updateCounter(value: number) {
     this.updateCounterForPlayers = value;
   }
-
+  gettheWinner(value: string) {
+    this.winner = value;
+    if (this.winner) {
+      console.log(value);
+    } else {
+      console.log('false');
+    }
+  }
+  checkIfCanStartTheGame(value: boolean) {
+    this.canStartTheGame = value;
+    console.log(value);
+  }
   takeAndGiveSelectedCards(value: {
     card: Card;
     playerNumber: number;

@@ -1,20 +1,24 @@
 <app-wait-the-player
   [playerCanPlay]="!playerCanPlay"
-  *ngIf="roomInfo?.usersId.length == 4"
+  *ngIf="roomInfo?.usersId.length == 4 && canStartTheGame"
 ></app-wait-the-player>
 <app-say-mirror
+  *ngIf="canStartTheGame"
   [gameId]="gameId"
   [roomName]="roomName"
   [playersIndex]="playersIndex"
 ></app-say-mirror>
 <app-results
+  *ngIf="canStartTheGame"
   style="position: fixed; z-index: 100; width: 100%"
   [Results]="showTheResult"
+  (theWinner)="gettheWinner($event)"
+  (startTheGame)="checkIfCanStartTheGame($event)"
 ></app-results>
 <div
   class="room-body"
   style="height: 100vh"
-  *ngIf="roomInfo?.usersId.length == 4"
+  *ngIf="roomInfo?.usersId.length == 4 && canStartTheGame"
 >
   <div class="d-flex justify-content-around first-line">
     <div class=""></div>
@@ -159,4 +163,5 @@
   <div class="loader"></div>
   <p class="mt-3">Waiting For All Members To Join The Room</p>
 </div>
-<div class="overlay" *ngIf="!playerCanPlay"></div>
+<div class="overlay" *ngIf="!playerCanPlay && canStartTheGame"></div>
+<app-game-finished *ngIf="!canStartTheGame"></app-game-finished>

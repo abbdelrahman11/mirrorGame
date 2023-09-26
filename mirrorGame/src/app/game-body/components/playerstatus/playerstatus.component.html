@@ -1,0 +1,40 @@
+<div
+  class="text m-4 text-center"
+  *ngIf="canPullFromPullCard && makeCanPullFromPullCardActive"
+>
+  <span class="badge badge-warning">select One The Card</span>
+</div>
+<div>{{ playerNumber }}</div>
+<div class="text m-4 text-center" *ngIf="showOneOfYourCard">
+  <span class="badge badge-warning text-center"
+    >select One Of Your Cards To See
+  </span>
+</div>
+<div class="text m-4 text-center" *ngIf="showOneCardOfOtherPlayerCards">
+  <span class="badge badge-warning text-center"
+    >select One Card Of Other Player Cards To See
+  </span>
+</div>
+<div class="text m-4 text-center" *ngIf="TakeOneCardAndGiveOne">
+  <span class="badge badge-warning text-center"
+    >select One Of Your Cards To Give To Other Player And One Of The Player
+    Cards To Take
+  </span>
+</div>
+<div class="text m-4 text-center" *ngIf="cardIsBasra">
+  <span class="badge badge-warning text-center"
+    >select One Of Your Cards To Throw To The Ground
+  </span>
+</div>
+<div class="text m-4 text-center" *ngIf="showOneCardFromAllThePlayers">
+  <span class="badge badge-warning text-center"
+    >select One Card Of All Other Players To See
+  </span>
+</div>
+
+<div
+  class="text m-4 text-center"
+  *ngIf="finishTheRound != playersIndex && finishTheRound"
+>
+  <span class="badge badge-warning text-center">This Is Last Play</span>
+</div>
