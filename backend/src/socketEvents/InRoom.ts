@@ -6,6 +6,7 @@ module.exports = (io: any, socket: any) => {
   const { getResult } = require("../utils/result");
   const handleinRoom = async ({ userId, roomName, gameId }: any) => {
     try {
+      console.log(gameId);
       const roomRes = await roomInfo(roomName);
       const theGame = await getGame(gameId);
       if (theGame[0].gameStarted) {
@@ -76,7 +77,7 @@ module.exports = (io: any, socket: any) => {
     const theGameUpdate = await UpdateTheGame(gameId, updatedFields);
     io.to(roomName).emit("allCards", [theGameUpdate]);
     const result = await getResult(roomName);
-    socket.emit("showtheResult", result);
+    io.to(roomName).emit("showtheResult", result);
   }
 
   function getRandomNumbers(arr: Array<any>, count: number) {

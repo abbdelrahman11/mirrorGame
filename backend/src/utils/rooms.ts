@@ -1,11 +1,11 @@
 import { resolve } from "path";
-import { roomUsers, roomUsersModel } from "../models/roomUsers.model";
+import { room, roomModel } from "../models/roomUsers.model";
 
-async function CreateRoom(room: roomUsers) {
-  return roomUsersModel.create(room);
+async function CreateRoom(room: room) {
+  return roomModel.create(room);
 }
-async function checkTheRoomName(room: roomUsers) {
-  const rooms = await roomUsersModel.findOne({ roomName: room.roomName });
+async function checkTheRoomName(room: room) {
+  const rooms = await roomModel.findOne({ roomName: room.roomName });
   if (rooms) {
     return new Promise((resolve, reject) => {
       reject("This name already exists. Enter another name");
@@ -16,15 +16,15 @@ async function checkTheRoomName(room: roomUsers) {
 }
 
 function allRooms() {
-  return roomUsersModel.find({});
+  return roomModel.find({});
 }
 
-function userJoin(room: roomUsers) {
-  return roomUsersModel.findByIdAndUpdate(room._id, { usersId: room.usersId });
+function userJoin(room: room) {
+  return roomModel.findByIdAndUpdate(room._id, { usersId: room.usersId });
 }
 
 function roomInfo(roomName: string) {
-  return roomUsersModel.find({ roomName: roomName });
+  return roomModel.find({ roomName: roomName });
 }
 module.exports = {
   CreateRoom,

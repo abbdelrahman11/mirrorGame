@@ -1,5 +1,5 @@
 import mongoose, { Schema, model } from "mongoose";
-export interface roomUsers {
+export interface room {
   _id?: string;
   roomName: string;
   roomPoints: string;
@@ -7,7 +7,7 @@ export interface roomUsers {
   gameId: string;
 }
 
-export const roomUsersSchema = new Schema<roomUsers>(
+export const roomSchema = new Schema<room>(
   {
     roomName: { type: String, required: true, unique: true },
     roomPoints: { type: String, required: true },
@@ -25,4 +25,4 @@ export const roomUsersSchema = new Schema<roomUsers>(
   }
 );
 
-export const roomUsersModel = model<roomUsers>("roomUsers", roomUsersSchema);
+export const roomModel = model<room>("room", roomSchema);

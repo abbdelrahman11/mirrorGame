@@ -3,12 +3,7 @@ import { Game } from "../models/game.model";
 import { Points } from "../models/results";
 
 module.exports = (io: any, socket: any) => {
-  const {
-    UpdateTheGame,
-    cardsSum,
-    getGame,
-    deleteTheGame,
-  } = require("../utils/game");
+  const { UpdateTheGame, cardsSum, deleteTheGame } = require("../utils/game");
   const { create, getResult, getSumOfResult } = require("../utils/result");
   const { CreateGame } = require("../utils/game");
   const { getAllCards } = require("../utils/cards");
@@ -21,18 +16,15 @@ module.exports = (io: any, socket: any) => {
   const handlegaameFinished = async ({ gameId, roomName }: any) => {
     const sum = await cardsSum(gameId);
     await create({ round: sum[0], roomName });
-    const result = await getResult(roomName);
     const sumOfresult = await getSumOfResult(roomName);
     await deleteTheGame(gameId);
     if (checkTheResult(sumOfresult[0])) {
       const gameresCards: Card = await getAllCards();
       const createdGame: Game = await CreateGame({ cards: gameresCards });
-      io.to(roomName).emit("showtheResult", result);
       io.to(roomName).emit("newGame", createdGame._id);
     } else {
       io.to(roomName).emit("canStartTheGame", false);
     }
-    console.log(sumOfresult);
   };
   function checkTheResult(sumOfresult: Points) {
     let StartTheGame: boolean = true;
@@ -41,6 +33,7 @@ module.exports = (io: any, socket: any) => {
         StartTheGame = false;
       }
     }
+
     return StartTheGame;
   }
   socket.on("finishTheRound", handlefinishTheRound);
