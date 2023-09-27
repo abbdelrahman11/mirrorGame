@@ -16,6 +16,7 @@ export class PlayerstatusComponent implements OnInit {
   @Input() playerNumber!: number;
   @Input() makeCanPullFromPullCardActive!: boolean;
   @Input() canPullFromPullCard!: boolean;
+  @Input() playerName!: string | undefined;
   constructor() {}
 
   ngOnInit(): void {}

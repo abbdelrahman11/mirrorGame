@@ -22,17 +22,6 @@
     To Ground
   </button>
 </div>
-<!-- *ngIf="finishTheRound == playersIndex" -->
-<div class="text m-4 text-center">
-  <button
-    class="btn btn-primary text-center position-relative mb-3"
-    style="z-index: 5"
-    (click)="roundFinished()"
-  >
-    Click To End The Game
-  </button>
-</div>
-<div class="overlay" *ngIf="finishTheRound == playersIndex"></div>
 <app-playerstatus
   [finishTheRound]="finishTheRound"
   [playersIndex]="playersIndex"
@@ -44,4 +33,17 @@
   [playerNumber]="playerNumber"
   [makeCanPullFromPullCardActive]="makeCanPullFromPullCardActive"
   [canPullFromPullCard]="canPullFromPullCard"
+  [playerName]="playerName"
 ></app-playerstatus>
+
+<div class="text m-4 text-center" *ngIf="finishTheRound == playersIndex">
+  <button
+    class="btn btn-primary text-center position-relative mb-3"
+    style="z-index: 5"
+    [disabled]="blockRoundFinishedButton"
+    (click)="roundFinished()"
+  >
+    Click To End The Game
+  </button>
+</div>
+<div class="overlay" *ngIf="finishTheRound == playersIndex"></div>

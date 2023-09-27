@@ -35,7 +35,6 @@ export class ResultsComponent implements OnInit {
   constructor(private toastr: ToastrService) {}
   ngOnChanges(): void {
     if (this.Results) {
-      console.log(this.Results);
       this.getsumsOfThePlayersPoints(this.Results);
     }
   }

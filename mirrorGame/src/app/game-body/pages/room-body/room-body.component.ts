@@ -9,7 +9,6 @@ import { Card } from 'src/app/core/interfaces/card';
 import { Room } from 'src/app/core/interfaces/room';
 import { RoomBodyService } from 'src/app/core/services/roomBody.service';
 import { SocketService } from 'src/app/core/services/socket-service.service';
-import { Game } from 'src/app/core/interfaces/game';
 import { Result } from 'src/app/core/interfaces/result';
 
 @Component({
@@ -54,6 +53,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   showTheResult!: Result[];
   winner!: string;
   canStartTheGame: boolean = true;
+  playersInfo!: any;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -79,7 +79,9 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     this.socket.listen('playerIndex').subscribe((res: number) => {
       this.playersIndex = res as number;
     });
-    this.socket.listen('finishTHeGame').subscribe((res) => {});
+    this.socket.listen('canStartTheGame').subscribe((res) => {
+      this.canStartTheGame = res;
+    });
 
     this.socket.listen('allCards').subscribe((res: any) => {
       console.log(res[0]);
@@ -88,7 +90,6 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
       this.tableCards = res[0].tableCards;
       this.activePlayer = res[0].activeUserIndex;
       this.finishTheRound = res[0].finishTheRound;
-      console.log(this.finishTheRound, 'this.finishTheRound');
       this.checkIfPlayerCanPlay();
       this.showLogs();
       this.showTwoCardsToThePlayer(res[0].showTwoCards);
@@ -99,7 +100,6 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     });
     this.socket.listen('newGame').subscribe({
       next: (res) => {
-        console.log(res);
         this.gameId = res;
         this.router.navigate([
           'roombody',
@@ -157,6 +157,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     this.service.getRoomInfo({ roomName: this.roomName }).subscribe({
       next: (res: any) => {
         this.roomInfo = res[0];
+        this.playersInfo = res[0].users_info;
       },
     });
   }
@@ -207,14 +208,11 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   gettheWinner(value: string) {
     this.winner = value;
     if (this.winner) {
-      console.log(value);
     } else {
       console.log('false');
     }
   }
-  checkIfCanStartTheGame(value: boolean) {
-    console.log(value);
-  }
+
   takeAndGiveSelectedCards(value: {
     card: Card;
     playerNumber: number;

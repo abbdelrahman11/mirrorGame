@@ -22,6 +22,7 @@
     <div class=""></div>
     <div class="mt-4">
       <app-player
+        [playersInfo]="playersInfo"
         *ngIf="
           daynamicPlayer[
             (playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4
@@ -54,6 +55,7 @@
   <div class="d-flex justify-content-between first-line">
     <div class="ml-3">
       <app-player
+        [playersInfo]="playersInfo"
         *ngIf="
           daynamicPlayer[
             (playersIndex + 3) % 4 == 0 ? 4 : (playersIndex + 3) % 4
@@ -90,6 +92,7 @@
     </div>
     <div class="mr-3">
       <app-player
+        [playersInfo]="playersInfo"
         *ngIf="
           daynamicPlayer[
             (playersIndex + 1) % 4 == 0 ? 4 : (playersIndex + 1) % 4
@@ -131,6 +134,7 @@
     </div>
     <div class="">
       <app-main-player
+        [playerName]="playersInfo[playersIndex - 1]?.name"
         [allPullCards]="pullCards"
         [Cards]="playerCards"
         [gameId]="gameId"

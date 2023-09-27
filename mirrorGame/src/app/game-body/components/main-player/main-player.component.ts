@@ -20,6 +20,7 @@ export class MainPlayerComponent implements OnInit {
   @Input() playerNumber!: number;
   @Input() updateTheCard!: boolean;
   @Input() finishTheRound!: number;
+  @Input() playerName!: string | undefined;
   @Input() takeAndGiveSelectedCard!:
     | {
         card: Card;
@@ -52,6 +53,7 @@ export class MainPlayerComponent implements OnInit {
   mainPlayerCardIndex!: number;
   lastPlay!: boolean;
   showEndGame!: boolean;
+  blockRoundFinishedButton!: boolean;
 
   constructor(private socket: SocketService) {}
   ngOnChanges(): void {
@@ -308,10 +310,10 @@ export class MainPlayerComponent implements OnInit {
   }
 
   roundFinished() {
-    console.log('roundFinished');
     this.socket.emit('roundFinished', {
       gameId: this.gameId,
       roomName: this.roomName,
     });
+    this.blockRoundFinishedButton = true;
   }
 }

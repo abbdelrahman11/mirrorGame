@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Card } from 'src/app/core/interfaces/card';
+import { User } from 'src/app/core/interfaces/user';
 
 @Component({
   selector: 'app-player',
@@ -14,6 +15,7 @@ export class PlayerComponent implements OnInit {
   @Input() takeAndGive!: boolean;
   @Input() showFourPlayerCards!: boolean;
   @Input() counterUpdatedForPlayers!: number;
+  @Input() playersInfo!: User[];
   @Output() onShowPlayerCardChange = new EventEmitter<boolean>(false);
   @Output() updateCounterForPlayers = new EventEmitter<number>();
   @Output() onshowFourPlayerCardsChange = new EventEmitter<boolean>(false);

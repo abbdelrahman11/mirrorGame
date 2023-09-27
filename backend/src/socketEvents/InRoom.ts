@@ -6,7 +6,6 @@ module.exports = (io: any, socket: any) => {
   const { getResult } = require("../utils/result");
   const handleinRoom = async ({ userId, roomName, gameId }: any) => {
     try {
-      console.log(gameId);
       const roomRes = await roomInfo(roomName);
       const theGame = await getGame(gameId);
       if (theGame[0].gameStarted) {

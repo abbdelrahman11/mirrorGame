@@ -26,6 +26,13 @@ router.post(
           localField: "usersId",
           foreignField: "_id",
           as: "users_info",
+          pipeline: [
+            {
+              $sort: {
+                _id: 1,
+              },
+            },
+          ],
         },
       },
     ]);
