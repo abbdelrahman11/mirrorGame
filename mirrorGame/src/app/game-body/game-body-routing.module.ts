@@ -3,7 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 import { LayoutComponent } from './layout/layout.component';
 import { RoomsComponent } from './pages/rooms/rooms.component';
 import { RoomBodyComponent } from './pages/room-body/room-body.component';
-import { GameFinishedComponent } from './components/game-finished/game-finished.component';
 
 const routes: Routes = [
   {
@@ -17,10 +16,6 @@ const routes: Routes = [
       {
         path: 'roombody/:roomName/:gameId/:id',
         component: RoomBodyComponent,
-      },
-      {
-        path: 'gamefinished',
-        component: GameFinishedComponent,
       },
     ],
   },

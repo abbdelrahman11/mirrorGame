@@ -9,6 +9,7 @@ import {
 import { Result } from 'src/app/core/interfaces/result';
 import { ToastrService } from 'ngx-toastr';
 import { Points } from 'src/app/core/interfaces/point';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-results',
@@ -17,11 +18,12 @@ import { Points } from 'src/app/core/interfaces/point';
 })
 export class ResultsComponent implements OnInit {
   @Input() Results!: Result[];
+  @Input() userId!: string | undefined;
+  @Input() showGameFinished!: boolean;
   @Input() playersInfo: any;
   showTheResults!: boolean;
   sumOfPoints: any = {};
-  @Output() theWinner = new EventEmitter<string>();
-  endTheGame: boolean = false;
+  theWinner!: number;
 
   // @HostListener('document:click', ['$event'])
   // onDocumentClick(event: MouseEvent) {
@@ -33,11 +35,20 @@ export class ResultsComponent implements OnInit {
   //   }
   // }
 
-  constructor(private toastr: ToastrService) {}
+  constructor(private toastr: ToastrService, private router: Router) {}
   ngOnChanges(): void {
     if (this.Results) {
       console.log(this.Results);
       this.getsumsOfThePlayersPoints(this.Results);
+    }
+  }
+
+  ngOnInit(): void {}
+  getResult() {
+    if (!this.Results?.length) {
+      this.toastr.info('Result Empty');
+    } else {
+      this.showTheResults = !this.showTheResults;
     }
   }
   getsumsOfThePlayersPoints(Results: Result[]) {
@@ -53,14 +64,17 @@ export class ResultsComponent implements OnInit {
         }
       }
     });
-  }
-
-  ngOnInit(): void {}
-  getResult() {
-    if (!this.Results?.length) {
-      this.toastr.info('Result Empty');
-    } else {
-      this.showTheResults = !this.showTheResults;
+    console.log(this.playersInfo);
+    console.log(this.sumOfPoints);
+    if (Object.keys(this.sumOfPoints).length) {
+      const smallestKey = Object.keys(this.sumOfPoints).reduce((a, b) =>
+        this.sumOfPoints[a] < this.sumOfPoints[b] ? a : b
+      );
+      this.theWinner = Object.keys(this.sumOfPoints).indexOf(smallestKey);
     }
+  }
+  goHome() {
+    // this.router.navigate(['']);
+    this.router.navigate(['rooms', this.userId]);
   }
 }

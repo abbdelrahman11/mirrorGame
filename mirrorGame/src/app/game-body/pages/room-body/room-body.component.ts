@@ -51,11 +51,11 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   };
   finishTheRound!: number;
   showTheResult!: Result[];
-  winner!: string;
   StartTheGame = localStorage.getItem('canStartTheGame');
   canStartTheGame!: boolean;
   playersInfo!: any;
   roomPoints!: number;
+  showGameFinished!: boolean;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -66,11 +66,12 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   ngOnInit(): void {
     if (this.StartTheGame === 'false') {
       this.canStartTheGame = false;
+      this.showGameFinished = true;
     } else {
       this.canStartTheGame = true;
     }
     this.getRouteParams();
-    if (localStorage.getItem('canStartTheGame') != 'false') {
+    if (this.canStartTheGame) {
       this.getRoomInfo();
       this.socket.emit('inRoom', {
         roomName: this.roomName,
@@ -88,9 +89,8 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     });
     this.socket.listen('canStartTheGame').subscribe((res) => {
       this.canStartTheGame = res;
-      console.log(res);
       localStorage.setItem('canStartTheGame', res);
-      this.router.navigateByUrl('gamefinished');
+      this.showGameFinished = !res;
     });
 
     this.socket.listen('allCards').subscribe((res: any) => {
@@ -167,8 +167,8 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     this.service.getRoomInfo({ roomName: this.roomName }).subscribe({
       next: (res: any) => {
         this.roomInfo = res[0];
-        this.playersInfo = res[0].users_info;
-        this.roomPoints = res[0].roomPoints;
+        this.playersInfo = res[0]?.users_info;
+        this.roomPoints = res[0]?.roomPoints;
       },
     });
   }
@@ -215,13 +215,6 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   }
   updateCounter(value: number) {
     this.updateCounterForPlayers = value;
-  }
-  gettheWinner(value: string) {
-    this.winner = value;
-    if (this.winner) {
-    } else {
-      console.log('false');
-    }
   }
 
   takeAndGiveSelectedCards(value: {

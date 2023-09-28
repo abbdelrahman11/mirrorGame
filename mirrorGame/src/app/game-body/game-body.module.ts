@@ -16,7 +16,6 @@ import { TableCardsComponent } from './components/table-cards/table-cards.compon
 import { ResultsComponent } from './components/results/results.component';
 import { WaitThePlayerComponent } from './components/wait-the-player/wait-the-player.component';
 import { SayMirrorComponent } from './components/say-mirror/say-mirror.component';
-import { GameFinishedComponent } from './components/game-finished/game-finished.component';
 import { PlayerstatusComponent } from './components/playerstatus/playerstatus.component';
 
 @NgModule({
@@ -32,7 +31,6 @@ import { PlayerstatusComponent } from './components/playerstatus/playerstatus.co
     ResultsComponent,
     WaitThePlayerComponent,
     SayMirrorComponent,
-    GameFinishedComponent,
     PlayerstatusComponent,
   ],
   imports: [

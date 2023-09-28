@@ -3,11 +3,15 @@
   style="left: 83%"
   id="result"
   (click)="getResult()"
+  *ngIf="!showGameFinished"
 >
   Result
 </button>
 
-<table class="table table-bordered mt-5" *ngIf="showTheResults">
+<table
+  class="table table-bordered mt-5"
+  *ngIf="showTheResults || showGameFinished"
+>
   <thead>
     <tr>
       <th scope="col">#</th>
@@ -49,3 +53,12 @@
     </tr>
   </tbody>
 </table>
+<div class="text m-4 text-center" *ngIf="showGameFinished">
+  The Winner Is
+  <span class="badge badge-warning text-center"
+    >{{ playersInfo ? playersInfo[theWinner]?.name : "" }}
+  </span>
+</div>
+<div class="text m-4 text-center">
+  <button class="btn btn-info" (click)="goHome()">Go Home</button>
+</div>

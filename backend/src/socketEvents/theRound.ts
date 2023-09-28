@@ -26,7 +26,7 @@ module.exports = (io: any, socket: any) => {
     } else {
       const result = await getResult(roomName);
       io.to(roomName).emit("showtheResult", result);
-      await deleteTheRoom(roomName);
+      // await deleteTheRoom(roomName);
       io.to(roomName).emit("canStartTheGame", false);
     }
   };
