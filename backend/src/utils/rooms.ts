@@ -4,6 +4,9 @@ import { room, roomModel } from "../models/roomUsers.model";
 async function CreateRoom(room: room) {
   return roomModel.create(room);
 }
+async function deleteTheRoom(roomName: string) {
+  return roomModel.findOneAndDelete({ roomName });
+}
 async function checkTheRoomName(room: room) {
   const rooms = await roomModel.findOne({ roomName: room.roomName });
   if (rooms) {
@@ -32,4 +35,5 @@ module.exports = {
   userJoin,
   roomInfo,
   checkTheRoomName,
+  deleteTheRoom,
 };

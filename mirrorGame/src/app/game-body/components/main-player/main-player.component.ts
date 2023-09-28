@@ -20,6 +20,7 @@ export class MainPlayerComponent implements OnInit {
   @Input() playerNumber!: number;
   @Input() updateTheCard!: boolean;
   @Input() finishTheRound!: number;
+  @Input() roomPoints!: number;
   @Input() playerName!: string | undefined;
   @Input() takeAndGiveSelectedCard!:
     | {
@@ -313,6 +314,7 @@ export class MainPlayerComponent implements OnInit {
     this.socket.emit('roundFinished', {
       gameId: this.gameId,
       roomName: this.roomName,
+      roomPoints: this.roomPoints,
     });
     this.blockRoundFinishedButton = true;
   }

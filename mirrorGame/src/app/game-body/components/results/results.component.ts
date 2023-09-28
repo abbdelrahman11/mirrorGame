@@ -17,6 +17,7 @@ import { Points } from 'src/app/core/interfaces/point';
 })
 export class ResultsComponent implements OnInit {
   @Input() Results!: Result[];
+  @Input() playersInfo: any;
   showTheResults!: boolean;
   sumOfPoints: any = {};
   @Output() theWinner = new EventEmitter<string>();
@@ -35,6 +36,7 @@ export class ResultsComponent implements OnInit {
   constructor(private toastr: ToastrService) {}
   ngOnChanges(): void {
     if (this.Results) {
+      console.log(this.Results);
       this.getsumsOfThePlayersPoints(this.Results);
     }
   }
@@ -52,6 +54,7 @@ export class ResultsComponent implements OnInit {
       }
     });
   }
+
   ngOnInit(): void {}
   getResult() {
     if (!this.Results?.length) {

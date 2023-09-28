@@ -11,6 +11,7 @@
 <app-results
   style="position: fixed; z-index: 100; width: 100%"
   [Results]="showTheResult"
+  [playersInfo]="playersInfo"
   (theWinner)="gettheWinner($event)"
 ></app-results>
 <div
@@ -156,6 +157,7 @@
         [updateTheCard]="updateTheCard"
         [takeAndGiveSelectedCard]="takeAndGiveSelectedCard"
         [finishTheRound]="finishTheRound"
+        [roomPoints]="roomPoints"
       ></app-main-player>
     </div>
     <div class=""></div>
@@ -166,4 +168,3 @@
   <p class="mt-3">Waiting For All Members To Join The Room</p>
 </div>
 <div class="overlay" *ngIf="!playerCanPlay && canStartTheGame"></div>
-<app-game-finished *ngIf="!canStartTheGame"></app-game-finished>

@@ -52,8 +52,10 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   finishTheRound!: number;
   showTheResult!: Result[];
   winner!: string;
-  canStartTheGame: boolean = true;
+  StartTheGame = localStorage.getItem('canStartTheGame');
+  canStartTheGame!: boolean;
   playersInfo!: any;
+  roomPoints!: number;
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
@@ -62,9 +64,14 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     private changeDetector: ChangeDetectorRef
   ) {}
   ngOnInit(): void {
+    if (this.StartTheGame === 'false') {
+      this.canStartTheGame = false;
+    } else {
+      this.canStartTheGame = true;
+    }
     this.getRouteParams();
-    this.getRoomInfo();
-    if (this.canStartTheGame) {
+    if (localStorage.getItem('canStartTheGame') != 'false') {
+      this.getRoomInfo();
       this.socket.emit('inRoom', {
         roomName: this.roomName,
         userId: this.userId,
@@ -81,6 +88,9 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     });
     this.socket.listen('canStartTheGame').subscribe((res) => {
       this.canStartTheGame = res;
+      console.log(res);
+      localStorage.setItem('canStartTheGame', res);
+      this.router.navigateByUrl('gamefinished');
     });
 
     this.socket.listen('allCards').subscribe((res: any) => {
@@ -98,7 +108,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     this.socket.listen('showtheResult').subscribe((res: any) => {
       this.showTheResult = res;
     });
-    this.socket.listen('newGame').subscribe({
+    this.socket.listen('newRound').subscribe({
       next: (res) => {
         this.gameId = res;
         this.router.navigate([
@@ -158,6 +168,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
       next: (res: any) => {
         this.roomInfo = res[0];
         this.playersInfo = res[0].users_info;
+        this.roomPoints = res[0].roomPoints;
       },
     });
   }

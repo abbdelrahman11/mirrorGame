@@ -5,7 +5,7 @@ import { RoomsService } from 'src/app/core/services/rooms.service';
 import { Room } from 'src/app/core/interfaces/room';
 import { SocketService } from 'src/app/core/services/socket-service.service';
 interface points {
-  name: string;
+  name: number;
 }
 @Component({
   selector: 'app-rooms',
@@ -28,7 +28,7 @@ export class RoomsComponent implements OnInit {
     private ActivatedRoute: ActivatedRoute,
     private socket: SocketService
   ) {
-    this.points = [{ name: '50 Point' }, { name: '100 Point' }];
+    this.points = [{ name: 50 }, { name: 100 }];
   }
 
   ngOnInit(): void {
@@ -90,5 +90,8 @@ export class RoomsComponent implements OnInit {
         this.userId,
       ]);
     });
+  }
+  ngOnDestroy(): void {
+    localStorage.removeItem('canStartTheGame');
   }
 }

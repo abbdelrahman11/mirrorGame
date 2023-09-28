@@ -11,10 +11,7 @@
   <thead>
     <tr>
       <th scope="col">#</th>
-      <th scope="col">player One</th>
-      <th scope="col">player two</th>
-      <th scope="col">player three</th>
-      <th scope="col">player four</th>
+      <th scope="col" *ngFor="let player of playersInfo">{{ player.name }}</th>
     </tr>
   </thead>
   <tbody>
