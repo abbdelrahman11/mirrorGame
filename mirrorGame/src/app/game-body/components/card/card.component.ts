@@ -7,6 +7,7 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class CardComponent implements OnInit {
   @Input() flip!: boolean;
+  @Input() color!: string;
   @Input() CardData!: any;
   @Input() disabled!: boolean;
   @Input() cardWidth!: number;

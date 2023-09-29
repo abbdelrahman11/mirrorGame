@@ -1,12 +1,8 @@
-.first-line {
-  height: 33%;
-}
 .loaderContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  height: 100vh;
   background-color: #d8d4d4;
   z-index: 5;
 }
@@ -34,4 +30,9 @@
   height: 100%;
   /* background-color: rgba(0, 0, 0, 0.5); */
   z-index: 10;
+}
+@media (min-width: 320px) and (max-width: 576px) {
+  .pull-cards {
+    height: 150px;
+  }
 }

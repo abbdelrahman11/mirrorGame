@@ -12,6 +12,7 @@
     <!-- ! -->
     <app-card
       [CardData]="card"
+      [color]="'#2196f3'"
       [flip]="flipCardsArray[i]"
       (click)="playerCard(card, i)"
     ></app-card>
@@ -36,7 +37,7 @@
   [playerName]="playerName"
 ></app-playerstatus>
 
-<div class="text m-4 text-center">
+<div class="text m-4 text-center" *ngIf="finishTheRound == playersIndex">
   <button
     class="btn btn-primary text-center position-relative mb-3"
     style="z-index: 5"

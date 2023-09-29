@@ -1,4 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  HostBinding,
+  HostListener,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { Card } from 'src/app/core/interfaces/card';
 import { User } from 'src/app/core/interfaces/user';
 
@@ -16,6 +24,7 @@ export class PlayerComponent implements OnInit {
   @Input() showFourPlayerCards!: boolean;
   @Input() counterUpdatedForPlayers!: number;
   @Input() playersInfo!: User[];
+  @Input() column!: boolean;
   @Output() onShowPlayerCardChange = new EventEmitter<boolean>(false);
   @Output() updateCounterForPlayers = new EventEmitter<number>();
   @Output() onshowFourPlayerCardsChange = new EventEmitter<boolean>(false);
@@ -29,9 +38,32 @@ export class PlayerComponent implements OnInit {
   flipCardsArray: Array<boolean> = [];
   counter!: number;
   clickedCards: number[] = [];
+  isSmallScreen = false;
 
-  constructor() {}
-  ngOnChanges() {}
+  @HostBinding('class.your-class')
+  get shouldApplyClass() {
+    return this.isSmallScreen;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(event: Event) {
+    this.checkScreenSize();
+  }
+
+  constructor() {
+    this.checkScreenSize();
+  }
+  private checkScreenSize() {
+    if (this.column) {
+      this.isSmallScreen = window.innerWidth > 350 && window.innerWidth < 576; // Adjust the breakpoint as per your needs
+    }
+  }
+  ngOnChanges() {
+    console.log(this.column);
+    if (this.column) {
+      this.checkScreenSize();
+    }
+  }
   ngOnInit(): void {}
   CardChecked(index: number) {
     if (this.showPlayerCards) {

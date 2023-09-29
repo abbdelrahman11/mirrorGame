@@ -8,7 +8,7 @@
   transform-style: preserve-3d;
   cursor: pointer;
   position: relative;
-  margin: 0 10px;
+  margin: 0 5px;
 }
 .memory-game-blocks .game-block .front {
   background-color: #333;
@@ -35,7 +35,6 @@
   justify-content: center;
   align-items: center;
   backface-visibility: hidden;
-  border: 5px solid #2196f3;
 }
 .memory-game-blocks .game-block.is-flipped {
   -webkit-transform: rotateY(180deg);
@@ -51,4 +50,19 @@
 }
 .disable {
   pointer-events: none;
+}
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) {
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) {
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) {
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
 }

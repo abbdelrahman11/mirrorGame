@@ -1,10 +1,15 @@
 <div
   *ngFor="let card of Cards; let i = index"
   class="inner"
-  style="left: 45%"
+  style="left: 50%; top: 50%"
   [ngClass]="showTakeButton ? 'player-card' : ''"
 >
-  <app-card [flip]="false" [CardData]="card" (click)="playerCard(i)">
+  <app-card
+    [flip]="false"
+    [CardData]="card"
+    [color]="'whitee'"
+    (click)="playerCard(i)"
+  >
   </app-card>
 </div>
 

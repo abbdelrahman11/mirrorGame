@@ -29,7 +29,6 @@ export class ResultsComponent implements OnInit {
   // onDocumentClick(event: MouseEvent) {
   //   const clickedElement = event.target as HTMLElement;
   //   const result = document.getElementById('result');
-  //   console.log(clickedElement);
   //   if (result && !result.contains(clickedElement)) {
   //     this.showTheResults = false;
   //   }
@@ -38,7 +37,6 @@ export class ResultsComponent implements OnInit {
   constructor(private toastr: ToastrService, private router: Router) {}
   ngOnChanges(): void {
     if (this.Results) {
-      console.log(this.Results);
       this.getsumsOfThePlayersPoints(this.Results);
     }
   }
@@ -64,8 +62,6 @@ export class ResultsComponent implements OnInit {
         }
       }
     });
-    console.log(this.playersInfo);
-    console.log(this.sumOfPoints);
     if (Object.keys(this.sumOfPoints).length) {
       const smallestKey = Object.keys(this.sumOfPoints).reduce((a, b) =>
         this.sumOfPoints[a] < this.sumOfPoints[b] ? a : b
