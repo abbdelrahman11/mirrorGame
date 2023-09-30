@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Card } from 'src/app/core/interfaces/card';
 
 @Component({
   selector: 'app-card',
@@ -8,7 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class CardComponent implements OnInit {
   @Input() flip!: boolean;
   @Input() color!: string;
-  @Input() CardData!: any;
+  @Input() CardData!: Card;
   @Input() disabled!: boolean;
   @Input() cardWidth!: number;
   @Input() cardHeight!: number;

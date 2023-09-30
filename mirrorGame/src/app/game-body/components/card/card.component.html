@@ -7,9 +7,10 @@
     class="game-block"
     [ngClass]="flip ? 'is-flipped' : 'flip-back'"
     [style.height.px]="cardHeight"
+    [id]="CardData._id"
   >
     <div class="face front text-center" [style.border]="'5px solid ' + color">
-      <span class="before">{{ CardData?.content }}</span>
+      <span class="before">{{ CardData.content }}</span>
     </div>
     <div class="face back">
       <img decoding="async" src="../../../assets/Mirror_Logo.png" alt="" />

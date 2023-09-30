@@ -80,7 +80,12 @@ export class MainPlayerComponent implements OnInit {
       this.TakeOneCardAndGiveFeature(this.takeAndGiveSelectedCard);
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.socket.listen('moveTheCards').subscribe((res: any) => {
+      console.log(res);
+      this.moveTheCard(res.sourceId, res.targetId);
+    });
+  }
 
   playerCard(playercard: Card, index: number) {
     if (this.showOneOfYourCard) {
@@ -130,6 +135,7 @@ export class MainPlayerComponent implements OnInit {
       PullCardsKeyName: 'pullCards',
       tableCardsKeyName: 'tableCards',
     });
+
     this.makeCanPullFromPullCardActive = false;
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
@@ -317,5 +323,24 @@ export class MainPlayerComponent implements OnInit {
       roomPoints: this.roomPoints,
     });
     this.blockRoundFinishedButton = true;
+  }
+  moveTheCard(sourceId: any, targetId: any) {
+    const sourceCircle: any = document.getElementById(sourceId);
+    const targetCircle: any = document.getElementById(targetId);
+
+    const sourceRect = sourceCircle.getBoundingClientRect();
+    const targetRect = targetCircle.getBoundingClientRect();
+    const deltaX = targetRect.left - sourceRect.left;
+    const deltaY = targetRect.top - sourceRect.top;
+    console.log(deltaX, deltaY);
+
+    setTimeout(function () {
+      sourceCircle.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+    }, 10);
+
+    setTimeout(function () {
+      sourceCircle.style.animation = '';
+      sourceCircle.style.transform = '';
+    }, 2000);
   }
 }
