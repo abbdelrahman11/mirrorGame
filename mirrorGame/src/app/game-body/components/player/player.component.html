@@ -1,7 +1,12 @@
-<div class="mt-5">
+<div [class]="isSmallScreen ? '' : 'mt-5'">
   <div class="text-center">
     <p class="badge badge-primary" *ngIf="activePlayerNumber == playerNumber">
       player is now playing
+    </p>
+  </div>
+  <div class="text-center">
+    <p style="color: #fff" *ngIf="activePlayerNumber != playerNumber">
+      Not Playing
     </p>
   </div>
 
@@ -17,7 +22,6 @@
     </ng-container>
   </div>
 </div>
-<!-- <div>{{ playerNumber }}</div> -->
 <div class="text m-1 text-center">
   <span class="badge badge-primary">{{
     playersInfo[playerNumber - 1].name

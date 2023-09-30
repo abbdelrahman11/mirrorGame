@@ -1,8 +1,7 @@
 <div
   *ngFor="let card of Cards; let i = index"
   class="inner"
-  style="left: 50%; top: 50%"
-  [ngClass]="showTakeButton ? 'player-card' : ''"
+  [style]="isSmallScreen ? '' : 'left:62%; bottom:15%'"
 >
   <app-card
     [flip]="false"
@@ -12,10 +11,11 @@
   >
   </app-card>
 </div>
-
 <div
   class="position-absolute text-center"
-  style="left: 46.5%; bottom: 43%"
+  [style]="
+    isSmallScreen ? 'left: 28.5%;bottom: 71%' : 'bottom: -1%; left: 67%;'
+  "
   *ngIf="showTakeButton"
 >
   <button class="btn btn-warning" (click)="takeTheCard()">Take</button>

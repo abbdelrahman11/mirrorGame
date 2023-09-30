@@ -55,7 +55,7 @@
     </div>
     <div class="col-md-4 col-sm-4"></div>
   </div>
-  <div style="display: flex; flex-wrap: nowrap; align-items: center">
+  <div class="d-flex flex-nowrap">
     <div class="col-md-4 col-sm-4">
       <app-player
         [playersInfo]="playersInfo"
@@ -77,7 +77,7 @@
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
         [showPlayerCards]="showPlayerCards"
         [takeAndGive]="takeAndGive"
-        [column]="true"
+        [isSmallScreen]="isSmallScreen"
         [showFourPlayerCards]="showFourPlayerCards"
         (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
         (onshowFourPlayerCardsChange)="onshowFourPlayerCardChange($event)"
@@ -89,10 +89,20 @@
     </div>
     <div class="col-md-4 col-sm-4">
       <app-table-cards
+        [isSmallScreen]="isSmallScreen"
         [Cards]="tableCards"
         [hideTheButton]="hideTheButton"
         (canPullFromGround)="canPullFromGround($event)"
       ></app-table-cards>
+      <app-pull-cards
+        [Cards]="pullCards"
+        [gameId]="gameId"
+        [isSmallScreen]="isSmallScreen"
+        [roomName]="roomName"
+        [hideTheCard]="hideTheCard"
+        (canPullFromPullCards)="canPullFromPullCards($event)"
+        (selectedCard)="theSelectedCard($event)"
+      ></app-pull-cards>
     </div>
     <div class="col-md-4 col-sm-4">
       <app-player
@@ -115,7 +125,7 @@
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
         [showPlayerCards]="showPlayerCards"
         [takeAndGive]="takeAndGive"
-        [column]="true"
+        [isSmallScreen]="isSmallScreen"
         [showFourPlayerCards]="showFourPlayerCards"
         (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
         (onshowFourPlayerCardsChange)="onshowFourPlayerCardChange($event)"
@@ -126,17 +136,8 @@
       ></app-player>
     </div>
   </div>
-  <div class="row mt-5">
-    <div class="pull-cards col-md-4 col-sm-4">
-      <app-pull-cards
-        [Cards]="pullCards"
-        [gameId]="gameId"
-        [roomName]="roomName"
-        [hideTheCard]="hideTheCard"
-        (canPullFromPullCards)="canPullFromPullCards($event)"
-        (selectedCard)="theSelectedCard($event)"
-      ></app-pull-cards>
-    </div>
+  <div class="row">
+    <div *ngIf="!isSmallScreen" class="pull-cards col-md-4 col-sm-4"></div>
     <div class="col-md-4 col-sm-4">
       <app-main-player
         [playerName]="playersInfo[playersIndex - 1]?.name"

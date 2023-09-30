@@ -12,6 +12,7 @@ export class PullCardsComponent implements OnInit {
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() hideTheCard!: boolean;
+  @Input() isSmallScreen!: boolean;
   @Output() canPullFromPullCards = new EventEmitter<boolean>();
   @Output() selectedCard = new EventEmitter<Card>();
   splicedCards!: Card[];

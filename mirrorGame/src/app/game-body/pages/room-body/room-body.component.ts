@@ -2,6 +2,8 @@ import {
   AfterContentChecked,
   ChangeDetectorRef,
   Component,
+  HostBinding,
+  HostListener,
   OnInit,
 } from '@angular/core';
 import { ActivatedRoute, Route, Router } from '@angular/router';
@@ -56,13 +58,32 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   playersInfo!: any;
   roomPoints!: number;
   showGameFinished!: boolean;
+  isSmallScreen: boolean = false;
+
+  @HostBinding('class.your-class')
+  get shouldApplyClass() {
+    return this.isSmallScreen;
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onWindowResize(event: Event) {
+    this.checkScreenSize();
+  }
+  private checkScreenSize() {
+    this.isSmallScreen = window.innerWidth > 350 && window.innerWidth < 576; // Adjust the breakpoint as per your needs
+  }
   constructor(
     private service: RoomBodyService,
     private ActivatedRoute: ActivatedRoute,
     private router: Router,
     private socket: SocketService,
     private changeDetector: ChangeDetectorRef
-  ) {}
+  ) {
+    this.checkScreenSize();
+  }
+  ngOnChanges() {
+    this.checkScreenSize();
+  }
   ngOnInit(): void {
     if (this.StartTheGame === 'false') {
       this.canStartTheGame = false;

@@ -3,8 +3,5 @@
 }
 .btns {
   position: absolute;
-  top: 55%;
-  right: 44%;
   z-index: 2;
-  margin: 10px;
 }
