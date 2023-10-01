@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "cd src && nodemon server.ts",
+    "start": "cd src && ts-node server.ts",
+    "test": "cd src && nodemon server.ts",
     "build": "npm install && tsc"
   },
   "keywords": [],
