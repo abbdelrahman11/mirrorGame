@@ -36,11 +36,16 @@ const io = require("socket.io")(server, {
     credentials: true,
   },
 });
+// app.use(
+//   cors({
+//     origin: "*",
+//     methods: "GET,POST,PUT,DELETE",
+//     credentials: true,
+//   })
+// );
 app.use(
   cors({
     origin: "*",
-    methods: "GET,POST,PUT,DELETE",
-    credentials: true,
   })
 );
 app.use(express.json());
