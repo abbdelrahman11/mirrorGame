@@ -135,17 +135,8 @@ export class MainPlayerComponent implements OnInit {
       PullCardsKeyName: 'pullCards',
       tableCardsKeyName: 'tableCards',
     });
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: this.allPullCards[1]._id,
-      targetId: selectedplayercard._id,
-    });
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: selectedplayercard._id,
-      targetId: this.allTableCards[0]._id,
-    });
-
+    this.MoveTheCards(this.allPullCards[0]._id, selectedplayercard._id);
+    this.MoveTheCards(selectedplayercard._id, this.allTableCards[0]._id);
     this.makeCanPullFromPullCardActive = false;
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
@@ -155,11 +146,10 @@ export class MainPlayerComponent implements OnInit {
     let tableCardsCopy = [...this.allTableCards];
     let card = tableCardsCopy.pop();
     tableCardsCopy.push(this.copyOfPlayerCards[index]);
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: this.allTableCards[0]._id,
-      targetId: this.copyOfPlayerCards[index]._id,
-    });
+    this.MoveTheCards(
+      this.allTableCards[0]._id,
+      this.copyOfPlayerCards[index]._id
+    );
     if (card) this.copyOfPlayerCards[index] = card;
     this.socket.emit('playerTakesCardFromGround', {
       gameId: this.gameId,
@@ -200,11 +190,10 @@ export class MainPlayerComponent implements OnInit {
     this.allTableCardsCopy.push(tableCard);
     this.allTableCardsCopy.push(tableCard);
     let copyOfCards = [...this.Cards];
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: this.Cards[this.playerCardToCheckInex]._id,
-      targetId: this.allTableCardsCopy[0]._id,
-    });
+    this.MoveTheCards(
+      this.Cards[this.playerCardToCheckInex]._id,
+      this.allTableCardsCopy[0]._id
+    );
     copyOfCards.splice(this.playerCardToCheckInex, 1);
     this.showSelectedCard[this.playerCardToCheckInex] = false;
     this.showToGround = false;
@@ -221,11 +210,10 @@ export class MainPlayerComponent implements OnInit {
     if (tableCard) this.Cards.push(tableCard);
     this.showSelectedCard[this.playerCardToCheckInex] = false;
     this.showToGround = false;
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: this.Cards[this.playerCardToCheckInex]._id,
-      targetId: this.allTableCardsCopy[0]._id,
-    });
+    this.MoveTheCards(
+      this.Cards[this.playerCardToCheckInex]._id,
+      this.allTableCardsCopy[0]._id
+    );
 
     this.socket.emit('updatePlayerCards', {
       gameId: this.gameId,
@@ -274,21 +262,15 @@ export class MainPlayerComponent implements OnInit {
     cardIndex: number;
   }) {
     let allPullCardsCopy = [...this.allPullCards];
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: takeAndGiveSelectedCard.card._id,
-      targetId: this.Cards[this.mainPlayerCardIndex]._id,
-    });
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: this.Cards[this.mainPlayerCardIndex]._id,
-      targetId: takeAndGiveSelectedCard.card._id,
-    });
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: this.allPullCards[0]._id,
-      targetId: this.allTableCardsCopy[0]._id,
-    });
+    this.MoveTheCards(
+      takeAndGiveSelectedCard.card._id,
+      this.Cards[this.mainPlayerCardIndex]._id
+    );
+    this.MoveTheCards(
+      this.Cards[this.mainPlayerCardIndex]._id,
+      takeAndGiveSelectedCard.card._id
+    );
+    this.MoveTheCards(this.allPullCards[0]._id, this.allTableCardsCopy[0]._id);
     const card = allPullCardsCopy.pop();
     if (card) this.allTableCardsCopy.push(card);
 
@@ -317,16 +299,8 @@ export class MainPlayerComponent implements OnInit {
   }
   async Basra(playercard: Card, index: number) {
     let allPullCardsCopy = [...this.allPullCards];
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: this.allPullCards[0]._id,
-      targetId: this.allTableCardsCopy[0]._id,
-    });
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: playercard._id,
-      targetId: this.allTableCardsCopy[0]._id,
-    });
+    this.MoveTheCards(this.allPullCards[0]._id, this.allTableCardsCopy[0]._id);
+    this.MoveTheCards(playercard._id, this.allTableCardsCopy[0]._id);
     const card = allPullCardsCopy.pop();
     if (card) this.allTableCardsCopy.push(card);
     this.allTableCardsCopy.push(playercard);
@@ -350,11 +324,7 @@ export class MainPlayerComponent implements OnInit {
   updateTheCards() {
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: this.allPullCards[0]._id,
-      targetId: this.allTableCardsCopy[0]._id,
-    });
+    this.MoveTheCards(this.allPullCards[0]._id, this.allTableCardsCopy[0]._id);
     this.socket.emit('fromPullCardsToTable', {
       gameId: this.gameId,
       deleteCards: allPullCardsCopy,
@@ -400,5 +370,12 @@ export class MainPlayerComponent implements OnInit {
       sourceCircle.style.animation = '';
       sourceCircle.style.transform = '';
     }, 2000);
+  }
+  MoveTheCards(sourceId: string, targetId: string) {
+    this.socket.emit('moveTheCard', {
+      roomName: this.roomName,
+      sourceId: sourceId,
+      targetId: targetId,
+    });
   }
 }
