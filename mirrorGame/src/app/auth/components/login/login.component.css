@@ -1,7 +1,9 @@
-.divider:after,
-.divider:before {
-content: "";
-flex: 1;
-height: 1px;
-background: #eee;
+.signup-btn {
+  background: none;
+  border: none;
+  padding: 0;
+  font: inherit;
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
 }

@@ -12,9 +12,10 @@
       <div class="col-md-7 col-lg-5 col-xl-5 offset-xl-1">
         <form [formGroup]="form">
           <div class="form-outline mb-4">
-            <label class="form-label" for="form1Example13">Name</label>
+            <label class="form-label" for="Name">Name</label>
             <input
               type="text"
+              name="Name"
               class="form-control form-control-lg"
               placeholder="Name"
               formControlName="name"
@@ -22,9 +23,10 @@
           </div>
 
           <div class="form-outline mb-4">
-            <label class="form-label" for="form1Example13">Email address</label>
+            <label class="form-label" for="Email address">Email address</label>
             <input
               type="email"
+              name="Email address"
               class="form-control form-control-lg"
               placeholder="Email address"
               formControlName="email"
@@ -32,9 +34,10 @@
           </div>
 
           <div class="form-outline mb-4">
-            <label class="form-label" for="form1Example23">Password</label>
+            <label class="form-label" for="Password">Password</label>
             <input
               type="password"
+              name="Password"
               class="form-control form-control-lg"
               placeholder="Password"
               formControlName="password"
@@ -48,19 +51,19 @@
           >
             Sign up
           </button>
-
+          <!--
           <div class="divider d-flex align-items-center my-4">
             <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
-          </div>
+          </div> -->
 
-          <a
+          <!-- <a
             class="btn btn-primary btn-lg btn-block d-block"
             style="background-color: #dd4b39"
             (click)="SignupWithGoogle()"
             role="button"
           >
             <i class="fab fa-facebook-f me-2"></i>Sign up with Google
-          </a>
+          </a> -->
         </form>
       </div>
     </div>

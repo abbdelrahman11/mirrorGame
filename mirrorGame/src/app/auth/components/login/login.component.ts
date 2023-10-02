@@ -39,4 +39,7 @@ export class LoginComponent implements OnInit {
     localStorage.setItem('token', res.token);
     this.router.navigate(['/rooms', res.id]);
   }
+  routeToSignup() {
+    this.router.navigateByUrl('auth/signup');
+  }
 }
