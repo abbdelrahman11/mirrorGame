@@ -70,7 +70,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     this.checkScreenSize();
   }
   private checkScreenSize() {
-    this.isSmallScreen = window.innerWidth > 350 && window.innerWidth < 576; // Adjust the breakpoint as per your needs
+    this.isSmallScreen = window.innerWidth > 350 && window.innerWidth < 576;
   }
   constructor(
     private service: RoomBodyService,

@@ -23,11 +23,10 @@
             </div>
           </div>
         </div>
-        <div
-          class="my-3 mx-0 d-flex justify-content-center flex-column"
-          *ngIf="room.usersId.length == 4"
-        >
-          <span class="badge badge-danger"> Completed </span>
+        <div class="row mb-2">
+          <div class="col-md-12 text-center" *ngIf="room.usersId.length == 4">
+            <span class="badge badge-danger"> Completed </span>
+          </div>
         </div>
         <div class="text-center">
           <button
@@ -48,7 +47,7 @@
 <p-dialog
   header="Create Room"
   [(visible)]="display"
-  [style]="{ width: '250px', height: '300px' }"
+  [style]="{ width: '300px', height: '300px' }"
 >
   <div class="content text-center">
     <div class="input-group mb-3 w-30">
