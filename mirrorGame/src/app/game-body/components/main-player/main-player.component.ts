@@ -356,20 +356,21 @@ export class MainPlayerComponent implements OnInit {
   moveTheCard(sourceId: any, targetId: any) {
     const sourceCircle: any = document.getElementById(sourceId);
     const targetCircle: any = document.getElementById(targetId);
-
     const sourceRect = sourceCircle.getBoundingClientRect();
     const targetRect = targetCircle.getBoundingClientRect();
-    const deltaX = targetRect.left - sourceRect.left;
-    const deltaY = targetRect.top - sourceRect.top;
+    if (sourceRect && targetRect) {
+      const deltaX = targetRect.left - sourceRect.left;
+      const deltaY = targetRect.top - sourceRect.top;
 
-    setTimeout(function () {
-      sourceCircle.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
-    }, 10);
+      setTimeout(function () {
+        sourceCircle.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
+      }, 10);
 
-    setTimeout(function () {
-      sourceCircle.style.animation = '';
-      sourceCircle.style.transform = '';
-    }, 2000);
+      setTimeout(function () {
+        sourceCircle.style.animation = '';
+        sourceCircle.style.transform = '';
+      }, 2000);
+    }
   }
   MoveTheCards(sourceId: string, targetId: string) {
     this.socket.emit('moveTheCard', {

@@ -51,10 +51,14 @@ export class RoomsComponent implements OnInit {
   }
   joinTheRoom(room: Room) {
     let data = room;
-    data.usersId.push(this.userId);
-    this.RoomName = data.roomName;
-    this.socket.emit('joinRoom', data);
-    this.gameId = data.gameId;
+    if (data.usersId.includes(this.userId)) {
+      this.toastr.error('Room Already have this User');
+    } else {
+      data.usersId.push(this.userId);
+      this.RoomName = data.roomName;
+      this.socket.emit('joinRoom', data);
+      this.gameId = data.gameId;
+    }
   }
 
   showDialog() {
