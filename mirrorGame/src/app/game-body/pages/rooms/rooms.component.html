@@ -1,4 +1,8 @@
-<div class="row mt-5">
+<button class="btn btn-dark mt-3 ml-3" (click)="getAllRooms()">
+  Reload
+  <i class="fa-solid fa-rotate-right fa-spin"></i>
+</button>
+<div class="row mt-2">
   <ng-container *ngFor="let room of allRooms; let i = index">
     <div class="col-md-3 col-6 mt-3">
       <div class="card-body">

@@ -1,4 +1,4 @@
-import { roomUsers, roomUsersModel } from "../models/roomUsers.model";
+import { roomModel } from "../models/roomUsers.model";
 
 const users: any = [];
 
@@ -9,12 +9,12 @@ function getCurrentUser(id: number) {
 
 // User leaves chat
 function userLeave(id: number) {
-  return roomUsersModel.findOneAndDelete({ user_id: id });
+  return roomModel.findOneAndDelete({ user_id: id });
 }
 
 // Get room users
 function getRoomUsers(roomName: any) {
-  return roomUsersModel.aggregate([
+  return roomModel.aggregate([
     { $match: { roomName } },
     {
       $lookup: {

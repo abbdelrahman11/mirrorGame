@@ -10,4 +10,7 @@ export class RoomsService {
   getAllRooms() {
     return this.http.get(`${environment.baseUrl}/api/rooms/getAllRooms`);
   }
+  getTheRoom(body: object) {
+    return this.http.post(`${environment.baseUrl}/api/rooms/getTheRoom`, body);
+  }
 }

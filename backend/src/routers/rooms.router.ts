@@ -15,6 +15,14 @@ router.get(
   })
 );
 router.post(
+  "/getTheRoom",
+  asyncHandler(async (req, res) => {
+    let { roomName } = req.body;
+    const room = await roomModel.findOne({ roomName });
+    res.send(room);
+  })
+);
+router.post(
   "/roomInfo",
   asyncHandler(async (req, res) => {
     let { roomName } = req.body;

@@ -87,42 +87,42 @@ export class MainPlayerComponent implements OnInit {
     });
   }
 
-  playerCard(playercard: Card, index: number) {
+  playerCard(playercard: Card, Cardindex: number) {
     if (this.showOneOfYourCard) {
-      this.showOneOfYourCardFeature(index);
+      this.showOneOfYourCardFeature(Cardindex);
     }
     if (!this.canPullFromPullCard && !this.canPullFromTheGround) {
-      this.showToGroundButton(index, playercard);
+      this.showToGroundButton(Cardindex, playercard);
     }
     if (this.canPullFromPullCard && this.makeCanPullFromPullCardActive) {
-      this.pullFromPullCard(playercard, index);
+      this.pullFromPullCard(playercard, Cardindex);
     }
     if (this.canPullFromTheGround) {
-      this.pullFromTheGround(index);
+      this.pullFromTheGround(Cardindex);
     }
     if (this.cardIsBasra) {
-      this.Basra(playercard, index);
+      this.Basra(playercard, Cardindex);
     }
     if (this.TakeOneCardAndGiveOne) {
       this.takeAndGive.emit(true);
       this.mainPlayerCard = playercard;
-      this.mainPlayerCardIndex = index;
+      this.mainPlayerCardIndex = Cardindex;
     }
     if (this.showOneCardFromAllThePlayers) {
-      this.showOneOfYourCardAndOtherPlayers(index);
+      this.showOneOfYourCardAndOtherPlayers(Cardindex);
     }
   }
-  showToGroundButton(index: number, playercard: Card) {
+  showToGroundButton(Cardindex: number, playercard: Card) {
     if (this.showSelectedCard.every((element) => element === false)) {
-      this.showSelectedCard[index] = true;
+      this.showSelectedCard[Cardindex] = true;
       this.showToGround = true;
       this.playerCardToCheck = playercard;
-      this.playerCardToCheckInex = index;
+      this.playerCardToCheckInex = Cardindex;
     }
   }
 
-  pullFromPullCard(selectedplayercard: Card, index: number) {
-    this.copyOfPlayerCards[index] = this.selectedPullCard;
+  pullFromPullCard(selectedplayercard: Card, Cardindex: number) {
+    this.copyOfPlayerCards[Cardindex] = this.selectedPullCard;
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();
     this.socket.emit('playerTakesCard', {
@@ -142,15 +142,15 @@ export class MainPlayerComponent implements OnInit {
     this.hideTheCardAndButton.emit(true);
   }
 
-  pullFromTheGround(index: number) {
+  pullFromTheGround(Cardindex: number) {
     let tableCardsCopy = [...this.allTableCards];
     let card = tableCardsCopy.pop();
-    tableCardsCopy.push(this.copyOfPlayerCards[index]);
+    tableCardsCopy.push(this.copyOfPlayerCards[Cardindex]);
     this.MoveTheCards(
       this.allTableCards[0]._id,
-      this.copyOfPlayerCards[index]._id
+      this.copyOfPlayerCards[Cardindex]._id
     );
-    if (card) this.copyOfPlayerCards[index] = card;
+    if (card) this.copyOfPlayerCards[Cardindex] = card;
     this.socket.emit('playerTakesCardFromGround', {
       gameId: this.gameId,
       roomName: this.roomName,
@@ -247,10 +247,10 @@ export class MainPlayerComponent implements OnInit {
     this.showOneCardFromAllThePlayers = true;
   }
 
-  showOneOfYourCardAndOtherPlayers(index: number) {
-    this.flipCardsArray[index] = true;
+  showOneOfYourCardAndOtherPlayers(Cardindex: number) {
+    this.flipCardsArray[Cardindex] = true;
     setTimeout(() => {
-      this.flipCardsArray[index] = false;
+      this.flipCardsArray[Cardindex] = false;
     }, 2000);
     this.showFourPlayerCard.emit(true);
   }
@@ -297,7 +297,7 @@ export class MainPlayerComponent implements OnInit {
     this.hideTheCardAndButton.emit(true);
     this.takeAndGive.emit(false);
   }
-  async Basra(playercard: Card, index: number) {
+  async Basra(playercard: Card, Cardindex: number) {
     let allPullCardsCopy = [...this.allPullCards];
     this.MoveTheCards(this.allPullCards[0]._id, this.allTableCardsCopy[0]._id);
     this.MoveTheCards(playercard._id, this.allTableCardsCopy[0]._id);
@@ -305,7 +305,7 @@ export class MainPlayerComponent implements OnInit {
     if (card) this.allTableCardsCopy.push(card);
     this.allTableCardsCopy.push(playercard);
     let CardsCopy = [...this.Cards];
-    CardsCopy.splice(index, 1);
+    CardsCopy.splice(Cardindex, 1);
     this.socket.emit('Basra', {
       gameId: this.gameId,
       roomName: this.roomName,
@@ -336,10 +336,10 @@ export class MainPlayerComponent implements OnInit {
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
   }
-  showOneOfYourCardFeature(index: number) {
-    this.flipCardsArray[index] = true;
+  showOneOfYourCardFeature(Cardindex: number) {
+    this.flipCardsArray[Cardindex] = true;
     setTimeout(() => {
-      this.flipCardsArray[index] = false;
+      this.flipCardsArray[Cardindex] = false;
       this.showOneOfYourCard = false;
       this.updateTheCards();
     }, 2000);

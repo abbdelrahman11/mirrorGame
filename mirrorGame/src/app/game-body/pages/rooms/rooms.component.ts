@@ -50,14 +50,10 @@ export class RoomsComponent implements OnInit {
     });
   }
   joinTheRoom(room: Room) {
-    let data = room;
-    if (data.usersId.includes(this.userId)) {
+    if (room.usersId.includes(this.userId)) {
       this.toastr.error('Room Already have this User');
     } else {
-      data.usersId.push(this.userId);
-      this.RoomName = data.roomName;
-      this.socket.emit('joinRoom', data);
-      this.gameId = data.gameId;
+      this.checkIfCanJoinTheRoom(room.roomName, room);
     }
   }
 
@@ -80,9 +76,6 @@ export class RoomsComponent implements OnInit {
     });
   }
   socketsOn() {
-    this.socket.listen('joinedTheRoom').subscribe((res: any) => {
-      this.getAllRooms();
-    });
     this.socket.listen('canRoute').subscribe((res: any) => {
       this.router.navigate(['roombody', this.RoomName, res, this.userId]);
     });
@@ -93,6 +86,18 @@ export class RoomsComponent implements OnInit {
         this.gameId,
         this.userId,
       ]);
+    });
+  }
+  checkIfCanJoinTheRoom(roomName: string, room: Room) {
+    this.service.getTheRoom({ roomName: roomName }).subscribe({
+      next: (res: any) => {
+        if (res.usersId.length < 4) {
+          room.usersId.push(this.userId);
+          this.RoomName = room.roomName;
+          this.socket.emit('joinRoom', room);
+          this.gameId = room.gameId;
+        }
+      },
     });
   }
   ngOnDestroy(): void {
