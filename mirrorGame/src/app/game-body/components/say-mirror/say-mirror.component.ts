@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./say-mirror.component.css'],
 })
 export class SayMirrorComponent implements OnInit {
-  blockTheButton!: boolean;
+  blocksayMirrorTheButton!: boolean;
   constructor(private socket: SocketService, private toastr: ToastrService) {}
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
@@ -20,7 +20,7 @@ export class SayMirrorComponent implements OnInit {
       roomName: this.roomName,
       playersIndex: this.playersIndex,
     });
-    this.blockTheButton = true;
-    this.toastr.success('This Is Your Last Move', 'You Said Mirror');
+    this.blocksayMirrorTheButton = true;
+    this.toastr.success('You Can Not play', 'You Said Mirror');
   }
 }

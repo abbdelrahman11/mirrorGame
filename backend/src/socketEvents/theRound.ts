@@ -8,11 +8,17 @@ module.exports = (io: any, socket: any) => {
   const { CreateGame } = require("../utils/game");
   const { getAllCards } = require("../utils/cards");
   const { deleteTheRoom } = require("../utils/rooms");
-  const handlefinishTheRound = async ({ gameId, playersIndex }: any) => {
+  const handlefinishTheRound = async ({
+    gameId,
+    roomName,
+    playersIndex,
+  }: any) => {
     const updatedFields = {
       finishTheRound: playersIndex,
+      $inc: { activeUserIndex: 1 },
     };
-    await UpdateTheGame(gameId, updatedFields);
+    const cardsUpdate = await UpdateTheGame(gameId, updatedFields);
+    io.to(roomName).emit("allCards", [cardsUpdate]);
   };
   const handlegaameFinished = async ({ gameId, roomName, roomPoints }: any) => {
     const sum = await cardsSum(gameId);
