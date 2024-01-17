@@ -100,7 +100,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
         gameId: this.gameId,
       });
     }
-    this.socket.listen('joinedTheRoom').subscribe({
+    this.socket.listen('updateTheRoom').subscribe({
       next: (res) => {
         this.getRoomInfo();
       },
@@ -187,6 +187,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   getRoomInfo() {
     this.service.getRoomInfo({ roomName: this.roomName }).subscribe({
       next: (res: any) => {
+        console.log('odvcml');
         this.roomInfo = res[0];
         this.playersInfo = res[0]?.users_info;
         this.roomPoints = res[0]?.roomPoints;
