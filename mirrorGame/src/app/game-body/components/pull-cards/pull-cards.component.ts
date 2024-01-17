@@ -15,6 +15,7 @@ export class PullCardsComponent implements OnInit {
   @Input() isSmallScreen!: boolean;
   @Input() allTableCards!: Card[];
   @Output() canPullFromPullCards = new EventEmitter<boolean>();
+  @Output() takeTheCardWithoutCheck = new EventEmitter<boolean>();
   @Output() selectedCard = new EventEmitter<Card>();
   splicedCards!: Card[];
   cardToShowToThePlayer!: Card;
@@ -42,13 +43,36 @@ export class PullCardsComponent implements OnInit {
     this.cardIndex = index;
   }
   takeTheCard() {
-    this.canPullFromPullCards.emit(true);
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];
+    this.canPullFromPullCards.emit(true);
+    this.takeTheCardWithoutCheck.emit(true);
     this.selectedCard.emit(card);
     this.showButtons = false;
   }
+
   toGround() {
     const card = this.splicedCards.splice(this.cardIndex, 1)[0];
+    this.checkCardTypeForGround(card);
+  }
+
+  checkCardTypeForGround(card: Card) {
+    if (
+      card.content == '7' ||
+      card.content == '8' ||
+      card.content == '*' ||
+      card.content == 'Basra' ||
+      card.content == '=><=' ||
+      card.content == '9' ||
+      card.content == '10'
+    ) {
+      this.canPullFromPullCards.emit(true);
+      this.selectedCard.emit(card);
+      this.showButtons = false;
+    } else {
+      this.dropTheCardToTheGround(card);
+    }
+  }
+  dropTheCardToTheGround(card: Card) {
     this.socket.emit('fromPullCardsToTable', {
       gameId: this.gameId,
       deleteCards: this.splicedCards,
@@ -64,6 +88,7 @@ export class PullCardsComponent implements OnInit {
     });
     this.hideThCard();
   }
+
   hideThCard() {
     this.showTheCard = false;
   }

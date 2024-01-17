@@ -92,7 +92,6 @@ export class RoomsComponent implements OnInit {
         } else {
           if (res.usersId.length < 4) {
             res.usersId.push(this.userId);
-            console.log(res, 'room');
             this.RoomName = res.roomName;
             this.socket.emit('joinRoom', res);
             this.gameId = res.gameId;

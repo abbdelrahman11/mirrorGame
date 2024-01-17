@@ -102,6 +102,7 @@
         [roomName]="roomName"
         [hideTheCard]="hideTheCard"
         (canPullFromPullCards)="canPullFromPullCards($event)"
+        (takeTheCardWithoutCheck)="takeTheCardWithoutCheckFunction($event)"
         (selectedCard)="theSelectedCard($event)"
       ></app-pull-cards>
     </div>
@@ -148,10 +149,14 @@
         [roomName]="roomName"
         [playersIndex]="playersIndex"
         [canPullFromPullCard]="canPullFromPullCard"
+        [takeTheCardWithoutCheck]="takeTheCardWithoutCheck"
         [selectedPullCard]="selectedPullCard"
         (hideTheCardAndButton)="hideTheCardAndButton($event)"
         (hideTheButton)="hideButton($event)"
         (changeCanSelectCard)="onCanSelectCardChange($event)"
+        (changeTakeTheCardWithoutCheck)="
+          onchangeTakeTheCardWithoutCheck($event)
+        "
         (changeCanPullFromTheGround)="onCanPullFromTheGroundChange($event)"
         (showPlayerCard)="showPlayerCard($event)"
         (takeAndGive)="takeAndGiveCard($event)"

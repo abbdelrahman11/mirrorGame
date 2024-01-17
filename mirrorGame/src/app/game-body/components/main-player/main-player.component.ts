@@ -12,6 +12,7 @@ export class MainPlayerComponent implements OnInit {
   @Input() playersIndex!: number;
   @Input() Cards!: Card[];
   @Input() canPullFromPullCard!: boolean;
+  @Input() takeTheCardWithoutCheck!: boolean;
   @Input() canPullFromTheGround!: boolean;
   @Input() showTwoCards!: boolean;
   @Input() selectedPullCard!: Card;
@@ -36,6 +37,7 @@ export class MainPlayerComponent implements OnInit {
   @Output() showFourPlayerCard = new EventEmitter<boolean>(false);
   @Output() hideTheButton = new EventEmitter<boolean>(false);
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
+  @Output() changeTakeTheCardWithoutCheck = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
   copyOfPlayerCards!: Card[];
   flipCardsArray: Array<boolean> = [];
@@ -82,7 +84,6 @@ export class MainPlayerComponent implements OnInit {
   }
   ngOnInit(): void {
     this.socket.listen('moveTheCards').subscribe((res: any) => {
-      console.log(res);
       this.moveTheCard(res.sourceId, res.targetId);
     });
   }
@@ -140,6 +141,7 @@ export class MainPlayerComponent implements OnInit {
     this.makeCanPullFromPullCardActive = false;
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
+    this.changeTakeTheCardWithoutCheck.emit(false);
   }
 
   pullFromTheGround(Cardindex: number) {
@@ -225,18 +227,20 @@ export class MainPlayerComponent implements OnInit {
     });
   }
   checkCardType(card: Card) {
-    if (card.content == '7' || card.content == '8') {
-      this.showOneOfYourCard = true;
-    } else if (card.content == '9' || card.content == '10') {
-      this.showOneCardOfThePlayer();
-    } else if (card.content == '=><=') {
-      this.TakeOneCardAndGiveOne = true;
-    } else if (card.content == 'Basra') {
-      this.cardIsBasra = true;
-    } else if (card.content == '*') {
-      this.showOneCardFromAllPlayers();
-    } else {
+    if (this.takeTheCardWithoutCheck) {
       this.makeCanPullFromPullCardActive = true;
+    } else {
+      if (card.content == '7' || card.content == '8') {
+        this.showOneOfYourCard = true;
+      } else if (card.content == '9' || card.content == '10') {
+        this.showOneCardOfThePlayer();
+      } else if (card.content == '=><=') {
+        this.TakeOneCardAndGiveOne = true;
+      } else if (card.content == 'Basra') {
+        this.cardIsBasra = true;
+      } else if (card.content == '*') {
+        this.showOneCardFromAllPlayers();
+      }
     }
   }
   showOneCardOfThePlayer() {

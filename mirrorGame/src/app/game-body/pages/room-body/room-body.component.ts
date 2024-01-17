@@ -59,6 +59,8 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   roomPoints!: number;
   showGameFinished!: boolean;
   isSmallScreen: boolean = false;
+  takeTheCardWithoutCheck!: boolean;
+  changeTakeTheCardWithoutCheck!: boolean;
 
   @HostBinding('class.your-class')
   get shouldApplyClass() {
@@ -115,7 +117,6 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     });
 
     this.socket.listen('allCards').subscribe((res: any) => {
-      console.log(res[0]);
       this.playerCards = res[0]['player' + this.playersIndex];
       this.pullCards = res[0].pullCards;
       this.tableCards = res[0].tableCards;
@@ -187,7 +188,6 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   getRoomInfo() {
     this.service.getRoomInfo({ roomName: this.roomName }).subscribe({
       next: (res: any) => {
-        console.log('odvcml');
         this.roomInfo = res[0];
         this.playersInfo = res[0]?.users_info;
         this.roomPoints = res[0]?.roomPoints;
@@ -197,8 +197,14 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   canPullFromPullCards(value: boolean) {
     this.canPullFromPullCard = value;
   }
+  takeTheCardWithoutCheckFunction(value: boolean) {
+    this.takeTheCardWithoutCheck = value;
+  }
   onCanSelectCardChange(newValue: boolean) {
     this.canPullFromPullCard = newValue;
+  }
+  onchangeTakeTheCardWithoutCheck(newValue: boolean) {
+    this.takeTheCardWithoutCheck = newValue;
   }
   onCanPullFromTheGroundChange(newValue: boolean) {
     this.canPullFromTheGround = newValue;
