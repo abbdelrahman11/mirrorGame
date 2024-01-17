@@ -50,11 +50,7 @@ export class RoomsComponent implements OnInit {
     });
   }
   joinTheRoom(room: Room) {
-    if (room.usersId.includes(this.userId)) {
-      this.toastr.error('Room Already have this User');
-    } else {
-      this.checkIfCanJoinTheRoom(room.roomName, room);
-    }
+    this.checkIfCanJoinTheRoom(room.roomName);
   }
 
   showDialog() {
@@ -88,14 +84,19 @@ export class RoomsComponent implements OnInit {
       ]);
     });
   }
-  checkIfCanJoinTheRoom(roomName: string, room: Room) {
+  checkIfCanJoinTheRoom(roomName: string) {
     this.service.getTheRoom({ roomName: roomName }).subscribe({
       next: (res: any) => {
-        if (res.usersId.length < 4) {
-          room.usersId.push(this.userId);
-          this.RoomName = room.roomName;
-          this.socket.emit('joinRoom', room);
-          this.gameId = room.gameId;
+        if (res.usersId.includes(this.userId)) {
+          this.toastr.error('Room Already have this User');
+        } else {
+          if (res.usersId.length < 4) {
+            res.usersId.push(this.userId);
+            console.log(res, 'room');
+            this.RoomName = res.roomName;
+            this.socket.emit('joinRoom', res);
+            this.gameId = res.gameId;
+          }
         }
       },
     });
