@@ -1,8 +1,9 @@
 <button class="btn btn-dark mt-3 ml-3" (click)="getAllRooms()">
-  Reload
-  <i class="fa-solid fa-rotate-right fa-spin"></i>
+  Refresh
+  <i class="fa-solid fa-rotate-right"></i>
 </button>
-<div class="row mt-2">
+
+<div class="rooms-container row mt-2">
   <ng-container *ngFor="let room of allRooms; let i = index">
     <div class="col-md-3 col-6 mt-3">
       <div class="card-body">
@@ -45,12 +46,16 @@
     </div>
   </ng-container>
 </div>
+<h3 class="text-center" *ngIf="!allRooms?.length">
+  Create New Room To Start Playing
+</h3>
+
 <div class="create-room text-center mt-5">
   <button class="btn btn-dark" (click)="showDialog()">Create Room</button>
 </div>
 <p-dialog
   header="Create Room"
-  [(visible)]="display"
+  [(visible)]="showTheDialog"
   [style]="{ width: '300px', height: '300px' }"
 >
   <div class="content text-center">

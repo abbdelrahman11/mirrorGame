@@ -13,7 +13,7 @@ interface points {
   styleUrls: ['./rooms.component.css'],
 })
 export class RoomsComponent implements OnInit {
-  display: boolean = false;
+  showTheDialog: boolean = false;
   selectedPoint!: string;
   RoomName!: string;
   allRooms!: Room[];
@@ -44,7 +44,7 @@ export class RoomsComponent implements OnInit {
         this.toastr.error(res.error);
         return;
       }
-      this.display = false;
+      this.showTheDialog = false;
       this.selectedPoint = '';
       this.allRooms = res;
     });
@@ -54,7 +54,7 @@ export class RoomsComponent implements OnInit {
   }
 
   showDialog() {
-    this.display = true;
+    this.showTheDialog = true;
   }
   CreateRoom() {
     if (this.usersIdArrray.length == 0) this.usersIdArrray.push(this.userId);
@@ -66,8 +66,9 @@ export class RoomsComponent implements OnInit {
   }
   getAllRooms() {
     this.service.getAllRooms().subscribe({
-      next: (res: any) => {
-        this.allRooms = res;
+      next: (res: Object) => {
+        this.allRooms = res as Room[];
+        console.log(this.allRooms.length);
       },
     });
   }
