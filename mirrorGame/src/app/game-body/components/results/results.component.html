@@ -1,5 +1,5 @@
 <button
-  class="btn btn-info position-absolute my-2 mx-0 result-btn"
+  class="btn btn-info mr-2"
   id="result"
   (click)="getResult()"
   *ngIf="!showGameFinished"
@@ -9,6 +9,7 @@
 
 <table
   class="table table-bordered mt-5"
+  style="position: absolute; right: 40px; top: 0; z-index: 2"
   *ngIf="showTheResults || showGameFinished"
 >
   <thead>

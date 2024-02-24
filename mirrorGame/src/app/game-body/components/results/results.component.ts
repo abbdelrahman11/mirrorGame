@@ -25,15 +25,6 @@ export class ResultsComponent implements OnInit {
   sumOfPoints: any = {};
   theWinner!: number;
 
-  // @HostListener('document:click', ['$event'])
-  // onDocumentClick(event: MouseEvent) {
-  //   const clickedElement = event.target as HTMLElement;
-  //   const result = document.getElementById('result');
-  //   if (result && !result.contains(clickedElement)) {
-  //     this.showTheResults = false;
-  //   }
-  // }
-
   constructor(private toastr: ToastrService, private router: Router) {}
   ngOnChanges(): void {
     if (this.Results) {
@@ -70,7 +61,6 @@ export class ResultsComponent implements OnInit {
     }
   }
   goHome() {
-    // this.router.navigate(['']);
     this.router.navigate(['rooms', this.userId]);
   }
 }

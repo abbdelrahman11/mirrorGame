@@ -1,61 +1,57 @@
-<app-wait-the-player
-  [playerCanPlay]="!playerCanPlay"
-  *ngIf="roomInfo?.usersId.length == 4 && canStartTheGame"
-></app-wait-the-player>
-<app-say-mirror
-  *ngIf="canStartTheGame && roomInfo?.usersId.length == 4"
-  [gameId]="gameId"
-  [roomName]="roomName"
-  [playersIndex]="playersIndex"
-></app-say-mirror>
-<app-results
-  *ngIf="roomInfo?.usersId.length == 4"
-  [userId]="userId"
-  [showGameFinished]="showGameFinished"
-  style="position: absolute; z-index: 100; width: 100%"
-  [Results]="showTheResult"
-  [playersInfo]="playersInfo"
-></app-results>
-<div
-  class="room-body"
-  style="height: 100vh"
-  *ngIf="roomInfo?.usersId.length == 4 && canStartTheGame"
->
-  <div class="row">
-    <div class="col-md-4 col-sm-4"></div>
-    <div class="col-md-4 col-sm-4">
-      <app-player
-        [playersInfo]="playersInfo"
-        *ngIf="
-          daynamicPlayer[
-            (playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4
-          ]
-        "
-        [playerCard]="
-          daynamicPlayer[
-            (playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4
-          ].playerCards
-        "
-        [playerNumber]="
-          daynamicPlayer[
-            (playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4
-          ].number
-        "
-        [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
-        [showPlayerCards]="showPlayerCards"
-        [takeAndGive]="takeAndGive"
-        [showFourPlayerCards]="showFourPlayerCards"
-        (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
-        (onshowFourPlayerCardsChange)="onshowFourPlayerCardChange($event)"
-        (updateTheCards)="updateTheCards($event)"
-        [counterUpdatedForPlayers]="updateCounterForPlayers"
-        (updateCounterForPlayers)="updateCounter($event)"
-        (takeAndGiveSelectedCard)="takeAndGiveSelectedCards($event)"
-      ></app-player>
-    </div>
-    <!-- <div class="col-md-4 col-sm-4"></div> -->
+<div class="row my-3">
+  <div class="col-md-9 col-6">
+    <app-wait-the-player
+      [playerCanPlay]="!playerCanPlay"
+      *ngIf="roomInfo?.usersId.length == 4 && canStartTheGame"
+    ></app-wait-the-player>
   </div>
-  <div class="d-flex flex-nowrap">
+  <div class="col-md-2 col-4">
+    <app-say-mirror
+      *ngIf="canStartTheGame && roomInfo?.usersId.length == 4"
+      [gameId]="gameId"
+      [roomName]="roomName"
+      [playersIndex]="playersIndex"
+    ></app-say-mirror>
+  </div>
+  <div class="col-md-1 col-2">
+    <app-results
+      *ngIf="roomInfo?.usersId.length == 4"
+      [userId]="userId"
+      [showGameFinished]="showGameFinished"
+      [Results]="showTheResult"
+      [playersInfo]="playersInfo"
+    ></app-results>
+  </div>
+</div>
+
+<div class="room-body" *ngIf="roomInfo?.usersId.length == 4 && canStartTheGame">
+  <div class="first-line d-flex">
+    <app-player
+      [playersInfo]="playersInfo"
+      *ngIf="
+        daynamicPlayer[(playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4]
+      "
+      [playerCard]="
+        daynamicPlayer[(playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4]
+          .playerCards
+      "
+      [playerNumber]="
+        daynamicPlayer[(playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4]
+          .number
+      "
+      [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
+      [showPlayerCards]="showPlayerCards"
+      [takeAndGive]="takeAndGive"
+      [showFourPlayerCards]="showFourPlayerCards"
+      (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
+      (onshowFourPlayerCardsChange)="onshowFourPlayerCardChange($event)"
+      (updateTheCards)="updateTheCards($event)"
+      [counterUpdatedForPlayers]="updateCounterForPlayers"
+      (updateCounterForPlayers)="updateCounter($event)"
+      (takeAndGiveSelectedCard)="takeAndGiveSelectedCards($event)"
+    ></app-player>
+  </div>
+  <div class="d-flex">
     <div class="col-md-4 col-sm-4">
       <app-player
         [playersInfo]="playersInfo"
@@ -138,42 +134,37 @@
       ></app-player>
     </div>
   </div>
-  <div class="row">
-    <div *ngIf="!isSmallScreen" class="pull-cards col-md-4 col-sm-4"></div>
-    <div class="col-md-4 col-sm-4">
-      <app-main-player
-        [playerName]="playersInfo[playersIndex - 1]?.name"
-        [allPullCards]="pullCards"
-        [Cards]="playerCards"
-        [gameId]="gameId"
-        [roomName]="roomName"
-        [playersIndex]="playersIndex"
-        [canPullFromPullCard]="canPullFromPullCard"
-        [takeTheCardWithoutCheck]="takeTheCardWithoutCheck"
-        [selectedPullCard]="selectedPullCard"
-        (hideTheCardAndButton)="hideTheCardAndButton($event)"
-        (hideTheButton)="hideButton($event)"
-        (changeCanSelectCard)="onCanSelectCardChange($event)"
-        (changeTakeTheCardWithoutCheck)="
-          onchangeTakeTheCardWithoutCheck($event)
-        "
-        (changeCanPullFromTheGround)="onCanPullFromTheGroundChange($event)"
-        (showPlayerCard)="showPlayerCard($event)"
-        (takeAndGive)="takeAndGiveCard($event)"
-        (showFourPlayerCard)="showFourPlayerCard($event)"
-        [canPullFromTheGround]="canPullFromTheGround"
-        [allTableCards]="tableCards"
-        [showTwoCards]="showTwoCards"
-        [playerNumber]="playersIndex"
-        [updateTheCard]="updateTheCard"
-        [takeAndGiveSelectedCard]="takeAndGiveSelectedCard"
-        [finishTheRound]="finishTheRound"
-        [roomPoints]="roomPoints"
-      ></app-main-player>
-    </div>
-    <div class="col-md-4 col-sm-4"></div>
+  <div class="first-line d-flex">
+    <app-main-player
+      [playerName]="playersInfo[playersIndex - 1]?.name"
+      [allPullCards]="pullCards"
+      [Cards]="playerCards"
+      [gameId]="gameId"
+      [roomName]="roomName"
+      [playersIndex]="playersIndex"
+      [canPullFromPullCard]="canPullFromPullCard"
+      [takeTheCardWithoutCheck]="takeTheCardWithoutCheck"
+      [selectedPullCard]="selectedPullCard"
+      (hideTheCardAndButton)="hideTheCardAndButton($event)"
+      (hideTheButton)="hideButton($event)"
+      (changeCanSelectCard)="onCanSelectCardChange($event)"
+      (changeTakeTheCardWithoutCheck)="onchangeTakeTheCardWithoutCheck($event)"
+      (changeCanPullFromTheGround)="onCanPullFromTheGroundChange($event)"
+      (showPlayerCard)="showPlayerCard($event)"
+      (takeAndGive)="takeAndGiveCard($event)"
+      (showFourPlayerCard)="showFourPlayerCard($event)"
+      [canPullFromTheGround]="canPullFromTheGround"
+      [allTableCards]="tableCards"
+      [showTwoCards]="showTwoCards"
+      [playerNumber]="playersIndex"
+      [updateTheCard]="updateTheCard"
+      [takeAndGiveSelectedCard]="takeAndGiveSelectedCard"
+      [finishTheRound]="finishTheRound"
+      [roomPoints]="roomPoints"
+    ></app-main-player>
   </div>
 </div>
+
 <div
   class="loaderContainer"
   *ngIf="roomInfo?.usersId.length != 4 && canStartTheGame"

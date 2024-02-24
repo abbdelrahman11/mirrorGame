@@ -1,8 +1,0 @@
-.Mirror-btn {
-  left: 90%;
-}
-@media (min-width: 320px) and (max-width: 576px) {
-  .Mirror-btn {
-    left: 2%;
-  }
-}

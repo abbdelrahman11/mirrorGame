@@ -32,8 +32,15 @@
   /* background-color: rgba(0, 0, 0, 0.5); */
   z-index: 10;
 }
+
+.first-line {
+  justify-content: center;
+}
 @media (min-width: 320px) and (max-width: 576px) {
   .pull-cards {
     height: 150px;
+  }
+  .first-line {
+    justify-content: normal;
   }
 }

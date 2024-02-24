@@ -1,4 +1,4 @@
-<div [class]="isSmallScreen ? '' : 'mt-5'">
+<div>
   <div class="text-center">
     <p class="badge badge-primary" *ngIf="activePlayerNumber == playerNumber">
       player is now playing
@@ -27,6 +27,3 @@
     playersInfo[playerNumber - 1].name
   }}</span>
 </div>
-<!-- <p *ngIf="showPlayerCards">showPlayerCards</p>
-<p *ngIf="showFourPlayerCards">showFourPlayerCards</p>
-<p *ngIf="takeAndGive">takeAndGive</p> -->
