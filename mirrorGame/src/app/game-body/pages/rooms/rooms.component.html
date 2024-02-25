@@ -1,37 +1,33 @@
-<button class="btn btn-dark mt-3 ml-3" (click)="getAllRooms()">
-  Refresh
-  <i class="fa-solid fa-rotate-right"></i>
-</button>
+<div class="Refresh-btn d-flex">
+  <button class="btn btn-dark mt-3 ml-3" (click)="getAllRooms()">
+    Refresh
+    <i class="fa-solid fa-rotate-right"></i>
+  </button>
+</div>
 
 <div class="rooms-container row mt-2">
   <ng-container *ngFor="let room of allRooms; let i = index">
-    <div class="col-md-3 col-6 mt-3">
-      <div class="card-body">
+    <div class="col-md-2 col-5 border m-3 rounded">
+      <div class="card-body p-0">
         <h5 class="card-title text-center">{{ room.roomName }}</h5>
-        <div class="m-2">
+        <div class="m-2 mb-0">
           <img
             style="border-radius: 10px"
             width="100%"
             src="assets/Mirror_Logo.png"
             alt=""
           />
-          <div class="row">
-            <div class="col-md-6 text-center">
-              <span class="badge badge-warning m-2">
-                Members: {{ room.usersId.length }}
-              </span>
-            </div>
-            <div class="col-md-6 text-center">
-              <span class="badge badge-warning m-2">
-                PointToWin: {{ room.roomPoints }}
-              </span>
-            </div>
+          <div class="badges d-flex text-center">
+            <span class="badge badge-warning m-2">
+              Members: {{ room.usersId.length }}
+            </span>
+            <span class="badge badge-warning m-2">
+              PointToWin: {{ room.roomPoints }}
+            </span>
           </div>
         </div>
-        <div class="row mb-2">
-          <div class="col-md-12 text-center" *ngIf="room.usersId.length == 4">
-            <span class="badge badge-danger"> Completed </span>
-          </div>
+        <div class="text-center mb-2" *ngIf="room.usersId.length == 4">
+          <span class="badge badge-danger"> Completed </span>
         </div>
         <div class="text-center">
           <button

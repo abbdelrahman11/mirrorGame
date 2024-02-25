@@ -1,6 +1,5 @@
 .card-body {
-  border: 1px solid rgba(0, 0, 0, 0.125);
-  /* border-radius: 0.25rem; */
+  min-height: 300px;
 }
 .content {
   display: flex;
@@ -9,4 +8,12 @@
 }
 .rooms-container {
   min-height: 200px;
+}
+@media (min-width: 320px) and (max-width: 576px) {
+  .badges {
+    flex-direction: column;
+  }
+  .Refresh-btn {
+    justify-content: center;
+  }
 }
