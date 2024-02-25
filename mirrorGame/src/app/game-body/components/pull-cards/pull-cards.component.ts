@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { CardStaticId } from 'src/app/core/enum/cardsId.enum';
 import { Card } from 'src/app/core/interfaces/card';
 import { SocketService } from 'src/app/core/services/socket-service.service';
 
@@ -84,7 +85,7 @@ export class PullCardsComponent implements OnInit {
     this.socket.emit('moveTheCard', {
       roomName: this.roomName,
       sourceId: card._id,
-      targetId: this.allTableCards[0]._id,
+      targetId: CardStaticId.tableCrdStaticId,
     });
     this.hideThCard();
   }

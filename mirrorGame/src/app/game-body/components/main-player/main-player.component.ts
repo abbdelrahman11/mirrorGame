@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Card } from 'src/app/core/interfaces/card';
 import { SocketService } from 'src/app/core/services/socket-service.service';
+import { CardStaticId } from 'src/app/core/enum/cardsId.enum';
 @Component({
   selector: 'app-main-player',
   templateUrl: './main-player.component.html',
@@ -194,7 +195,7 @@ export class MainPlayerComponent implements OnInit {
     let copyOfCards = [...this.Cards];
     this.MoveTheCards(
       this.Cards[this.playerCardToCheckInex]._id,
-      this.allTableCardsCopy[0]._id
+      CardStaticId.tableCrdStaticId
     );
     copyOfCards.splice(this.playerCardToCheckInex, 1);
     this.showSelectedCard[this.playerCardToCheckInex] = false;
@@ -214,7 +215,7 @@ export class MainPlayerComponent implements OnInit {
     this.showToGround = false;
     this.MoveTheCards(
       this.Cards[this.playerCardToCheckInex]._id,
-      this.allTableCardsCopy[0]._id
+      CardStaticId.tableCrdStaticId
     );
 
     this.socket.emit('updatePlayerCards', {
@@ -274,7 +275,7 @@ export class MainPlayerComponent implements OnInit {
       this.Cards[this.mainPlayerCardIndex]._id,
       takeAndGiveSelectedCard.card._id
     );
-    this.MoveTheCards(this.allPullCards[0]._id, this.allTableCardsCopy[0]._id);
+    this.MoveTheCards(this.allPullCards[0]._id, CardStaticId.tableCrdStaticId);
     const card = allPullCardsCopy.pop();
     if (card) this.allTableCardsCopy.push(card);
 
@@ -303,8 +304,8 @@ export class MainPlayerComponent implements OnInit {
   }
   async Basra(playercard: Card, Cardindex: number) {
     let allPullCardsCopy = [...this.allPullCards];
-    this.MoveTheCards(this.allPullCards[0]._id, this.allTableCardsCopy[0]._id);
-    this.MoveTheCards(playercard._id, this.allTableCardsCopy[0]._id);
+    this.MoveTheCards(this.allPullCards[0]._id, CardStaticId.tableCrdStaticId);
+    this.MoveTheCards(playercard._id, CardStaticId.tableCrdStaticId);
     const card = allPullCardsCopy.pop();
     if (card) this.allTableCardsCopy.push(card);
     this.allTableCardsCopy.push(playercard);
@@ -328,7 +329,7 @@ export class MainPlayerComponent implements OnInit {
   updateTheCards() {
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();
-    this.MoveTheCards(this.allPullCards[0]._id, this.allTableCardsCopy[0]._id);
+    this.MoveTheCards(this.allPullCards[0]._id, CardStaticId.tableCrdStaticId);
     this.socket.emit('fromPullCardsToTable', {
       gameId: this.gameId,
       deleteCards: allPullCardsCopy,
@@ -357,11 +358,14 @@ export class MainPlayerComponent implements OnInit {
     });
     this.blockRoundFinishedButton = true;
   }
-  moveTheCard(sourceId: any, targetId: any) {
+  moveTheCard(sourceId: string, targetId: string) {
+    console.log(targetId);
     const sourceCircle: any = document.getElementById(sourceId);
     const targetCircle: any = document.getElementById(targetId);
+    console.log(targetCircle);
     const sourceRect = sourceCircle.getBoundingClientRect();
     const targetRect = targetCircle.getBoundingClientRect();
+    console.log(targetRect);
     if (sourceRect && targetRect) {
       const deltaX = targetRect.left - sourceRect.left;
       const deltaY = targetRect.top - sourceRect.top;

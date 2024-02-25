@@ -10,6 +10,8 @@ export class TableCardsComponent implements OnInit {
   @Input() Cards!: Card[];
   @Input() hideTheButton!: boolean;
   @Input() isSmallScreen!: boolean;
+  @Input() tableCards!: boolean;
+
   @Output() canPullFromGround = new EventEmitter<boolean>();
   cardIndex!: number;
   splicedCards!: Card[];
