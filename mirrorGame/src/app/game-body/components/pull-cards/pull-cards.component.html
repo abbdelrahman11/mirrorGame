@@ -1,43 +1,40 @@
-<div
-  *ngFor="let card of Cards; let i = index"
-  class="inner"
-  [style]="isSmallScreen ? 'bottom: 28%' : 'bottom:15%'"
->
+<div *ngFor="let card of Cards; let i = index" class="cards">
   <app-card
     [CardData]="card"
     [disabled]="showTheCard"
     [flip]="false"
-    [color]="'green'"
     (click)="showToThePlayer(card, i)"
   ></app-card>
 </div>
-<div *ngIf="showTheCard">
-  <app-card
-    [disabled]="showTheCard"
-    [CardData]="cardToShowToThePlayer"
-    [cardWidth]="160"
-    [cardHeight]="200"
-    [flip]="false"
-    [style]="isSmallScreen ? 'bottom: 65%;left:-16% ' : ' top: 0; right: 45%;'"
-    style="position: absolute; z-index: 2"
-  ></app-card>
-  <div
-    class="btn btns d-flex"
-    [style]="isSmallScreen ? 'bottom: 50%;left:-36% ' : 'top: 75%; right: 42%;'"
-  >
-    <button
-      class="btn btn-primary mr-2 rounded"
-      (click)="takeTheCard()"
-      *ngIf="showButtons"
-    >
-      Take
-    </button>
-    <button
-      class="btn btn-primary rounded"
-      (click)="toGround()"
-      *ngIf="showButtons"
-    >
-      To Ground
-    </button>
+<p-dialog
+  [(visible)]="showTheCard"
+  [showHeader]="false"
+  [contentStyle]="{ backgroundColor: 'transparent', padding: '0' }"
+  [dismissableMask]="true"
+>
+  <div *ngIf="showTheCard">
+    <app-card
+      [disabled]="showTheCard"
+      [CardData]="cardToShowToThePlayer"
+      [cardWidth]="160"
+      [cardHeight]="200"
+      [flip]="false"
+    ></app-card>
+    <div class="btn btns d-flex">
+      <button
+        class="btn btn-primary mr-2 rounded"
+        (click)="takeTheCard()"
+        *ngIf="showButtons"
+      >
+        Take
+      </button>
+      <button
+        class="btn btn-primary rounded"
+        (click)="toGround()"
+        *ngIf="showButtons"
+      >
+        To Ground
+      </button>
+    </div>
   </div>
-</div>
+</p-dialog>

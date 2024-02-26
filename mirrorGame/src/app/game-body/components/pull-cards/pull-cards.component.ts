@@ -13,7 +13,6 @@ export class PullCardsComponent implements OnInit {
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() hideTheCard!: boolean;
-  @Input() isSmallScreen!: boolean;
   @Input() allTableCards!: Card[];
   @Output() canPullFromPullCards = new EventEmitter<boolean>();
   @Output() takeTheCardWithoutCheck = new EventEmitter<boolean>();

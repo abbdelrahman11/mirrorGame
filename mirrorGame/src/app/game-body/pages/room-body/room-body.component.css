@@ -34,11 +34,13 @@
 .first-line {
   justify-content: center;
 }
-@media (min-width: 320px) and (max-width: 576px) {
+@media (min-width: 320px) and (max-width: 380px) {
   .pull-cards {
     height: 150px;
   }
   .first-line {
     justify-content: normal;
   }
+}
+@media (min-width: 320px) and (max-width: 576px) {
 }

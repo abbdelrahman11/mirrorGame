@@ -1,3 +1,5 @@
-.your-class {
-  flex-direction: column;
+@media (min-width: 320px) and (max-width: 1200px) {
+  .card-direction {
+    flex-direction: column;
+  }
 }

@@ -13,7 +13,7 @@
       [playersIndex]="playersIndex"
     ></app-say-mirror>
   </div>
-  <div class="col-md-1 col-2">
+  <div class="col-md-1 col-2" style="z-index: 11">
     <app-results
       *ngIf="roomInfo?.usersId.length == 4"
       [userId]="userId"
@@ -52,7 +52,7 @@
     ></app-player>
   </div>
   <div class="d-flex">
-    <div class="col-md-4 col-sm-4">
+    <div class="col-md-4 col-sm-4 d-flex justify-content-center">
       <app-player
         [playersInfo]="playersInfo"
         *ngIf="
@@ -73,7 +73,7 @@
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
         [showPlayerCards]="showPlayerCards"
         [takeAndGive]="takeAndGive"
-        [isSmallScreen]="isSmallScreen"
+        [isSmallScreen]="true"
         [showFourPlayerCards]="showFourPlayerCards"
         (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
         (onshowFourPlayerCardsChange)="onshowFourPlayerCardChange($event)"
@@ -84,26 +84,30 @@
       ></app-player>
     </div>
     <div class="col-md-4 col-sm-4">
-      <app-table-cards
-        [isSmallScreen]="isSmallScreen"
-        [Cards]="tableCards"
-        [hideTheButton]="hideTheButton"
-        (canPullFromGround)="canPullFromGround($event)"
-        [tableCards]="true"
-      ></app-table-cards>
-      <app-pull-cards
-        [Cards]="pullCards"
-        [allTableCards]="tableCards"
-        [gameId]="gameId"
-        [isSmallScreen]="isSmallScreen"
-        [roomName]="roomName"
-        [hideTheCard]="hideTheCard"
-        (canPullFromPullCards)="canPullFromPullCards($event)"
-        (takeTheCardWithoutCheck)="takeTheCardWithoutCheckFunction($event)"
-        (selectedCard)="theSelectedCard($event)"
-      ></app-pull-cards>
+      <div class="row mt-4">
+        <div class="col-md-6 col-sm-6">
+          <app-table-cards
+            [Cards]="tableCards"
+            [hideTheButton]="hideTheButton"
+            (canPullFromGround)="canPullFromGround($event)"
+            [tableCards]="true"
+          ></app-table-cards>
+        </div>
+        <div class="col-md-6 col-sm-6">
+          <app-pull-cards
+            [Cards]="pullCards"
+            [allTableCards]="tableCards"
+            [gameId]="gameId"
+            [roomName]="roomName"
+            [hideTheCard]="hideTheCard"
+            (canPullFromPullCards)="canPullFromPullCards($event)"
+            (takeTheCardWithoutCheck)="takeTheCardWithoutCheckFunction($event)"
+            (selectedCard)="theSelectedCard($event)"
+          ></app-pull-cards>
+        </div>
+      </div>
     </div>
-    <div class="col-md-4 col-sm-4">
+    <div class="col-md-4 col-sm-4 d-flex justify-content-center">
       <app-player
         [playersInfo]="playersInfo"
         *ngIf="
@@ -124,7 +128,7 @@
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
         [showPlayerCards]="showPlayerCards"
         [takeAndGive]="takeAndGive"
-        [isSmallScreen]="isSmallScreen"
+        [isSmallScreen]="true"
         [showFourPlayerCards]="showFourPlayerCards"
         (onShowPlayerCardChange)="onShowPlayerCardChange($event)"
         (onshowFourPlayerCardsChange)="onshowFourPlayerCardChange($event)"

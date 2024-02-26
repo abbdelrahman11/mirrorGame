@@ -138,7 +138,7 @@ export class MainPlayerComponent implements OnInit {
       tableCardsKeyName: 'tableCards',
     });
     this.MoveTheCards(this.allPullCards[0]._id, selectedplayercard._id);
-    this.MoveTheCards(selectedplayercard._id, this.allTableCards[0]._id);
+    this.MoveTheCards(selectedplayercard._id, CardStaticId.tableCrdStaticId);
     this.makeCanPullFromPullCardActive = false;
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
@@ -150,7 +150,7 @@ export class MainPlayerComponent implements OnInit {
     let card = tableCardsCopy.pop();
     tableCardsCopy.push(this.copyOfPlayerCards[Cardindex]);
     this.MoveTheCards(
-      this.allTableCards[0]._id,
+      CardStaticId.tableCrdStaticId,
       this.copyOfPlayerCards[Cardindex]._id
     );
     if (card) this.copyOfPlayerCards[Cardindex] = card;

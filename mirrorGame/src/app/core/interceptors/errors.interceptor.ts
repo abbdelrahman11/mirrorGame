@@ -31,7 +31,7 @@ export class ErrorsInterceptor implements HttpInterceptor {
             case 401:
             case 403:
               localStorage.removeItem('token');
-              this.toastr.error('error', 'تسجيل الدخول');
+              this.toastr.error('error', 'login');
               this.router.navigateByUrl('/auth/login');
               break;
             case 500:

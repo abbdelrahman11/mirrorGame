@@ -9,7 +9,6 @@ import { Card } from 'src/app/core/interfaces/card';
 export class TableCardsComponent implements OnInit {
   @Input() Cards!: Card[];
   @Input() hideTheButton!: boolean;
-  @Input() isSmallScreen!: boolean;
   @Input() tableCards!: boolean;
 
   @Output() canPullFromGround = new EventEmitter<boolean>();
