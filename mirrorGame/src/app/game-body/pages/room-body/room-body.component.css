@@ -43,4 +43,8 @@
   }
 }
 @media (min-width: 320px) and (max-width: 576px) {
+  .pull-cards {
+    position: absolute;
+    top: 450px;
+  }
 }
