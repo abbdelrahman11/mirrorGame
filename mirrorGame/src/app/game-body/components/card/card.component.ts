@@ -16,7 +16,5 @@ export class CardComponent implements OnInit {
   @Input() tableCards!: boolean;
   constructor() {}
   ngOnInit(): void {}
-  ngOnChanges(): void {
-    console.log(this.tableCards);
-  }
+  ngOnChanges(): void {}
 }

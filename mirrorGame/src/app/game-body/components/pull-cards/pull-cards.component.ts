@@ -72,7 +72,13 @@ export class PullCardsComponent implements OnInit {
       this.dropTheCardToTheGround(card);
     }
   }
-  dropTheCardToTheGround(card: Card) {
+  async dropTheCardToTheGround(card: Card) {
+    this.socket.emit('moveTheCard', {
+      roomName: this.roomName,
+      sourceId: card._id,
+      targetId: CardStaticId.tableCrdStaticId,
+    });
+    await this.delay();
     this.socket.emit('fromPullCardsToTable', {
       gameId: this.gameId,
       deleteCards: this.splicedCards,
@@ -81,15 +87,14 @@ export class PullCardsComponent implements OnInit {
       deleteKeyName: 'pullCards',
       addKeyName: 'tableCards',
     });
-    this.socket.emit('moveTheCard', {
-      roomName: this.roomName,
-      sourceId: card._id,
-      targetId: CardStaticId.tableCrdStaticId,
-    });
+
     this.hideThCard();
   }
 
   hideThCard() {
     this.showTheCard = false;
+  }
+  async delay() {
+    return new Promise((resolve) => setTimeout(resolve, 3000));
   }
 }

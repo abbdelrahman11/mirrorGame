@@ -10,7 +10,7 @@
     [id]="tableCards ? '223' : CardData._id"
   >
     <div class="face front text-center" [style.border]="'5px solid ' + color">
-      <span class="before">{{ CardData.content }}</span>
+      <span *ngIf="!flip" class="before">{{ CardData.content }}</span>
     </div>
     <div class="face back">
       <img

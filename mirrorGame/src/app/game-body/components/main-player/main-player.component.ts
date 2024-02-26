@@ -123,10 +123,14 @@ export class MainPlayerComponent implements OnInit {
     }
   }
 
-  pullFromPullCard(selectedplayercard: Card, Cardindex: number) {
+  async pullFromPullCard(selectedplayercard: Card, Cardindex: number) {
     this.copyOfPlayerCards[Cardindex] = this.selectedPullCard;
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();
+    this.MoveTheCards(this.allPullCards[0]._id, selectedplayercard._id);
+    this.MoveTheCards(selectedplayercard._id, CardStaticId.tableCrdStaticId);
+    await this.delay();
+
     this.socket.emit('playerTakesCard', {
       gameId: this.gameId,
       roomName: this.roomName,
@@ -137,15 +141,14 @@ export class MainPlayerComponent implements OnInit {
       PullCardsKeyName: 'pullCards',
       tableCardsKeyName: 'tableCards',
     });
-    this.MoveTheCards(this.allPullCards[0]._id, selectedplayercard._id);
-    this.MoveTheCards(selectedplayercard._id, CardStaticId.tableCrdStaticId);
+
     this.makeCanPullFromPullCardActive = false;
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
     this.changeTakeTheCardWithoutCheck.emit(false);
   }
 
-  pullFromTheGround(Cardindex: number) {
+  async pullFromTheGround(Cardindex: number) {
     let tableCardsCopy = [...this.allTableCards];
     let card = tableCardsCopy.pop();
     tableCardsCopy.push(this.copyOfPlayerCards[Cardindex]);
@@ -153,6 +156,8 @@ export class MainPlayerComponent implements OnInit {
       CardStaticId.tableCrdStaticId,
       this.copyOfPlayerCards[Cardindex]._id
     );
+    await this.delay();
+
     if (card) this.copyOfPlayerCards[Cardindex] = card;
     this.socket.emit('playerTakesCardFromGround', {
       gameId: this.gameId,
@@ -189,7 +194,7 @@ export class MainPlayerComponent implements OnInit {
       this.ValuesAreNotEquals(tableCard);
     }
   }
-  ValuesAreEquals(tableCard: Card) {
+  async ValuesAreEquals(tableCard: Card) {
     this.allTableCardsCopy.push(tableCard);
     this.allTableCardsCopy.push(tableCard);
     let copyOfCards = [...this.Cards];
@@ -197,6 +202,7 @@ export class MainPlayerComponent implements OnInit {
       this.Cards[this.playerCardToCheckInex]._id,
       CardStaticId.tableCrdStaticId
     );
+    await this.delay();
     copyOfCards.splice(this.playerCardToCheckInex, 1);
     this.showSelectedCard[this.playerCardToCheckInex] = false;
     this.showToGround = false;
@@ -209,7 +215,7 @@ export class MainPlayerComponent implements OnInit {
       tableCardsKeyName: 'tableCards',
     });
   }
-  ValuesAreNotEquals(tableCard?: Card) {
+  async ValuesAreNotEquals(tableCard?: Card) {
     if (tableCard) this.Cards.push(tableCard);
     this.showSelectedCard[this.playerCardToCheckInex] = false;
     this.showToGround = false;
@@ -217,6 +223,7 @@ export class MainPlayerComponent implements OnInit {
       this.Cards[this.playerCardToCheckInex]._id,
       CardStaticId.tableCrdStaticId
     );
+    await this.delay();
 
     this.socket.emit('updatePlayerCards', {
       gameId: this.gameId,
@@ -260,7 +267,7 @@ export class MainPlayerComponent implements OnInit {
     this.showFourPlayerCard.emit(true);
   }
 
-  TakeOneCardAndGiveFeature(takeAndGiveSelectedCard: {
+  async TakeOneCardAndGiveFeature(takeAndGiveSelectedCard: {
     card: Card;
     playerNumber: number;
     allCard: Card[];
@@ -276,9 +283,10 @@ export class MainPlayerComponent implements OnInit {
       takeAndGiveSelectedCard.card._id
     );
     this.MoveTheCards(this.allPullCards[0]._id, CardStaticId.tableCrdStaticId);
+    await this.delay();
+
     const card = allPullCardsCopy.pop();
     if (card) this.allTableCardsCopy.push(card);
-
     let mainplayerCards = [...this.Cards];
     mainplayerCards[this.mainPlayerCardIndex] = takeAndGiveSelectedCard.card;
     let secondplayerCards = [...takeAndGiveSelectedCard.allCard];
@@ -306,6 +314,8 @@ export class MainPlayerComponent implements OnInit {
     let allPullCardsCopy = [...this.allPullCards];
     this.MoveTheCards(this.allPullCards[0]._id, CardStaticId.tableCrdStaticId);
     this.MoveTheCards(playercard._id, CardStaticId.tableCrdStaticId);
+    await this.delay();
+
     const card = allPullCardsCopy.pop();
     if (card) this.allTableCardsCopy.push(card);
     this.allTableCardsCopy.push(playercard);
@@ -326,10 +336,12 @@ export class MainPlayerComponent implements OnInit {
     this.hideTheCardAndButton.emit(true);
   }
 
-  updateTheCards() {
+  async updateTheCards() {
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();
     this.MoveTheCards(this.allPullCards[0]._id, CardStaticId.tableCrdStaticId);
+    await this.delay();
+
     this.socket.emit('fromPullCardsToTable', {
       gameId: this.gameId,
       deleteCards: allPullCardsCopy,
@@ -359,25 +371,19 @@ export class MainPlayerComponent implements OnInit {
     this.blockRoundFinishedButton = true;
   }
   moveTheCard(sourceId: string, targetId: string) {
-    console.log(targetId);
     const sourceCircle: any = document.getElementById(sourceId);
     const targetCircle: any = document.getElementById(targetId);
-    console.log(targetCircle);
     const sourceRect = sourceCircle.getBoundingClientRect();
     const targetRect = targetCircle.getBoundingClientRect();
-    console.log(targetRect);
+    console.log(sourceRect, targetRect);
     if (sourceRect && targetRect) {
       const deltaX = targetRect.left - sourceRect.left;
       const deltaY = targetRect.top - sourceRect.top;
 
       setTimeout(function () {
+        sourceCircle.style.transition = 'transform 2s ease-in-out';
         sourceCircle.style.transform = `translate(${deltaX}px, ${deltaY}px)`;
       }, 10);
-
-      setTimeout(function () {
-        sourceCircle.style.animation = '';
-        sourceCircle.style.transform = '';
-      }, 2000);
     }
   }
   MoveTheCards(sourceId: string, targetId: string) {
@@ -386,5 +392,8 @@ export class MainPlayerComponent implements OnInit {
       sourceId: sourceId,
       targetId: targetId,
     });
+  }
+  async delay() {
+    return new Promise((resolve) => setTimeout(resolve, 3000));
   }
 }

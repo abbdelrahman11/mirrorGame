@@ -9,11 +9,10 @@
         : ''
     "
   >
-    <!-- ! -->
     <app-card
       [CardData]="card"
       [color]="'#2196f3'"
-      [flip]="flipCardsArray[i]"
+      [flip]="!flipCardsArray[i]"
       (click)="playerCard(card, i)"
     ></app-card>
   </div>
