@@ -159,6 +159,10 @@ export class MainPlayerComponent implements OnInit {
       CardStaticId.tableCrdStaticId,
       this.copyOfPlayerCards[Cardindex]._id
     );
+    this.MoveTheCards(
+      this.copyOfPlayerCards[Cardindex]._id,
+      this.allPullCards[0]._id
+    );
     await this.delay();
 
     if (card) this.copyOfPlayerCards[Cardindex] = card;
@@ -177,17 +181,17 @@ export class MainPlayerComponent implements OnInit {
   }
 
   showTwoCardsToThePlayer() {
+    this.socket.emit('chandeshowTwoCardsValue', {
+      gameId: this.gameId,
+      value: false,
+      playersIndex: this.playersIndex,
+    });
     this.flipCardsArray[0] = true;
     this.flipCardsArray[1] = true;
     setTimeout(() => {
-      this.socket.emit('chandeshowTwoCardsValue', {
-        gameId: this.gameId,
-        value: false,
-        playersIndex: this.playersIndex,
-      });
       this.flipCardsArray[0] = false;
       this.flipCardsArray[1] = false;
-    }, 5000);
+    }, 2000);
   }
   checkIfValuesAreEquals() {
     const tableCard = this.allTableCardsCopy.pop();
@@ -396,7 +400,6 @@ export class MainPlayerComponent implements OnInit {
     const targetCircle: any = document.getElementById(targetId);
     const sourceRect = sourceCircle.getBoundingClientRect();
     const targetRect = targetCircle.getBoundingClientRect();
-    console.log(sourceRect, targetRect);
     if (sourceRect && targetRect) {
       const deltaX = targetRect.left - sourceRect.left;
       const deltaY = targetRect.top - sourceRect.top;

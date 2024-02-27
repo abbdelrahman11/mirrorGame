@@ -161,9 +161,9 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   }
 
   showLogs() {
-    console.log(this.playerCards, 'playerCards');
-    console.log(this.pullCards, 'pullCards');
-    console.log(this.tableCards, 'tableCard');
+    // console.log(this.playerCards, 'playerCards');
+    // console.log(this.pullCards, 'pullCards');
+    // console.log(this.tableCards, 'tableCard');
   }
   showTwoCardsToThePlayer(showTwoCards: boolean) {
     this.showTwoCards = showTwoCards;
