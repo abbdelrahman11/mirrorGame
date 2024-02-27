@@ -87,11 +87,14 @@ export class MainPlayerComponent implements OnInit {
     this.socket.listen('moveTheCards').subscribe((res: any) => {
       this.moveTheCard(res.sourceId, res.targetId);
     });
+    this.socket.listen('flipTheCards').subscribe((res: any) => {
+      this.flipTheCard(res);
+    });
   }
 
   playerCard(playercard: Card, Cardindex: number) {
     if (this.showOneOfYourCard) {
-      this.showOneOfYourCardFeature(Cardindex);
+      this.showOneOfYourCardFeature(playercard, Cardindex);
     }
     if (!this.canPullFromPullCard && !this.canPullFromTheGround) {
       this.showToGroundButton(Cardindex, playercard);
@@ -111,7 +114,7 @@ export class MainPlayerComponent implements OnInit {
       this.mainPlayerCardIndex = Cardindex;
     }
     if (this.showOneCardFromAllThePlayers) {
-      this.showOneOfYourCardAndOtherPlayers(Cardindex);
+      this.showOneOfYourCardAndOtherPlayers(Cardindex, playercard);
     }
   }
   showToGroundButton(Cardindex: number, playercard: Card) {
@@ -259,7 +262,12 @@ export class MainPlayerComponent implements OnInit {
     this.showOneCardFromAllThePlayers = true;
   }
 
-  showOneOfYourCardAndOtherPlayers(Cardindex: number) {
+  showOneOfYourCardAndOtherPlayers(Cardindex: number, card: Card) {
+    this.socket.emit('flipTheCard', {
+      gameId: this.gameId,
+      roomName: this.roomName,
+      cardId: card._id,
+    });
     this.flipCardsArray[Cardindex] = true;
     setTimeout(() => {
       this.flipCardsArray[Cardindex] = false;
@@ -353,8 +361,13 @@ export class MainPlayerComponent implements OnInit {
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
   }
-  showOneOfYourCardFeature(Cardindex: number) {
+  showOneOfYourCardFeature(playercard: Card, Cardindex: number) {
     this.flipCardsArray[Cardindex] = true;
+    this.socket.emit('flipTheCard', {
+      gameId: this.gameId,
+      roomName: this.roomName,
+      cardId: playercard._id,
+    });
     setTimeout(() => {
       this.flipCardsArray[Cardindex] = false;
       this.showOneOfYourCard = false;
@@ -370,6 +383,14 @@ export class MainPlayerComponent implements OnInit {
     });
     this.blockRoundFinishedButton = true;
   }
+  flipTheCard(cardrId: string) {
+    let cardDiv: any = document.getElementById(cardrId);
+    cardDiv.classList.add('flip-back');
+    setTimeout(() => {
+      cardDiv.classList.remove('flip-back');
+    }, 1000);
+  }
+
   moveTheCard(sourceId: string, targetId: string) {
     const sourceCircle: any = document.getElementById(sourceId);
     const targetCircle: any = document.getElementById(targetId);
@@ -393,6 +414,7 @@ export class MainPlayerComponent implements OnInit {
       targetId: targetId,
     });
   }
+
   async delay() {
     return new Promise((resolve) => setTimeout(resolve, 3000));
   }

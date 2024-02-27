@@ -39,6 +39,8 @@
         daynamicPlayer[(playersIndex + 2) % 4 == 0 ? 4 : (playersIndex + 2) % 4]
           .number
       "
+      [gameId]="gameId"
+      [roomName]="roomName"
       [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
       [showPlayerCards]="showPlayerCards"
       [takeAndGive]="takeAndGive"
@@ -70,6 +72,8 @@
             (playersIndex + 3) % 4 == 0 ? 4 : (playersIndex + 3) % 4
           ].number
         "
+        [gameId]="gameId"
+        [roomName]="roomName"
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
         [showPlayerCards]="showPlayerCards"
         [takeAndGive]="takeAndGive"
@@ -125,6 +129,8 @@
             (playersIndex + 1) % 4 == 0 ? 4 : (playersIndex + 1) % 4
           ].number
         "
+        [gameId]="gameId"
+        [roomName]="roomName"
         [activePlayerNumber]="activePlayer % 4 == 0 ? 4 : activePlayer % 4"
         [showPlayerCards]="showPlayerCards"
         [takeAndGive]="takeAndGive"
