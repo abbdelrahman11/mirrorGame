@@ -6,59 +6,63 @@
 >
   Result
 </button>
-
-<table
-  class="table table-bordered mt-5"
-  style="position: absolute; right: 40px; top: 0; z-index: 2"
-  *ngIf="showTheResults || showGameFinished"
->
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col" *ngFor="let player of playersInfo">{{ player.name }}</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let Result of Results; let i = index">
-      <th scope="row">Round {{ i + 1 }}</th>
-      <td>
-        {{ Result.round["player1"] }}
-      </td>
-      <td>
-        {{ Result.round["player2"] }}
-      </td>
-      <td>
-        {{ Result.round["player3"] }}
-      </td>
-      <td>
-        {{ Result.round["player4"] }}
-      </td>
-    </tr>
-    <tr>
-      <th scope="row">Sum</th>
-      <ng-container *ngFor="let item of [sumOfPoints]; let i = index">
+<div class="table-container" *ngIf="showTheResults || showGameFinished">
+  <table
+    class="table table-hover table-dark text-center mt-5"
+    style="height: 100%"
+  >
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col" *ngFor="let player of playersInfo">
+          {{ player.name }}
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let Result of Results; let i = index">
+        <th scope="row">Round {{ i + 1 }}</th>
         <td>
-          {{ item["player1"] }}
+          {{ Result.round["player1"] }}
         </td>
         <td>
-          {{ item["player2"] }}
+          {{ Result.round["player2"] }}
         </td>
         <td>
-          {{ item["player3"] }}
+          {{ Result.round["player3"] }}
         </td>
         <td>
-          {{ item["player4"] }}
+          {{ Result.round["player4"] }}
         </td>
-      </ng-container>
-    </tr>
-  </tbody>
-</table>
-<div class="text m-4 text-center" *ngIf="showGameFinished">
-  The Winner Is
-  <span class="badge badge-warning text-center"
-    >{{ playersInfo ? playersInfo[theWinner]?.name : "" }}
-  </span>
-</div>
-<div class="text m-4 text-center" *ngIf="showGameFinished">
-  <button class="btn btn-info" (click)="goHome()">Go Home</button>
+      </tr>
+      <tr>
+        <th scope="row">Sum</th>
+        <ng-container *ngFor="let item of [sumOfPoints]; let i = index">
+          <td>
+            {{ item["player1"] }}
+          </td>
+          <td>
+            {{ item["player2"] }}
+          </td>
+          <td>
+            {{ item["player3"] }}
+          </td>
+          <td>
+            {{ item["player4"] }}
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+  <div *ngIf="showGameFinished">
+    <div class="text text-center">
+      The Winner Is
+      <span class="badge badge-warning text-center"
+        >{{ playersInfo ? playersInfo[theWinner]?.name : "" }}
+      </span>
+    </div>
+    <div class="text text-center">
+      <button class="btn btn-info" (click)="goHome()">Go Home</button>
+    </div>
+  </div>
 </div>

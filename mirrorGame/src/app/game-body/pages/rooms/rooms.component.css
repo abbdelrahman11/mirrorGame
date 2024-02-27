@@ -9,6 +9,7 @@
 .rooms-container {
   min-height: 200px;
 }
+
 @media (min-width: 320px) and (max-width: 576px) {
   .badges {
     flex-direction: column;
