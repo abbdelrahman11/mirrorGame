@@ -68,10 +68,13 @@ module.exports = (io: any, socket: any) => {
     gameId: string,
     roomName: string
   ) {
-    getPullCards(theGame.cards, 16);
+    let gameCards = [...theGame.cards];
+
+    getPullCards(theGame.cards, 17);
     const updatedFields = {
       gameStarted: true,
       pullCards: theGame.cards,
+      tableCards: getTableCards(gameCards),
     };
     const theGameUpdate = await UpdateTheGame(gameId, updatedFields);
     io.to(roomName).emit("allCards", [theGameUpdate]);
@@ -84,7 +87,11 @@ module.exports = (io: any, socket: any) => {
     randomNumbers = arr.slice(count * 4, (count + 1) * 4);
     return randomNumbers;
   }
-
+  function getTableCards(arr: Array<any>) {
+    let randomNumbers;
+    randomNumbers = arr.slice(16, 17);
+    return randomNumbers;
+  }
   function getPullCards(arr: Array<any>, count: number) {
     let randomNumbers;
     randomNumbers = arr.splice(0, count);
