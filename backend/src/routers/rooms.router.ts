@@ -34,13 +34,24 @@ router.post(
           localField: "usersId",
           foreignField: "_id",
           as: "users_info",
-          pipeline: [
-            {
-              $sort: {
-                _id: 1,
+        },
+      },
+      {
+        $addFields: {
+          users_info: {
+            $map: {
+              input: "$usersId",
+              as: "userId",
+              in: {
+                $arrayElemAt: [
+                  "$users_info",
+                  {
+                    $indexOfArray: ["$users_info._id", "$$userId"],
+                  },
+                ],
               },
             },
-          ],
+          },
         },
       },
     ]);

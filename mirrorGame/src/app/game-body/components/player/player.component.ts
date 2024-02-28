@@ -102,5 +102,6 @@ export class PlayerComponent implements OnInit {
       playerNumber,
       cardIndex: index,
     });
+    // something is here check it
   }
 }
