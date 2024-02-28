@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Card } from 'src/app/core/interfaces/card';
 import { SocketService } from 'src/app/core/services/socket-service.service';
-import { CardStaticId } from 'src/app/core/enum/cardsId.enum';
 @Component({
   selector: 'app-main-player',
   templateUrl: './main-player.component.html',
@@ -131,7 +130,10 @@ export class MainPlayerComponent implements OnInit {
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();
     this.MoveTheCards(this.allPullCards[0]._id, selectedplayercard._id);
-    this.MoveTheCards(selectedplayercard._id, CardStaticId.tableCrdStaticId);
+    this.MoveTheCards(
+      selectedplayercard._id,
+      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
+    );
     await this.delay();
 
     this.socket.emit('playerTakesCard', {
@@ -156,7 +158,7 @@ export class MainPlayerComponent implements OnInit {
     let card = tableCardsCopy.pop();
     tableCardsCopy.push(this.copyOfPlayerCards[Cardindex]);
     this.MoveTheCards(
-      CardStaticId.tableCrdStaticId,
+      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id,
       this.copyOfPlayerCards[Cardindex]._id
     );
     this.MoveTheCards(
@@ -207,7 +209,7 @@ export class MainPlayerComponent implements OnInit {
     let copyOfCards = [...this.Cards];
     this.MoveTheCards(
       this.Cards[this.playerCardToCheckInex]._id,
-      CardStaticId.tableCrdStaticId
+      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
     );
     await this.delay();
     copyOfCards.splice(this.playerCardToCheckInex, 1);
@@ -228,7 +230,7 @@ export class MainPlayerComponent implements OnInit {
     this.showToGround = false;
     this.MoveTheCards(
       this.Cards[this.playerCardToCheckInex]._id,
-      CardStaticId.tableCrdStaticId
+      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
     );
     await this.delay();
 
@@ -294,7 +296,10 @@ export class MainPlayerComponent implements OnInit {
       this.Cards[this.mainPlayerCardIndex]._id,
       takeAndGiveSelectedCard.card._id
     );
-    this.MoveTheCards(this.allPullCards[0]._id, CardStaticId.tableCrdStaticId);
+    this.MoveTheCards(
+      this.allPullCards[0]._id,
+      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
+    );
     await this.delay();
 
     const card = allPullCardsCopy.pop();
@@ -324,8 +329,14 @@ export class MainPlayerComponent implements OnInit {
   }
   async Basra(playercard: Card, Cardindex: number) {
     let allPullCardsCopy = [...this.allPullCards];
-    this.MoveTheCards(this.allPullCards[0]._id, CardStaticId.tableCrdStaticId);
-    this.MoveTheCards(playercard._id, CardStaticId.tableCrdStaticId);
+    this.MoveTheCards(
+      this.allPullCards[0]._id,
+      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
+    );
+    this.MoveTheCards(
+      playercard._id,
+      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
+    );
     await this.delay();
 
     const card = allPullCardsCopy.pop();
@@ -351,7 +362,10 @@ export class MainPlayerComponent implements OnInit {
   async updateTheCards() {
     let allPullCardsCopy = [...this.allPullCards];
     const card = allPullCardsCopy.pop();
-    this.MoveTheCards(this.allPullCards[0]._id, CardStaticId.tableCrdStaticId);
+    this.MoveTheCards(
+      this.allPullCards[0]._id,
+      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
+    );
     await this.delay();
 
     this.socket.emit('fromPullCardsToTable', {

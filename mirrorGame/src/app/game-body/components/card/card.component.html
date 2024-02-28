@@ -7,7 +7,7 @@
     class="game-block"
     [ngClass]="flip ? 'is-flipped' : 'flip-back'"
     [style.height.px]="cardHeight"
-    [id]="tableCards ? '223' : CardData._id"
+    [id]="CardData._id"
   >
     <div class="face front text-center" [style.border]="'5px solid ' + color">
       <span *ngIf="!flip" class="before">{{ CardData.content }}</span>
