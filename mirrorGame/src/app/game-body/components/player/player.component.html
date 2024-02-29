@@ -13,7 +13,7 @@
   <div [class]="isSmallScreen ? 'd-flex card-direction' : 'd-flex'">
     <ng-container *ngFor="let card of playerCard; let i = index">
       <app-card
-        [flip]="!flipCardsArray[i]"
+        [flip]="flipCardsArray[i]"
         [CardData]="card"
         style="margin: 5px 0"
         [color]="'red'"

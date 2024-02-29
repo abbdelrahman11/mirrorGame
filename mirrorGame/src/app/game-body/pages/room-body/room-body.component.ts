@@ -28,7 +28,6 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   gameId!: string | undefined;
   playersIndex!: number;
   canPullFromPullCard!: boolean;
-  selectedPullCard!: Card;
   hideTheCard!: boolean;
   hideButtons!: boolean;
   playerCanPlay!: boolean;
@@ -192,9 +191,6 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   onCanPullFromTheGroundChange(newValue: boolean) {
     this.canPullFromTheGround = newValue;
   }
-  theSelectedCard(card: Card) {
-    this.selectedPullCard = card;
-  }
 
   hideTheCardAndButton(value: boolean) {
     this.hideTheCard = value;
@@ -223,6 +219,9 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   }
   updateTheCards(value: boolean) {
     this.updateTheCard = value;
+  }
+  changeupdateTheCard(newvalue: boolean) {
+    this.updateTheCard = newvalue;
   }
   updateCounter(value: number) {
     this.updateCounterForPlayers = value;

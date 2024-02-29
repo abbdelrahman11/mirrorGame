@@ -68,7 +68,6 @@ export class RoomsComponent implements OnInit {
     this.service.getAllRooms().subscribe({
       next: (res: Object) => {
         this.allRooms = res as Room[];
-        console.log(this.allRooms.length);
       },
     });
   }

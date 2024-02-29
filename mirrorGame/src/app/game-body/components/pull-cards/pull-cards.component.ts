@@ -15,12 +15,10 @@ export class PullCardsComponent implements OnInit {
   @Input() allTableCards!: Card[];
   @Output() canPullFromPullCards = new EventEmitter<boolean>();
   @Output() takeTheCardWithoutCheck = new EventEmitter<boolean>();
-  @Output() selectedCard = new EventEmitter<Card>();
   splicedCards!: Card[];
   cardToShowToThePlayer!: Card;
   showTheCard: boolean = false;
   cardIndex!: number;
-  showButtons: boolean = true;
   constructor(private socket: SocketService) {}
 
   ngOnInit(): void {
@@ -37,16 +35,12 @@ export class PullCardsComponent implements OnInit {
 
   showToThePlayer(card: Card, index: number) {
     this.showTheCard = true;
-    this.showButtons = true;
     this.cardToShowToThePlayer = card;
     this.cardIndex = index;
   }
   takeTheCard() {
-    const card = this.splicedCards.splice(this.cardIndex, 1)[0];
     this.canPullFromPullCards.emit(true);
     this.takeTheCardWithoutCheck.emit(true);
-    this.selectedCard.emit(card);
-    this.showButtons = false;
   }
 
   toGround() {
@@ -65,8 +59,6 @@ export class PullCardsComponent implements OnInit {
       card.content == '10'
     ) {
       this.canPullFromPullCards.emit(true);
-      this.selectedCard.emit(card);
-      this.showButtons = false;
     } else {
       this.dropTheCardToTheGround(card);
     }

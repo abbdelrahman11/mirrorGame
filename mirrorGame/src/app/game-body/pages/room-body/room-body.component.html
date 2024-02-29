@@ -106,7 +106,6 @@
             [hideTheCard]="hideTheCard"
             (canPullFromPullCards)="canPullFromPullCards($event)"
             (takeTheCardWithoutCheck)="takeTheCardWithoutCheckFunction($event)"
-            (selectedCard)="theSelectedCard($event)"
           ></app-pull-cards>
         </div>
       </div>
@@ -155,7 +154,6 @@
       [playersIndex]="playersIndex"
       [canPullFromPullCard]="canPullFromPullCard"
       [takeTheCardWithoutCheck]="takeTheCardWithoutCheck"
-      [selectedPullCard]="selectedPullCard"
       (hideTheCardAndButton)="hideTheCardAndButton($event)"
       (hideTheButton)="hideButton($event)"
       (changeCanSelectCard)="onCanSelectCardChange($event)"
@@ -164,6 +162,7 @@
       (showPlayerCard)="showPlayerCard($event)"
       (takeAndGive)="takeAndGiveCard($event)"
       (showFourPlayerCard)="showFourPlayerCard($event)"
+      (changeupdateTheCard)="changeupdateTheCard($event)"
       [canPullFromTheGround]="canPullFromTheGround"
       [allTableCards]="tableCards"
       [showTwoCards]="showTwoCards"

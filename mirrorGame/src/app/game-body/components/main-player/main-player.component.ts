@@ -15,7 +15,6 @@ export class MainPlayerComponent implements OnInit {
   @Input() takeTheCardWithoutCheck!: boolean;
   @Input() canPullFromTheGround!: boolean;
   @Input() showTwoCards!: boolean;
-  @Input() selectedPullCard!: Card;
   @Input() allTableCards!: Card[];
   @Input() allPullCards!: Card[];
   @Input() playerNumber!: number;
@@ -39,6 +38,7 @@ export class MainPlayerComponent implements OnInit {
   @Output() changeCanSelectCard = new EventEmitter<boolean>(false);
   @Output() changeTakeTheCardWithoutCheck = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
+  @Output() changeupdateTheCard = new EventEmitter<boolean>(false);
   copyOfPlayerCards!: Card[];
   flipCardsArray: Array<boolean> = [];
   showToGround!: boolean;
@@ -71,7 +71,9 @@ export class MainPlayerComponent implements OnInit {
       this.allTableCardsCopy = [...this.allTableCards];
     }
     if (!this.updateTheCard && this.canPullFromPullCard) {
-      this.checkCardType(this.selectedPullCard);
+      let allPullCardsCopy = [...this.allPullCards];
+      const card: any = allPullCardsCopy.pop();
+      this.checkCardType(card);
     }
     if (this.updateTheCard && this.canPullFromPullCard) {
       this.showOneCardOfOtherPlayerCards = !this.updateTheCard;
@@ -126,16 +128,16 @@ export class MainPlayerComponent implements OnInit {
   }
 
   async pullFromPullCard(selectedplayercard: Card, Cardindex: number) {
+    let allPullCardsCopy = [...this.allPullCards];
+    const card: any = allPullCardsCopy.pop();
+    this.copyOfPlayerCards[Cardindex] = card;
+    this.makeCanPullFromPullCardActive = false;
     this.MoveTheCards(this.allPullCards[0]._id, selectedplayercard._id);
     this.MoveTheCards(
       selectedplayercard._id,
       this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
     );
     await this.delay();
-    this.copyOfPlayerCards[Cardindex] = this.selectedPullCard;
-    let allPullCardsCopy = [...this.allPullCards];
-    const card = allPullCardsCopy.pop();
-
     this.socket.emit('playerTakesCard', {
       gameId: this.gameId,
       roomName: this.roomName,
@@ -146,13 +148,17 @@ export class MainPlayerComponent implements OnInit {
       PullCardsKeyName: 'pullCards',
       tableCardsKeyName: 'tableCards',
     });
-    this.makeCanPullFromPullCardActive = false;
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
     this.changeTakeTheCardWithoutCheck.emit(false);
   }
 
   async pullFromTheGround(Cardindex: number) {
+    let tableCardsCopy = [...this.allTableCards];
+    let card = tableCardsCopy.pop();
+    tableCardsCopy.push(this.copyOfPlayerCards[Cardindex]);
+    if (card) this.copyOfPlayerCards[Cardindex] = card;
+
     this.MoveTheCards(
       this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id,
       this.copyOfPlayerCards[Cardindex]._id
@@ -162,11 +168,6 @@ export class MainPlayerComponent implements OnInit {
       this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
     );
     await this.delay();
-    let tableCardsCopy = [...this.allTableCards];
-    let card = tableCardsCopy.pop();
-    tableCardsCopy.push(this.copyOfPlayerCards[Cardindex]);
-    if (card) this.copyOfPlayerCards[Cardindex] = card;
-
     this.socket.emit('playerTakesCardFromGround', {
       gameId: this.gameId,
       roomName: this.roomName,
@@ -203,17 +204,17 @@ export class MainPlayerComponent implements OnInit {
     }
   }
   async ValuesAreEquals(tableCard: Card) {
-    this.MoveTheCards(
-      this.Cards[this.playerCardToCheckInex]._id,
-      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
-    );
-    await this.delay();
     this.allTableCardsCopy.push(tableCard);
     this.allTableCardsCopy.push(tableCard);
     let copyOfCards = [...this.Cards];
     copyOfCards.splice(this.playerCardToCheckInex, 1);
     this.showSelectedCard[this.playerCardToCheckInex] = false;
     this.showToGround = false;
+    this.MoveTheCards(
+      this.Cards[this.playerCardToCheckInex]._id,
+      this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
+    );
+    await this.delay();
     this.socket.emit('updatePlayerCards', {
       gameId: this.gameId,
       roomName: this.roomName,
@@ -224,15 +225,15 @@ export class MainPlayerComponent implements OnInit {
     });
   }
   async ValuesAreNotEquals(tableCard?: Card) {
+    if (tableCard) this.Cards.push(tableCard);
+    this.showSelectedCard[this.playerCardToCheckInex] = false;
+    this.showToGround = false;
+
     this.MoveTheCards(
       this.Cards[this.playerCardToCheckInex]._id,
       this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
     );
     await this.delay();
-    if (tableCard) this.Cards.push(tableCard);
-    this.showSelectedCard[this.playerCardToCheckInex] = false;
-    this.showToGround = false;
-
     this.socket.emit('updatePlayerCards', {
       gameId: this.gameId,
       roomName: this.roomName,
@@ -286,6 +287,15 @@ export class MainPlayerComponent implements OnInit {
     allCard: Card[];
     cardIndex: number;
   }) {
+    let allPullCardsCopy = [...this.allPullCards];
+
+    const card = allPullCardsCopy.pop();
+    if (card) this.allTableCardsCopy.push(card);
+    let mainplayerCards = [...this.Cards];
+    mainplayerCards[this.mainPlayerCardIndex] = takeAndGiveSelectedCard.card;
+    let secondplayerCards = [...takeAndGiveSelectedCard.allCard];
+    secondplayerCards[takeAndGiveSelectedCard.cardIndex] = this.mainPlayerCard;
+
     this.MoveTheCards(
       takeAndGiveSelectedCard.card._id,
       this.Cards[this.mainPlayerCardIndex]._id
@@ -299,15 +309,6 @@ export class MainPlayerComponent implements OnInit {
       this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
     );
     await this.delay();
-    let allPullCardsCopy = [...this.allPullCards];
-
-    const card = allPullCardsCopy.pop();
-    if (card) this.allTableCardsCopy.push(card);
-    let mainplayerCards = [...this.Cards];
-    mainplayerCards[this.mainPlayerCardIndex] = takeAndGiveSelectedCard.card;
-    let secondplayerCards = [...takeAndGiveSelectedCard.allCard];
-    secondplayerCards[takeAndGiveSelectedCard.cardIndex] = this.mainPlayerCard;
-
     this.socket.emit('TakeAndGive', {
       gameId: this.gameId,
       roomName: this.roomName,
@@ -327,6 +328,12 @@ export class MainPlayerComponent implements OnInit {
     this.takeAndGive.emit(false);
   }
   async Basra(playercard: Card, Cardindex: number) {
+    let allPullCardsCopy = [...this.allPullCards];
+    const card = allPullCardsCopy.pop();
+    if (card) this.allTableCardsCopy.push(card);
+    this.allTableCardsCopy.push(playercard);
+    let CardsCopy = [...this.Cards];
+    CardsCopy.splice(Cardindex, 1);
     this.MoveTheCards(
       this.allPullCards[0]._id,
       this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
@@ -336,12 +343,6 @@ export class MainPlayerComponent implements OnInit {
       this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
     );
     await this.delay();
-    let allPullCardsCopy = [...this.allPullCards];
-    const card = allPullCardsCopy.pop();
-    if (card) this.allTableCardsCopy.push(card);
-    this.allTableCardsCopy.push(playercard);
-    let CardsCopy = [...this.Cards];
-    CardsCopy.splice(Cardindex, 1);
     this.socket.emit('Basra', {
       gameId: this.gameId,
       roomName: this.roomName,
@@ -358,14 +359,14 @@ export class MainPlayerComponent implements OnInit {
   }
 
   async updateTheCards() {
+    let allPullCardsCopy = [...this.allPullCards];
+    const card = allPullCardsCopy.pop();
+
     this.MoveTheCards(
       this.allPullCards[0]._id,
       this.allTableCardsCopy[this.allTableCardsCopy.length - 1]._id
     );
     await this.delay();
-    let allPullCardsCopy = [...this.allPullCards];
-    const card = allPullCardsCopy.pop();
-
     this.socket.emit('fromPullCardsToTable', {
       gameId: this.gameId,
       deleteCards: allPullCardsCopy,
@@ -376,6 +377,7 @@ export class MainPlayerComponent implements OnInit {
     });
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
+    this.changeupdateTheCard.emit(false);
   }
   showOneOfYourCardFeature(playercard: Card, Cardindex: number) {
     this.flipCardsArray[Cardindex] = true;

@@ -21,18 +21,10 @@
       [flip]="false"
     ></app-card>
     <div class="btn btns d-flex">
-      <button
-        class="btn btn-primary mr-2 rounded"
-        (click)="takeTheCard()"
-        *ngIf="showButtons"
-      >
+      <button class="btn btn-primary mr-2 rounded" (click)="takeTheCard()">
         Take
       </button>
-      <button
-        class="btn btn-primary rounded"
-        (click)="toGround()"
-        *ngIf="showButtons"
-      >
+      <button class="btn btn-primary rounded" (click)="toGround()">
         To Ground
       </button>
     </div>
