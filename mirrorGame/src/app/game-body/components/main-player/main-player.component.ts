@@ -197,7 +197,7 @@ export class MainPlayerComponent implements OnInit {
     setTimeout(() => {
       this.flipCardsArray[0] = false;
       this.flipCardsArray[1] = false;
-    }, 6000);
+    }, 7000);
   }
   checkIfValuesAreEquals() {
     const tableCard = this.allTableCardsCopy.pop();
@@ -412,7 +412,7 @@ export class MainPlayerComponent implements OnInit {
       });
       this.blockRoundFinishedButton = true;
       console.log('sichdndk');
-    }, 5000);
+    }, 4000);
   }
   flipTheCard(cardrId: string) {
     let cardDiv: any = document.getElementById(cardrId);

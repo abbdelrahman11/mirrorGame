@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RoomsService } from 'src/app/core/services/rooms.service';
 import { Room } from 'src/app/core/interfaces/room';
 import { SocketService } from 'src/app/core/services/socket-service.service';
+
 interface points {
   name: number;
 }
@@ -21,6 +22,7 @@ export class RoomsComponent implements OnInit {
   usersIdArrray: Array<string | undefined> = [];
   userId!: string | undefined;
   gameId!: string;
+  showTheInstructions!: boolean;
   constructor(
     private service: RoomsService,
     private router: Router,
@@ -102,5 +104,8 @@ export class RoomsComponent implements OnInit {
   }
   ngOnDestroy(): void {
     localStorage.removeItem('canStartTheGame');
+  }
+  showInstructions() {
+    this.showTheInstructions = true;
   }
 }

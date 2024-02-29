@@ -17,6 +17,7 @@ import { ResultsComponent } from './components/results/results.component';
 import { WaitThePlayerComponent } from './components/wait-the-player/wait-the-player.component';
 import { SayMirrorComponent } from './components/say-mirror/say-mirror.component';
 import { PlayerstatusComponent } from './components/playerstatus/playerstatus.component';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { PlayerstatusComponent } from './components/playerstatus/playerstatus.co
     RouterModule,
     DialogModule,
     DropdownModule,
+    TabViewModule,
   ],
 })
 export class GameBodyModule {}

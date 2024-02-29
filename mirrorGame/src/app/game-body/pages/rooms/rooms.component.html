@@ -84,3 +84,49 @@
     </button>
   </div>
 </p-dialog>
+<div class="text-center mt-5">
+  <button class="btn btn-primary" (click)="showInstructions()">
+    show The Instructions
+  </button>
+</div>
+<p-dialog header="The Instructions" [(visible)]="showTheInstructions">
+  <p-tabView>
+    <p-tabPanel header="Information">
+      <ul>
+        <li>you will start with four cards</li>
+        <li>you will see two cards at the start of the game</li>
+        <li>
+          The main goal of The game is that you have as few numbers as possible
+          From the points to win the game
+        </li>
+        <li>You can pull from the ground if the number is small</li>
+        <li>You can pull from the pull cards</li>
+        <li>
+          You can throw a card to the ground if they are the same to decrease
+          your cards
+        </li>
+        <li>
+          you can say mirror to end the game the one with the smallest point
+          will win and his score will be zero
+        </li>
+      </ul>
+    </p-tabPanel>
+    <p-tabPanel header="The Cards">
+      <ul>
+        <li>the 7 & 8 It allow you to see your card</li>
+        <li>the 9 & 10 It allows you to see othe player card</li>
+        <li>
+          the * It allows you to see othe player card and card from your cards
+        </li>
+        <li>
+          teh Basra It allows you to throw a card to the ground to decrease your
+          cards
+        </li>
+        <li>
+          the =><= It allows you to It allows you to exchange a card from
+          another player
+        </li>
+      </ul>
+    </p-tabPanel>
+  </p-tabView>
+</p-dialog>
