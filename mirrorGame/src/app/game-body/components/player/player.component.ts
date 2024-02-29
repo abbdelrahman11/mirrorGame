@@ -42,7 +42,11 @@ export class PlayerComponent implements OnInit {
       this.flipAllTheCards();
     }
   }
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.socket.listen('flipTheCardToEndOfTheGame').subscribe((res: any) => {
+      this.flipAllTheCards();
+    });
+  }
   CardChecked(index: number, card: Card) {
     if (this.showPlayerCards) {
       this.showOneOfYourCardFeature(index, card);

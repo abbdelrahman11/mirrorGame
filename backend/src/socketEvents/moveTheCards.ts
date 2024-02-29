@@ -5,6 +5,10 @@ module.exports = (io: any, socket: any) => {
   const flipTheCard = async ({ roomName, cardId }: any) => {
     io.to(roomName).emit("flipTheCards", cardId);
   };
+  const flipAllTheCards = async ({ roomName, cardId }: any) => {
+    io.to(roomName).emit("flipTheCardToEndOfTheGame", cardId);
+  };
   socket.on("moveTheCard", handleMoveTheCards);
   socket.on("flipTheCard", flipTheCard);
+  socket.on("flipAllTheCards", flipAllTheCards);
 };

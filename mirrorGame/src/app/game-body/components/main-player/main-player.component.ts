@@ -92,6 +92,9 @@ export class MainPlayerComponent implements OnInit {
     this.socket.listen('flipTheCards').subscribe((res: any) => {
       this.flipTheCard(res);
     });
+    this.socket.listen('flipTheCardToEndOfTheGame').subscribe((res: any) => {
+      this.flipAllTheCards();
+    });
   }
 
   playerCard(playercard: Card, Cardindex: number) {
@@ -396,6 +399,11 @@ export class MainPlayerComponent implements OnInit {
 
   roundFinished() {
     this.flipAllTheCards();
+    this.socket.emit('flipAllTheCards', {
+      gameId: this.gameId,
+      roomName: this.roomName,
+      roomPoints: this.roomPoints,
+    });
     setTimeout(() => {
       this.socket.emit('roundFinished', {
         gameId: this.gameId,
