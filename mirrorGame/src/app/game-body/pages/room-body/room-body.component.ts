@@ -42,6 +42,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   showPlayerCards!: boolean;
   showFourPlayerCards!: boolean;
   updateTheCard!: boolean;
+  flipAllCardsForPlayers!: boolean;
   updateCounterForPlayers!: number;
   takeAndGive!: boolean;
   takeAndGiveSelectedCard!: {
@@ -226,7 +227,9 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   updateCounter(value: number) {
     this.updateCounterForPlayers = value;
   }
-
+  flipAllTheCardsForPlayers() {
+    this.flipAllCardsForPlayers = true;
+  }
   takeAndGiveSelectedCards(value: {
     card: Card;
     playerNumber: number;

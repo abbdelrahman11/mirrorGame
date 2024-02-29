@@ -39,6 +39,7 @@ export class MainPlayerComponent implements OnInit {
   @Output() changeTakeTheCardWithoutCheck = new EventEmitter<boolean>(false);
   @Output() changeCanPullFromTheGround = new EventEmitter<boolean>(false);
   @Output() changeupdateTheCard = new EventEmitter<boolean>(false);
+  @Output() flipAllTheCardsForPlayers = new EventEmitter<boolean>(false);
   copyOfPlayerCards!: Card[];
   flipCardsArray: Array<boolean> = [];
   showToGround!: boolean;
@@ -394,12 +395,16 @@ export class MainPlayerComponent implements OnInit {
   }
 
   roundFinished() {
-    this.socket.emit('roundFinished', {
-      gameId: this.gameId,
-      roomName: this.roomName,
-      roomPoints: this.roomPoints,
-    });
-    this.blockRoundFinishedButton = true;
+    this.flipAllTheCards();
+    setTimeout(() => {
+      this.socket.emit('roundFinished', {
+        gameId: this.gameId,
+        roomName: this.roomName,
+        roomPoints: this.roomPoints,
+      });
+      this.blockRoundFinishedButton = true;
+      console.log('sichdndk');
+    }, 5000);
   }
   flipTheCard(cardrId: string) {
     let cardDiv: any = document.getElementById(cardrId);
@@ -431,7 +436,12 @@ export class MainPlayerComponent implements OnInit {
       targetId: targetId,
     });
   }
-
+  flipAllTheCards() {
+    this.flipAllTheCardsForPlayers.emit(true);
+    for (let index = 0; index < this.Cards.length; index++) {
+      this.flipCardsArray[index] = true;
+    }
+  }
   async delay() {
     return new Promise((resolve) => setTimeout(resolve, 3000));
   }

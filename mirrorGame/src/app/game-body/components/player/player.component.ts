@@ -20,6 +20,7 @@ export class PlayerComponent implements OnInit {
   @Input() isSmallScreen!: boolean;
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
+  @Input() flipAllCardsForPlayers!: boolean;
   @Output() onShowPlayerCardChange = new EventEmitter<boolean>(false);
   @Output() updateCounterForPlayers = new EventEmitter<number>();
   @Output() onshowFourPlayerCardsChange = new EventEmitter<boolean>(false);
@@ -36,7 +37,11 @@ export class PlayerComponent implements OnInit {
 
   constructor(private socket: SocketService) {}
 
-  ngOnChanges() {}
+  ngOnChanges() {
+    if (this.flipAllCardsForPlayers) {
+      this.flipAllTheCards();
+    }
+  }
   ngOnInit(): void {}
   CardChecked(index: number, card: Card) {
     if (this.showPlayerCards) {
@@ -102,6 +107,10 @@ export class PlayerComponent implements OnInit {
       playerNumber,
       cardIndex: index,
     });
-    // something is here check it
+  }
+  flipAllTheCards() {
+    for (let index = 0; index < this.playerCard.length; index++) {
+      this.flipCardsArray[index] = true;
+    }
   }
 }
