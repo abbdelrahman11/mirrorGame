@@ -1,19 +1,15 @@
 <div class="row my-3">
-  <div class="col-md-9 col-6">
-    <app-wait-the-player
-      [playerCanPlay]="!playerCanPlay"
-      *ngIf="roomInfo?.usersId.length == 4 && canStartTheGame"
-    ></app-wait-the-player>
-  </div>
-  <div class="col-md-2 col-4">
+  <div class="col-md-3 col-5 text-right">
     <app-say-mirror
       *ngIf="canStartTheGame && roomInfo?.usersId.length == 4"
       [gameId]="gameId"
       [roomName]="roomName"
       [playersIndex]="playersIndex"
+      [finishTheRound]="finishTheRound"
     ></app-say-mirror>
   </div>
-  <div class="col-md-1 col-2" style="z-index: 11">
+  <div class="col-md-6 col-2"></div>
+  <div class="col-md-3 col-5" style="z-index: 11">
     <app-results
       *ngIf="roomInfo?.usersId.length == 4"
       [userId]="userId"
@@ -145,6 +141,10 @@
     </div>
   </div>
   <div class="first-line d-flex">
+    <app-wait-the-player
+      [playerCanPlay]="!playerCanPlay"
+      *ngIf="roomInfo?.usersId.length == 4 && canStartTheGame"
+    ></app-wait-the-player>
     <app-main-player
       [playerName]="playersInfo[playersIndex - 1]?.name"
       [allPullCards]="pullCards"

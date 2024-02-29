@@ -193,7 +193,7 @@ export class MainPlayerComponent implements OnInit {
     setTimeout(() => {
       this.flipCardsArray[0] = false;
       this.flipCardsArray[1] = false;
-    }, 2000);
+    }, 6000);
   }
   checkIfValuesAreEquals() {
     const tableCard = this.allTableCardsCopy.pop();

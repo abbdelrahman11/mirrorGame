@@ -1,3 +1,16 @@
+<app-playerstatus
+  [finishTheRound]="finishTheRound"
+  [playersIndex]="playersIndex"
+  [showOneCardFromAllThePlayers]="showOneCardFromAllThePlayers"
+  [cardIsBasra]="cardIsBasra"
+  [TakeOneCardAndGiveOne]="TakeOneCardAndGiveOne"
+  [showOneCardOfOtherPlayerCards]="showOneCardOfOtherPlayerCards"
+  [showOneOfYourCard]="showOneOfYourCard"
+  [playerNumber]="playerNumber"
+  [makeCanPullFromPullCardActive]="makeCanPullFromPullCardActive"
+  [canPullFromPullCard]="canPullFromPullCard"
+  [playerName]="playerName"
+></app-playerstatus>
 <div class="d-flex">
   <div
     *ngFor="let card of Cards; let i = index"
@@ -22,19 +35,6 @@
     To Ground
   </button>
 </div>
-<app-playerstatus
-  [finishTheRound]="finishTheRound"
-  [playersIndex]="playersIndex"
-  [showOneCardFromAllThePlayers]="showOneCardFromAllThePlayers"
-  [cardIsBasra]="cardIsBasra"
-  [TakeOneCardAndGiveOne]="TakeOneCardAndGiveOne"
-  [showOneCardOfOtherPlayerCards]="showOneCardOfOtherPlayerCards"
-  [showOneOfYourCard]="showOneOfYourCard"
-  [playerNumber]="playerNumber"
-  [makeCanPullFromPullCardActive]="makeCanPullFromPullCardActive"
-  [canPullFromPullCard]="canPullFromPullCard"
-  [playerName]="playerName"
-></app-playerstatus>
 
 <div class="text m-4 text-center" *ngIf="finishTheRound == playersIndex">
   <button

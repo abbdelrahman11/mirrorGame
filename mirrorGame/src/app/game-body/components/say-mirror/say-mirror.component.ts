@@ -13,6 +13,7 @@ export class SayMirrorComponent implements OnInit {
   @Input() gameId!: string | undefined;
   @Input() roomName!: string | undefined;
   @Input() playersIndex!: number;
+  @Input() finishTheRound!: number;
   ngOnInit(): void {}
   sayMirror() {
     this.socket.emit('finishTheRound', {

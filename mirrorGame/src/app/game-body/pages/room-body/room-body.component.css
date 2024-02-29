@@ -32,7 +32,8 @@
 }
 
 .first-line {
-  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
 @media (min-width: 320px) and (max-width: 380px) {
   .pull-cards {
@@ -40,6 +41,7 @@
   }
   .first-line {
     justify-content: normal;
+    align-items: normal;
   }
 }
 @media (min-width: 320px) and (max-width: 576px) {

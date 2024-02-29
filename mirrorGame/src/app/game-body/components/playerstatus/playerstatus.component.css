@@ -1,0 +1,8 @@
+.status-text {
+  margin: 20px;
+}
+@media (min-width: 320px) and (max-width: 576px) {
+  .status-text {
+    margin: 0;
+  }
+}
