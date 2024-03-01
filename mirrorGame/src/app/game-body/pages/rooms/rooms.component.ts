@@ -90,13 +90,21 @@ export class RoomsComponent implements OnInit {
     this.service.getTheRoom({ roomName: roomName }).subscribe({
       next: (res: any) => {
         if (res.usersId.includes(this.userId)) {
-          this.toastr.error('Room Already have this User');
+          this.router.navigate([
+            'roombody',
+            res.roomName,
+            res.gameId,
+            this.userId,
+          ]);
         } else {
           if (res.usersId.length < 4) {
             res.usersId.push(this.userId);
             this.RoomName = res.roomName;
             this.socket.emit('joinRoom', res);
             this.gameId = res.gameId;
+          } else {
+            this.toastr.error('Room Completed');
+            this.getAllRooms();
           }
         }
       },

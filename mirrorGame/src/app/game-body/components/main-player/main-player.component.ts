@@ -411,7 +411,6 @@ export class MainPlayerComponent implements OnInit {
         roomPoints: this.roomPoints,
       });
       this.blockRoundFinishedButton = true;
-      console.log('sichdndk');
     }, 4000);
   }
   flipTheCard(cardrId: string) {

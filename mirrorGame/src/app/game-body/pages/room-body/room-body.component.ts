@@ -124,7 +124,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
         ]);
         setTimeout(() => {
           location.reload();
-        }, 1000);
+        }, 2000);
       },
     });
   }
