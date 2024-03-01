@@ -411,7 +411,7 @@ export class MainPlayerComponent implements OnInit {
         roomPoints: this.roomPoints,
       });
       this.blockRoundFinishedButton = true;
-    }, 4000);
+    }, 2000);
   }
   flipTheCard(cardrId: string) {
     let cardDiv: any = document.getElementById(cardrId);
