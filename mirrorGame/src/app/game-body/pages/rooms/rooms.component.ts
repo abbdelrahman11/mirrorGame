@@ -4,6 +4,7 @@ import { ToastrService } from 'ngx-toastr';
 import { RoomsService } from 'src/app/core/services/rooms.service';
 import { Room } from 'src/app/core/interfaces/room';
 import { SocketService } from 'src/app/core/services/socket-service.service';
+import { problemsService } from 'src/app/core/services/problems.service';
 
 interface points {
   name: number;
@@ -23,12 +24,15 @@ export class RoomsComponent implements OnInit {
   userId!: string | undefined;
   gameId!: string;
   showTheInstructions!: boolean;
+  showTheInput!: boolean;
+  ProblemText: any;
   constructor(
     private service: RoomsService,
     private router: Router,
     private toastr: ToastrService,
     private ActivatedRoute: ActivatedRoute,
-    private socket: SocketService
+    private socket: SocketService,
+    private problemsService: problemsService
   ) {
     this.points = [{ name: 50 }, { name: 100 }];
   }
@@ -57,6 +61,9 @@ export class RoomsComponent implements OnInit {
 
   showDialog() {
     this.showTheDialog = true;
+  }
+  showInstructions() {
+    this.showTheInstructions = true;
   }
   CreateRoom() {
     if (this.usersIdArrray.length == 0) this.usersIdArrray.push(this.userId);
@@ -110,10 +117,21 @@ export class RoomsComponent implements OnInit {
       },
     });
   }
+  send() {
+    this.problemsService
+      .sendProblem({
+        text: this.ProblemText,
+        username: this.userId,
+      })
+      .subscribe({
+        next: (res) => {
+          this.showTheInput = false;
+          this.ProblemText = '';
+          this.toastr.success('The problem was sent');
+        },
+      });
+  }
   ngOnDestroy(): void {
     localStorage.removeItem('canStartTheGame');
-  }
-  showInstructions() {
-    this.showTheInstructions = true;
   }
 }

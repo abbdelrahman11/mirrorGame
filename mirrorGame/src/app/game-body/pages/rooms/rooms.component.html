@@ -1,10 +1,39 @@
-<div class="Refresh-btn d-flex">
-  <button class="btn btn-dark mt-3 ml-3" (click)="getAllRooms()">
-    Refresh
-    <i class="fa-solid fa-rotate-right"></i>
-  </button>
+<div class="row">
+  <div class="Refresh-btn col-md-6 col-6">
+    <button class="btn btn-dark mt-3 ml-3" (click)="getAllRooms()">
+      Refresh
+      <i class="fa-solid fa-rotate-right"></i>
+    </button>
+  </div>
+  <div class="btn" class="col-md-6 col-6">
+    <button
+      class="btn btn-dark mt-3 ml-3"
+      (click)="showTheInput = !showTheInput"
+    >
+      For problems
+    </button>
+    <div
+      class="input-group input-group-sm m-3 d-flex flex-column"
+      *ngIf="showTheInput"
+    >
+      <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-sm"
+          >If You Have Any Problems Send It And It Will Be Fixed</span
+        >
+      </div>
+      <input
+        [(ngModel)]="ProblemText"
+        class="ProblemText mt-3"
+        aria-label="Small"
+        aria-describedby="inputGroup-sizing-sm"
+        style="width: 50%"
+      />
+    </div>
+    <button class="btn btn-primary ml-3" (click)="send()" *ngIf="showTheInput">
+      send
+    </button>
+  </div>
 </div>
-
 <div class="rooms-container row mt-2">
   <ng-container *ngFor="let room of allRooms; let i = index">
     <div class="col-md-2 col-5 border m-3 rounded">

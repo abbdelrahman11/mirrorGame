@@ -14,7 +14,11 @@
   .badges {
     flex-direction: column;
   }
-  .Refresh-btn {
-    justify-content: center;
+  .input-group-text {
+    text-wrap: wrap;
+    width: 80% !important;
+  }
+  .ProblemText {
+    width: 80% !important;
   }
 }

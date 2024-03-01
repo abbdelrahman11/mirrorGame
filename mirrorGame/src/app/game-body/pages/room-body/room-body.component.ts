@@ -12,6 +12,8 @@ import { Room } from 'src/app/core/interfaces/room';
 import { RoomBodyService } from 'src/app/core/services/roomBody.service';
 import { SocketService } from 'src/app/core/services/socket-service.service';
 import { Result } from 'src/app/core/interfaces/result';
+import { ToastrService } from 'ngx-toastr';
+import { problemsService } from 'src/app/core/services/problems.service';
 
 @Component({
   selector: 'app-room-body',
@@ -37,6 +39,8 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   tableCardsAfterSpliced!: Card[];
   hideTheButton!: boolean;
   showTwoCards!: boolean;
+  showTheInput!: boolean;
+  ProblemText: any;
   allPlayersCards: Array<{ number: number; playerCards: Card[] }> = [];
   daynamicPlayer: Array<{ number: number; playerCards: Card[] }> = [];
   showPlayerCards!: boolean;
@@ -67,7 +71,9 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     private ActivatedRoute: ActivatedRoute,
     private router: Router,
     private socket: SocketService,
-    private changeDetector: ChangeDetectorRef
+    private changeDetector: ChangeDetectorRef,
+    private toastr: ToastrService,
+    private problemsService: problemsService
   ) {}
   ngOnInit(): void {
     if (this.StartTheGame === 'false') {
@@ -253,5 +259,19 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     this.userId = userIdParam !== null ? userIdParam : undefined;
     const gameIdParam = this.ActivatedRoute.snapshot.paramMap.get('gameId');
     this.gameId = gameIdParam !== null ? gameIdParam : undefined;
+  }
+  send() {
+    this.problemsService
+      .sendProblem({
+        text: this.ProblemText,
+        username: this.userId,
+      })
+      .subscribe({
+        next: (res) => {
+          this.showTheInput = false;
+          this.ProblemText = '';
+          this.toastr.success('The problem was sent');
+        },
+      });
   }
 }

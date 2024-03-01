@@ -49,4 +49,11 @@
     position: absolute;
     top: 450px;
   }
+  .input-group-text {
+    text-wrap: wrap;
+    width: 80% !important;
+  }
+  .ProblemText {
+    width: 80% !important;
+  }
 }

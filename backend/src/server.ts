@@ -4,6 +4,7 @@ import express from "express";
 import cors from "cors";
 import userRouter from "./routers/user.router";
 import roomsRouter from "./routers/rooms.router";
+import problemsRouter from "./routers/problems.router";
 import googleLoginRouter from "./routers/googleLogin";
 dotenv.config();
 require("dotenv").config();
@@ -57,6 +58,7 @@ app.use(passport.session());
 
 app.use("/api/users", userRouter);
 app.use("/api/rooms", roomsRouter);
+app.use("/api/problems", problemsRouter);
 app.use("/auth", googleLoginRouter);
 const onConnection = (socket: any) => {
   console.log("connected");
