@@ -178,6 +178,7 @@
       [Cards]="playerCards"
       [gameId]="gameId"
       [roomName]="roomName"
+      [playerCanPlay]="playerCanPlay"
       [playersIndex]="playersIndex"
       [canPullFromPullCard]="canPullFromPullCard"
       [takeTheCardWithoutCheck]="takeTheCardWithoutCheck"
@@ -208,6 +209,12 @@
   *ngIf="roomInfo?.usersId.length != 4 && canStartTheGame"
 >
   <div class="loader"></div>
-  <p class="mt-3">Waiting For All Members To Join The Room</p>
+  <p class="mt-3">Waiting For All players To Join The Room</p>
+  <p class="mt-3">
+    The Game Will Strat When <strong>four</strong> players Join The Room
+  </p>
+  <span class="badge badge-warning m-2"
+    >Players In The Room:{{ playersInTheRoom }}</span
+  >
 </div>
 <div class="overlay" *ngIf="!playerCanPlay && canStartTheGame"></div>

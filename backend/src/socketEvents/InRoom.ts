@@ -58,6 +58,7 @@ module.exports = (io: any, socket: any) => {
       };
       const updatedGame = await UpdateTheGame(gameId, updatedFields);
       socket.emit("playerIndex", userIndex + 1);
+      io.to(roomName).emit("playersInTheRoom", roomRes[0].usersId.length);
       if (roomRes[0].usersId.length == 4 && updatedGame.gameMembersCount > 3) {
         await RoomIsComplete(updatedGame, gameId, roomName);
       }

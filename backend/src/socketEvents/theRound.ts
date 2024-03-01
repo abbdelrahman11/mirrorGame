@@ -66,7 +66,15 @@ module.exports = (io: any, socket: any) => {
 
     return obj;
   }
-
+  const handletheTimerFinished = async ({ gameId, roomName }: any) => {
+    console.log(gameId, roomName);
+    const updatedFields = {
+      $inc: { activeUserIndex: 1 },
+    };
+    const cardsUpdate = await UpdateTheGame(gameId, updatedFields);
+    io.to(roomName).emit("allCards", [cardsUpdate]);
+  };
   socket.on("finishTheRound", handlefinishTheRound);
   socket.on("roundFinished", handlegaameFinished);
+  socket.on("theTimerFinished", handletheTimerFinished);
 };

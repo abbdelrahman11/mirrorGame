@@ -14,7 +14,6 @@ import { SocketService } from 'src/app/core/services/socket-service.service';
 import { Result } from 'src/app/core/interfaces/result';
 import { ToastrService } from 'ngx-toastr';
 import { problemsService } from 'src/app/core/services/problems.service';
-
 @Component({
   selector: 'app-room-body',
   templateUrl: './room-body.component.html',
@@ -49,6 +48,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
   flipAllCardsForPlayers!: boolean;
   updateCounterForPlayers!: number;
   takeAndGive!: boolean;
+  playersInTheRoom!: number;
   takeAndGiveSelectedCard!: {
     card: Card;
     playerNumber: number;
@@ -98,6 +98,9 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
     });
     this.socket.listen('playerIndex').subscribe((res: number) => {
       this.playersIndex = res as number;
+    });
+    this.socket.listen('playersInTheRoom').subscribe((res: number) => {
+      this.playersInTheRoom = res as number;
     });
     this.socket.listen('canStartTheGame').subscribe((res) => {
       this.canStartTheGame = res;

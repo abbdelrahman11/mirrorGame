@@ -22,6 +22,8 @@ export class MainPlayerComponent implements OnInit {
   @Input() finishTheRound!: number;
   @Input() roomPoints!: number;
   @Input() playerName!: string | undefined;
+  @Input() playerCanPlay!: boolean;
+  theTimer: number = 30;
   @Input() takeAndGiveSelectedCard!:
     | {
         card: Card;
@@ -83,6 +85,11 @@ export class MainPlayerComponent implements OnInit {
     }
     if (this.takeAndGiveSelectedCard) {
       this.TakeOneCardAndGiveFeature(this.takeAndGiveSelectedCard);
+    }
+    if (this.playerCanPlay) {
+      this.startTheTimer(this.playerCanPlay);
+    } else if (this.playerCanPlay == false) {
+      this.theTimer = 30;
     }
   }
   ngOnInit(): void {
@@ -451,5 +458,22 @@ export class MainPlayerComponent implements OnInit {
   }
   async delay() {
     return new Promise((resolve) => setTimeout(resolve, 3000));
+  }
+  startTheTimer(playerCanPlay: boolean) {
+    if (this.theTimer == 0) {
+      this.socket.emit('theTimerFinished', {
+        gameId: this.gameId,
+        roomName: this.roomName,
+      });
+      return;
+    }
+    setTimeout(() => {
+      this.theTimer--;
+      if (this.playerCanPlay) {
+        this.startTheTimer(playerCanPlay);
+      } else if (this.playerCanPlay == false) {
+        this.theTimer = 30;
+      }
+    }, 1500);
   }
 }
