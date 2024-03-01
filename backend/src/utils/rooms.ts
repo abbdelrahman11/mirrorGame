@@ -19,7 +19,7 @@ async function checkTheRoomName(room: room) {
 }
 
 function allRooms() {
-  return roomModel.find({});
+  return roomModel.find().sort({ _id: -1 }).limit(10);
 }
 
 function userJoin(room: room) {

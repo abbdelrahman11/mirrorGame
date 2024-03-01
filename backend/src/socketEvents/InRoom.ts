@@ -48,6 +48,7 @@ module.exports = (io: any, socket: any) => {
     socket.join(roomName);
     if (theGame.length > 0) {
       const userIndex = roomRes[0].usersId.indexOf(userId);
+
       const updatedFields = {
         [`player${userIndex + 1}`]: getRandomNumbers(
           theGame[0].cards,
@@ -57,7 +58,7 @@ module.exports = (io: any, socket: any) => {
       };
       const updatedGame = await UpdateTheGame(gameId, updatedFields);
       socket.emit("playerIndex", userIndex + 1);
-      if (roomRes[0].usersId.length == 4 && updatedGame.gameMembersCount == 4) {
+      if (roomRes[0].usersId.length == 4 && updatedGame.gameMembersCount > 3) {
         await RoomIsComplete(updatedGame, gameId, roomName);
       }
     }

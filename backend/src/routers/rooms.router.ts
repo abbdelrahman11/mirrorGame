@@ -10,7 +10,7 @@ router.use(auth);
 router.get(
   "/getAllRooms",
   asyncHandler(async (req, res) => {
-    const rooms = await roomModel.find({});
+    const rooms = await roomModel.find().sort({ _id: -1 }).limit(10);
     res.send(rooms);
   })
 );
