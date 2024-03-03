@@ -35,7 +35,12 @@
         style="width: 50%"
       />
     </div>
-    <button class="btn btn-primary ml-3" (click)="send()" *ngIf="showTheInput">
+    <button
+      class="btn btn-primary ml-3"
+      (click)="send()"
+      *ngIf="showTheInput"
+      [disabled]="!ProblemText"
+    >
       send
     </button>
   </div>

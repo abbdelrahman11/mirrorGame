@@ -67,7 +67,6 @@ module.exports = (io: any, socket: any) => {
     return obj;
   }
   const handletheTimerFinished = async ({ gameId, roomName }: any) => {
-    console.log(gameId, roomName);
     const updatedFields = {
       $inc: { activeUserIndex: 1 },
     };

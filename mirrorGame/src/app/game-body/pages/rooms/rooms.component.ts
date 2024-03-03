@@ -66,12 +66,16 @@ export class RoomsComponent implements OnInit {
     this.showTheInstructions = true;
   }
   CreateRoom() {
-    if (this.usersIdArrray.length == 0) this.usersIdArrray.push(this.userId);
-    this.socket.emit('createRoom', {
-      roomName: this.RoomName,
-      roomPoints: this.selectedPoint,
-      usersId: this.usersIdArrray,
-    });
+    if (this.RoomName.trim().length === 0) {
+      this.toastr.error('You must type a name for the room');
+    } else {
+      if (this.usersIdArrray.length == 0) this.usersIdArrray.push(this.userId);
+      this.socket.emit('createRoom', {
+        roomName: this.RoomName,
+        roomPoints: this.selectedPoint,
+        usersId: this.usersIdArrray,
+      });
+    }
   }
   getAllRooms() {
     this.service.getAllRooms().subscribe({

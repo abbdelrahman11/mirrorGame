@@ -11,7 +11,6 @@ router.use(auth);
 router.post(
   "/sendProblem",
   asyncHandler(async (req, res) => {
-    console.log(req.body);
     let theProblem = await messagesModel.create(req.body);
     if (theProblem) {
       res.send(true);
