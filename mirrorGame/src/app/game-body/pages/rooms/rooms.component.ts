@@ -5,6 +5,8 @@ import { RoomsService } from 'src/app/core/services/rooms.service';
 import { Room } from 'src/app/core/interfaces/room';
 import { SocketService } from 'src/app/core/services/socket-service.service';
 import { problemsService } from 'src/app/core/services/problems.service';
+import { Store } from '@ngrx/store';
+import { player_status } from 'src/app/app-state/actions/playerStatus.actions';
 
 interface points {
   name: number;
@@ -32,7 +34,8 @@ export class RoomsComponent implements OnInit {
     private toastr: ToastrService,
     private ActivatedRoute: ActivatedRoute,
     private socket: SocketService,
-    private problemsService: problemsService
+    private problemsService: problemsService,
+    private store: Store<any>
   ) {
     this.points = [{ name: 50 }, { name: 100 }];
   }
@@ -137,5 +140,10 @@ export class RoomsComponent implements OnInit {
   }
   ngOnDestroy(): void {
     localStorage.removeItem('canStartTheGame');
+  }
+  hfedu() {
+    this.store.dispatch(
+      player_status({ statusName: 'TakeOneCardAndGiveOne', value: true })
+    );
   }
 }

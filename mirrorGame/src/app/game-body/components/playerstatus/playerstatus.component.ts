@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store, select } from '@ngrx/store';
 
 @Component({
   selector: 'app-playerstatus',
@@ -17,7 +18,11 @@ export class PlayerstatusComponent implements OnInit {
   @Input() makeCanPullFromPullCardActive!: boolean;
   @Input() canPullFromPullCard!: boolean;
   @Input() playerName!: string | undefined;
-  constructor() {}
+  constructor(private store: Store<any>) {
+    // this.store
+    //   .pipe(select('tasks'))
+    //   .subscribe((tasks: ) => ());
+  }
 
   ngOnInit(): void {}
 }

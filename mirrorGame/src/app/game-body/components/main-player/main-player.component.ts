@@ -1,4 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { player_status } from 'src/app/app-state/actions/playerStatus.actions';
 import { Card } from 'src/app/core/interfaces/card';
 import { SocketService } from 'src/app/core/services/socket-service.service';
 @Component({
@@ -61,7 +63,7 @@ export class MainPlayerComponent implements OnInit {
   showEndGame!: boolean;
   blockRoundFinishedButton!: boolean;
 
-  constructor(private socket: SocketService) {}
+  constructor(private socket: SocketService, private store: Store<any>) {}
   ngOnChanges(): void {
     if (this.Cards) {
       this.copyOfPlayerCards = [...this.Cards];
@@ -263,7 +265,10 @@ export class MainPlayerComponent implements OnInit {
       } else if (card.content == '9' || card.content == '10') {
         this.showOneCardOfThePlayer();
       } else if (card.content == '=><=') {
-        this.TakeOneCardAndGiveOne = true;
+        // this.TakeOneCardAndGiveOne = true;
+        this.store.dispatch(
+          player_status({ statusName: 'TakeOneCardAndGiveOne', value: true })
+        );
       } else if (card.content == 'Basra') {
         this.cardIsBasra = true;
       } else if (card.content == '*') {
@@ -333,6 +338,9 @@ export class MainPlayerComponent implements OnInit {
       TableCards: this.allTableCardsCopy,
     });
     this.TakeOneCardAndGiveOne = false;
+    this.store.dispatch(
+      player_status({ statusName: 'TakeOneCardAndGiveOne', value: false })
+    );
     this.takeAndGiveSelectedCard = undefined;
     this.changeCanSelectCard.emit(false);
     this.hideTheCardAndButton.emit(true);
