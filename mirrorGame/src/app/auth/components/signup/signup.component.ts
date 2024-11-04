@@ -36,6 +36,6 @@ export class SignupComponent implements OnInit {
     window.open(`${environment.baseUrl}/auth/google/callback`, '_self');
   }
   handelSuccess() {
-    this.router.navigateByUrl("/auth/login")
+    this.router.navigateByUrl('/auth/login');
   }
 }
