@@ -16,7 +16,7 @@ export class RedirectComponent implements OnInit {
     this.service.checkRedirect().subscribe({
       next: (res: any) => {
         localStorage.setItem('token', res.token);
-        this.router.navigate(['/rooms', res.user.id]);
+        this.router.navigate(['game/rooms', res.user.id]);
       },
     });
   }

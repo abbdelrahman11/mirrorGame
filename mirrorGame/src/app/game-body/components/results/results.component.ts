@@ -61,6 +61,6 @@ export class ResultsComponent implements OnInit {
     }
   }
   goHome() {
-    this.router.navigate(['rooms', this.userId]);
+    this.router.navigate(['game/rooms', this.userId]);
   }
 }

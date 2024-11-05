@@ -126,7 +126,7 @@ export class RoomBodyComponent implements OnInit, AfterContentChecked {
       next: (res) => {
         this.gameId = res;
         this.router.navigate([
-          'roombody',
+          'game/roombody',
           this.roomName,
           this.gameId,
           this.userId,

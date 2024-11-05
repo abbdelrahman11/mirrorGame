@@ -90,7 +90,7 @@ export class RoomsComponent implements OnInit {
     });
     this.socket.listen('canJoinRoom').subscribe((res: any) => {
       this.router.navigate([
-        'roombody',
+        'game/roombody',
         this.RoomName,
         this.gameId,
         this.userId,
@@ -102,7 +102,7 @@ export class RoomsComponent implements OnInit {
       next: (res: any) => {
         if (res.usersId.includes(this.userId)) {
           this.router.navigate([
-            'roombody',
+            'game/roombody',
             res.roomName,
             res.gameId,
             this.userId,

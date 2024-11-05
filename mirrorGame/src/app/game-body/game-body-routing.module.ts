@@ -7,7 +7,6 @@ import { RoomBodyComponent } from './pages/room-body/room-body.component';
 const routes: Routes = [
   {
     path: '',
-    component: LayoutComponent,
     children: [
       {
         path: 'rooms/:id',
